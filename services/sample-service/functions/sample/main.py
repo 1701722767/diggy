@@ -25,6 +25,6 @@ def lambda_handler(event, context):
         print(err)
     finally:
         if req.err is None:
-            return "all is good"
+            return "all is good y"
         else:
-            return "all is not good"
+            return "all is not good y"
