@@ -17,7 +17,8 @@ jobs:
     - name: Create Zip File
       run: |
         cd ..
-        cd ./diggy/services/sample-service/functions
+        ls
+        cd diggy/services/sample-service/functions
         ls
         zip -r output_file.zip samples
         ls
