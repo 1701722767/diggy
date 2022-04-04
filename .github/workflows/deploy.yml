@@ -11,7 +11,12 @@ jobs:
 
     steps:
     - name: Make artifact directory
-      run: mkdir -p './artifacts'
+      run: |
+        mkdir -p './artifacts'
+        ls
+        cd ..
+        ls
+        echo "end"
 
     - name: Create Zip File
       run: ls
