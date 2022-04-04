@@ -1,5 +1,6 @@
+#!/bin/bash
+
 mkdir -p './artifacts'
-tree
 
 for d in ./services/* ; do
   if [ ! -d "$d" ]; then
@@ -11,8 +12,9 @@ for d in ./services/* ; do
       continue
     fi
 
-    echo "$f"
-    zip -jr ./artifacts/sample-service_sample.zip $f/main.py
-    printf "@ main.py\n@=lambda_function.py\n" | zipnote -w ./artifacts/sample-service_sample.zip
+    zip_name="${d##*/}-service_${f##*/}"
+
+    zip -jr ./artifacts/$zip_name.zip $f/main.py
+    printf '@ main.py\n@=lambda_function.py\n' | zipnote -w ./artifacts/$zip_name.zip
   done
 done
