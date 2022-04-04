@@ -18,9 +18,7 @@ jobs:
       - name: Create Zip File
         run: |
           cd ./runner/work/diggy/diggy
-          mkdir -p './artifacts'
-          bash scripts/zip_functions.sh
-          tree
+          bash ./scripts/zip_functions.sh
 
       - name: Push Zip to S3
         uses: jakejarvis/s3-sync-action@v0.3.1
