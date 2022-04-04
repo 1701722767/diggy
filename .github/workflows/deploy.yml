@@ -21,6 +21,7 @@ jobs:
           cd ..
           cd ..
           cd ..
+          cd ./runner/work/diggy
           tree -f
           ls
           cd diggy
