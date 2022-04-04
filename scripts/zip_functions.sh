@@ -1,7 +1,7 @@
 mkdir -p './artifacts'
 tree
 
-for d in ../services/* ; do
+for d in ./services/* ; do
   if [ ! -d "$d" ]; then
     continue
   fi
