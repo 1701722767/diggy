@@ -17,9 +17,6 @@ jobs:
 
       - name: Create Zip File
         run: |
-          tree
-          cd ./runner/work/diggy
-          tree
           bash ./scripts/zip_functions.sh
 
       - name: Push Zip to S3
