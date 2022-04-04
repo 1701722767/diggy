@@ -16,8 +16,8 @@ jobs:
 
     - name: Create Zip File
       run: |
-        tree -f
         cd ..
+        tree -f
         ls
         cd diggy
         ls
