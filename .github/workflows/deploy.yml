@@ -10,12 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Make artifact directory
-      run: |
-        mkdir -p './artifacts'
+    # - name: Make artifact directory
+    #   run: |
+    #     mkdir -p './artifacts'
 
     - name: Create Zip File
       run: |
+        cd ..
+        cd ..
         cd ..
         cd ..
         tree -f
