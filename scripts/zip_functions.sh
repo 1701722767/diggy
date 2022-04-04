@@ -21,7 +21,7 @@ for d in ./services/* ; do
     input=$f/requirements.txt
     while IFS= read -r line
     do
-      pip install --target ./package $line
+      pip install --target $f/package $line
     done < "$input"
 
     zip -jr ./artifacts/$zip_name.zip $f/package
