@@ -13,23 +13,20 @@ jobs:
     - name: Make artifact directory
       run: |
         mkdir -p './artifacts'
-        ls
-        cd ..
-        ls
-        echo "end"
 
     - name: Create Zip File
       run: |
-        zip -v
-      # uses: montudor/action-zip@v0.1.0
-      # with:
-      #   args: zip -r ./artifacts/code.zip ./../diggy/services/sample-service/functions/sample
+        cd ..
+        cd ./diggy/services/sample-service/functions
+        ls
+        zip -r output_file.zip samples
+        ls
 
-    - name: Push Zip to S3
-      uses: jakejarvis/s3-sync-action@v0.3.1
-      env:
-        SOURCE_DIR: './artifacts'
-        AWS_REGION: 'us-east-1'
-        AWS_S3_BUCKET: 'us-east-1'
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    # - name: Push Zip to S3
+    #   uses: jakejarvis/s3-sync-action@v0.3.1
+    #   env:
+    #     SOURCE_DIR: './artifacts'
+    #     AWS_REGION: 'us-east-1'
+    #     AWS_S3_BUCKET: 'us-east-1'
+    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
