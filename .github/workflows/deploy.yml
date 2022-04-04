@@ -21,7 +21,7 @@ jobs:
     - name: Create Zip File
       uses: montudor/action-zip@v0.1.0
       with:
-        args: zip -r ./artifacts/code.zip ../diggy/services/sample-service/functions/sample
+        args: zip -r ./artifacts/code.zip ./../diggy/services/sample-service/functions/sample
 
     - name: Push Zip to S3
       uses: jakejarvis/s3-sync-action@v0.3.1
