@@ -19,7 +19,7 @@ jobs:
         run: |
           cd ./runner/work/diggy/diggy
           mkdir -p './artifacts'
-          bash ./scripts/zip_functions.sh
+          bash scripts/zip_functions.sh
           tree
 
       - name: Push Zip to S3
