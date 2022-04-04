@@ -18,9 +18,9 @@ jobs:
       run: |
         cd ..
         ls
-        cd diggy/services/sample-service/functions
+        cd diggy
         ls
-        zip -r output_file.zip samples
+        zip -r output_file.zip .
         ls
 
     # - name: Push Zip to S3
