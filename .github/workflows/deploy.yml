@@ -24,7 +24,7 @@ jobs:
           cd ./runner/work
           mkdir -p './artifacts'
           tree -f
-          zip -r ./artifacts/output_file.zip ./diggy/services/sample-service/functions/sample
+          zip -r ./artifacts/output_file.zip ./diggy/diggy/services/sample-service/functions/sample
 
       - name: Push Zip to S3
         uses: jakejarvis/s3-sync-action@v0.3.1
