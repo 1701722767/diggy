@@ -21,16 +21,16 @@ jobs:
           cd ..
           cd ..
           cd ..
-          cd ./runner/work
+          cd ./runner/work/diggy
           mkdir -p './artifacts'
           tree -f
-          zip -r ./artifacts/output_file.zip ./diggy/diggy/services/sample-service/functions/sample
+          zip -r ./artifacts/output_file.zip ./diggy/services/sample-service/functions/sample
 
       - name: Push Zip to S3
         uses: jakejarvis/s3-sync-action@v0.3.1
         env:
-          SOURCE_DIR: './runner/work/artifacts'
+          SOURCE_DIR: '.artifacts'
           AWS_REGION: 'us-east-1'
-          AWS_S3_BUCKET: 'us-east-1'
+          AWS_S3_BUCKET: 'diggy-artifacts'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
