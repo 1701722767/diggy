@@ -12,7 +12,7 @@ for d in ./services/* ; do
     fi
 
     echo "$f"
-    zip -jr ../artifacts/sample-service_sample.zip $f/main.py
-    printf "@ main.py\n@=lambda_function.py\n" | zipnote -w ../artifacts/sample-service_sample.zip
+    zip -jr ./artifacts/sample-service_sample.zip $f/main.py
+    printf "@ main.py\n@=lambda_function.py\n" | zipnote -w ./artifacts/sample-service_sample.zip
   done
 done
