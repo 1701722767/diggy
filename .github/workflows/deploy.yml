@@ -2,7 +2,7 @@ name: Build zips
 
 on:
   push:
-    branches: [ enable-deploy-to-aws ]
+    branches: [ main ]
 
 jobs:
   build:
