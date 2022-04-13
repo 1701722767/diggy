@@ -1,5 +1,4 @@
-
-from ast import Try
+import json, yaml
 class Request:
     """
     Request is the class used for handling the request
@@ -7,8 +6,8 @@ class Request:
     def __init__(self):
         self.err = None
 
-    def process(self):
-        print("hello world")
+    def process(self,message):
+        print(yaml.dump(message, default_flow_style=False))
 
 
 
@@ -19,12 +18,12 @@ def lambda_handler(event, context):
     _ = context
     req = Request()
     try:
-        req.process()
+        req.process(event)
 
     except Exception as err:
         print(err)
     finally:
         if req.err is None:
-            return "all is good"
+            return "all is good siuuu"
         else:
-            return "all is not good"
+            return "all is not good nouu"
