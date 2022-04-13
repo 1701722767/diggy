@@ -1,7 +1,10 @@
 #!/bin/bash
 
-mkdir -p './artifacts'
+mkdir -p './artifacts/functions'
+mkdir -p './artifacts/layers'
 
+
+## create zip with code
 for d in ./services/* ; do
   if [ ! -d "$d" ]; then
     continue
@@ -14,18 +17,38 @@ for d in ./services/* ; do
 
     zip_name="${d##*/}-service_${f##*/}"
 
-    zip -jr ./artifacts/$zip_name.zip $f/main.py
-    # pip freeze > $f/requirements.txt
-    # pip install -r $f/requirements.txt -t ./package
-    # zip -jr ./artifacts/$zip_name.zip $f/package
-    input=$f/requirements.txt
-    while IFS= read -r line
-    do
-      pip install --target $f/package $line
-    done < "$input"
+    for file in $f/* ; do
+      if (grep -l 'test' $file) then
+        echo "Not insert " $file "in zip"
+      else
+        zip -rj ./artifacts/functions/$zip_name.zip $file
+      fi
 
-    zip -jr ./artifacts/$zip_name.zip $f/package
+    done
 
-    printf '@ main.py\n@=lambda_function.py\n' | zipnote -w ./artifacts/$zip_name.zip
+
+    printf '@ main.py\n@=lambda_function.py\n' | zipnote -w ./artifacts/functions/$zip_name.zip
   done
+done
+
+# create zip for service layer
+for d in ./services/* ; do
+  if [ ! -d "$d" ]; then
+    continue
+  fi
+
+  mkdir -p $d/python
+  pip3 install --target=$d/python -r $d/requirements.txt
+
+  cd $d
+
+  zip_name="${d##*/}-service_layer"
+  zip -r $zip_name.zip ./python
+  mv $zip_name.zip '../../artifacts/layers'
+
+
+  rm -r ./python
+
+  cd ../..
+
 done
