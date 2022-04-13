@@ -1,5 +1,4 @@
 import json, yaml
-import pandas
 class Request:
     """
     Request is the class used for handling the request
@@ -8,7 +7,7 @@ class Request:
         self.err = None
 
     def process(self,message):
-        print(message)
+        print(yaml.dump(message, default_flow_style=False))
 
 
 
