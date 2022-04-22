@@ -2,7 +2,7 @@ name: Build zips
 
 on:
   push:
-    branches: [ nofity-email ]
+    branches: [ notify-email ]
 
 jobs:
   build:
