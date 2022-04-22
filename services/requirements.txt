@@ -2,3 +2,4 @@ PyYAML
 pandas
 firebase
 python_jwt
+gcloud
