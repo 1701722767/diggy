@@ -1,3 +1,4 @@
 PyYAML
 pandas
 firebase-admin
+python-dotenv
