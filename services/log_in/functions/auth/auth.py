@@ -31,5 +31,5 @@ def authenticate():
     return response
 
 def lambda_handler(event, context):
-    # TODO implement
+    
     return authenticate()
