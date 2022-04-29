@@ -23,5 +23,5 @@ def confirm_user():
     return response
 
 def lambda_handler(event, context):
-    # TODO implement
+    
     return confirm_user()
