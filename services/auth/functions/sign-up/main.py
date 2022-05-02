@@ -3,7 +3,7 @@ import os
 import boto3
 from dotenv import load_dotenv, find_dotenv
 
-def sign_up(username,password,email,phone_number,birthdate):
+def sign_up(new_user):
     load_dotenv(find_dotenv())
 
     # read the .env-sample, to load the environment variable.
@@ -18,22 +18,25 @@ def sign_up(username,password,email,phone_number,birthdate):
      # TODO implement
     response = client.sign_up(
         ClientId=os.getenv("COGNITO_USER_CLIENT_ID"),
-        Username=username,
-        Password=password,
+        Username=new_user['username'],
+        Password=new_user['password'],
         UserAttributes=[
-            {"Name": "email", "Value": email},
-            { "Name": "phone_number", "Value": phone_number},
-            {"Name": "birthdate" , "Value": birthdate}])
+            {"Name": "email", "Value": new_user['email']},
+            { "Name": "phone_number", "Value": new_user['phone_number']},
+            {"Name": "birthdate" , "Value": new_user['birthdate']}])
     
     
     return response
 
 def lambda_handler(event, context):
+
+    new_user = {
+        "username" : event.body['username'],
+        "password" : event.body['password'],
+       " email" : event.body['email'],
+        "phone_number" : event.body['phone_number'],
+        "birthdate" : event.body['birthdate']
+
+    }
     
-    username = event['username']
-    password = event['password']
-    email = event['email']
-    phone_number =event['phone_number']
-    birthdate = event['birthdate']
-    
-    return sign_up(username,password,email,phone_number,birthdate)
+    return sign_up(new_user)

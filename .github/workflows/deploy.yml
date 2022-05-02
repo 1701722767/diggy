@@ -15,7 +15,7 @@ jobs:
         run: |
           bash ./scripts/zip_functions.sh
           bash ./scripts/create_layers.sh
-          tree
+          
 
       - name: Push Zip to S3
         uses: jakejarvis/s3-sync-action@v0.3.1
