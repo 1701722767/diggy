@@ -3,15 +3,13 @@ import os
 import boto3
 from dotenv import load_dotenv, find_dotenv
 
-def sign_up():
+def sign_up(username,password,email,phone_number,birthdate):
     load_dotenv(find_dotenv())
 
     # read the .env-sample, to load the environment variable.
     dotenv_path = os.path.join(os.path.dirname(__file__), ".env-sample")
     load_dotenv(dotenv_path)
     
-    username = "usertest041"
-    password = "#Abc1234"
     
     client = boto3.client("cognito-idp", region_name="us-east-1")
     
@@ -23,13 +21,19 @@ def sign_up():
         Username=username,
         Password=password,
         UserAttributes=[
-            {"Name": "email", "Value": "nicolascr181@outlook.com"},
-            { "Name": "phone_number", "Value": "+573234440587"},
-            {"Name": "birthdate" , "Value": "5 Jun 1998"}])
+            {"Name": "email", "Value": email},
+            { "Name": "phone_number", "Value": phone_number},
+            {"Name": "birthdate" , "Value": birthdate}])
     
     
     return response
 
 def lambda_handler(event, context):
     
-    return sign_up()
+    username = event['username']
+    password = event['password']
+    email = event['email']
+    phone_number =event['phone_number']
+    birthdate = event['birthdate']
+    
+    return sign_up(username,password,email,phone_number,birthdate)
