@@ -2,7 +2,7 @@ name: Build zips
 
 on:
   push:
-    branches: [firebase_test]
+    branches: [main]
 
 jobs:
   build:
