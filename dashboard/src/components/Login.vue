@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <h2>Wenas</h2>
+    <h2>Login</h2>
   </v-container>
 </template>
 
 <script>
   export default {
-    name: 'HelloWorld',
+    name: 'Login',
 
     data: () => ({
     }),
