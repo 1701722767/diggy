@@ -4,11 +4,13 @@ from firebase_admin import credentials,messaging
 def init(push):
 
     cred = credentials.Certificate("serviceAccountKey.json")
-    firebase_admin.initialize_app(cred)
+    
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app(cred)
     
     title = push["title"]
     body = push["body"]
-    registrarion_token  = push["registration_token"]
+    registration_token  = push["registration_token"]
 
     # See documentation on defining a message payload.
 
@@ -31,6 +33,7 @@ def init(push):
 
 
 def lambda_handler(event, context):
+
 
     push = {
         "registration_token" : event["registration_token"],
