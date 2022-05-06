@@ -6,6 +6,8 @@ import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
 
+Vue.component('HelloWorld', { /* ... */ })
+
 Vue.use(vuetify)
 
 new Vue({

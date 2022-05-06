@@ -1,26 +1,77 @@
 <template>
   <v-app>
-    <h3>test</h3>
-  <!-- Sizes your content based upon application components -->
-  <v-main>
+    <!-- Sizes your content based upon application components -->
+    <v-main> 
+      <v-app-bar
+      color="deep-purple accent-4"
+      dense
+      dark
+    >
+      <v-toolbar-title>DIGGY</v-toolbar-title>
 
-    <!-- Provides the application the proper gutter -->
-    <v-container fluid>
+      <v-spacer></v-spacer>
 
-      <!-- If using vue-router -->
-      <router-view></router-view>
-    </v-container>
-  </v-main>
+      <v-btn icon>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
 
-  <v-footer app>
-    <!-- -->
-  </v-footer>
-</v-app>
+      <v-btn icon>
+        <v-icon >mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-menu
+        left
+        bottom
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="n in 4"
+            :key="n"
+            @click="() => {}"
+          >
+            <v-list-item-title>Option {{ n }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
+  
+      <!-- Provides the application the proper gutter -->
+      <v-container fluid>
+        <!-- If using vue-router -->
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      <!-- -->
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
+//import HelloWorld from './components/HelloWorld.vue';
 
-export default {
+ export default { 
   name: 'App',
-};
+  data(){
+    return {
+      appTitle: 'DIGGY',
+      sidebar: false,
+      menuItems: [
+          { title: 'Home', path: '/home'},
+          { title: 'Sign Out', path: '/Login' }
+     ]
+    }
+  }
+  };
 </script>
