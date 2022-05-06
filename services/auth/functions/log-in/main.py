@@ -23,10 +23,15 @@ def log_in(user):
         
         response = client.get_user(AccessToken=access_token)
         
-        return response
+        token_user = {
+            "access_token" : access_token
+        }
+        
+        return token_user
     
     except Exception as e:
-        return str(e)
+        print(str(e))
+        raise e
     
    
 

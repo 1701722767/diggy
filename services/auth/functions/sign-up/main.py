@@ -19,7 +19,8 @@ def sign_up(new_user):
         )
         return response
     except Exception as e:
-       return str(e)
+        print(str(e))
+        raise e
     
     
 

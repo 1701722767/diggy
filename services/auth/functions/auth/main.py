@@ -20,7 +20,8 @@ def confirm_user(confirm_data_user):
         
         return response
     except Exception as e:
-        return str(e)
+        print(str(e))
+        raise e
 
 def lambda_handler(event, context):
   

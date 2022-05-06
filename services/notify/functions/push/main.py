@@ -1,4 +1,5 @@
 import firebase_admin
+import json
 from firebase_admin import credentials,messaging
 
 def init(push):
@@ -10,7 +11,7 @@ def init(push):
     
     title = push["title"]
     body = push["body"]
-    registration_token  = push["registration_token"]
+    token  = push["token"]
 
     # See documentation on defining a message payload.
 
@@ -20,25 +21,27 @@ def init(push):
                 title=title,
                 body=body,
             ),
-            token=registration_token
+            token=token
         )
 
         # Send a message to the device corresponding to the provided
         # registration token.
         response = messaging.send(message)
         return response
+        
 
     except Exception as e:
-        return str(e)
+        print(str(e))
+        raise e
 
 
 def lambda_handler(event, context):
-
+    message = json.loads(event['Records'][0]['Sns']['Message'])
 
     push = {
-        "registration_token" : event["registration_token"],
-        "title" : event["title"],
-        "body" : event["body"]
+        "token" : message["token"],
+        "title" : message["title"],
+        "body" : message["body"]
     }
 
     return init(push)
