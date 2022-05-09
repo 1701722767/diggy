@@ -1,0 +1,117 @@
+import json
+import boto3
+import json
+from boto3.dynamodb.conditions import Key
+from botocore.exceptions import ClientError
+import templates
+
+
+
+AWS_REGION = "us-east-1"
+# Create a new SES resource and specify a region.
+client = boto3.client('ses',region_name=AWS_REGION)
+
+class Request:
+    """
+    Request is the class used for handling the request
+    """
+    def __init__(self,message):
+        self.message = message
+        self.err = None
+
+    def validate(self):
+        if self.message.get('email',None) is None:
+            print("missing email")
+            return False
+
+        if self.message.get('subject',None) is None:
+            print("missing subject")
+            return False
+
+        if self.message.get('template',None) is None:
+            print("missing template")
+            return False
+
+        if self.message.get('data',None) is None:
+            print("missing data")
+            return False
+
+        return True
+
+    def process(self):
+        if not self.validate():
+            return None
+
+
+        self.email = self.message['email']
+        self.subject = self.message['subject']
+        self.template = self.message['template']
+        self.data = self.message['data']
+
+        print(self.email)
+
+        return self.send_email()
+
+    def getBodyHtml(self):
+        return templates.EMAILS_TEMPLATES[self.template]
+
+
+    def send_email(self):
+        SENDER = "Diggy <sergio.1701510237@ucaldas.edu.co>"
+        RECIPIENT = self.email
+        SUBJECT = self.subject
+        CHARSET = "UTF-8"
+
+        bodyHtml = self.getBodyHtml()
+
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    RECIPIENT,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Charset': CHARSET,
+                        'Data': bodyHtml ,
+                    }
+                },
+                'Subject': {
+                    'Charset': CHARSET,
+                    'Data': SUBJECT,
+                },
+            },
+            Source=SENDER,
+        )
+
+
+def getMessage(event):
+    if event.get('Records', None) is None or len(event['Records']) <= 0:
+        print('no records')
+        return None
+
+    if event['Records'][0].get('Sns',None) is None or event['Records'][0]['Sns'].get('Message',None) is None:
+        print('no messages',event['Records'][0])
+        return None
+
+    return json.loads(event['Records'][0]['Sns']['Message'])
+
+"""
+lambda_handler function that starts the lambda
+"""
+def lambda_handler(event, context):
+    try:
+        _ = context
+        message = getMessage(event)
+        if message == None:
+            return None
+
+        req = Request(message)
+
+        return req.process()
+
+    except Exception as err:
+        print(err)
+
+        return err
