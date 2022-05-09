@@ -35,23 +35,36 @@ def init(push):
         raise e
 
 def validate(data):
+    
     for name in data.keys():
         if not data[name]:
-            print(name," undefined")
-            return False
-    
-    return True
+            print(name," missing")
+            raise Exception(str(name))
 
 
 def lambda_handler(event, context):
-    message = json.loads(event['Records'][0]['Sns']['Message'])
-
-    if validate(event):
+    
+    response = {
+        "error" : False,
+        "message": "Todo bien",
+        "data": None
+    }
+    
+    try :
+        message = json.loads(event['Records'][0]['Sns']['Message'])
         push = {
             "token" : message["token"],
             "title" : message["title"],
             "body" : message["body"]
         }
-        return init(push)
-    else:
-        return None
+        validate(message)
+    except Exception as e:
+        response['error']  = True
+        response['message'] = str(e).replace("'","")  + " missing"
+        return response
+        
+    data = init(push)
+    response['error'] = False
+    response['data'] = data
+    
+    return response

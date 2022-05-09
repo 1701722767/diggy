@@ -24,21 +24,33 @@ def confirm_user(confirm_data_user):
         raise e
 
 def validate(data):
+    
     for name in data.keys():
         if not data[name]:
-            print(name," undefined")
-            return False
-    
-    return True
+            print(name," missing")
+            raise Exception(str(name))
 
 def lambda_handler(event, context):
-  
+
+    response = {
+        "error" : False,
+        "message": "Todo bien",
+        "data": None
+    }
     
-    if validate(event):
+    try :
         confirm_data_user = {
-        "username" : event['username'],
-        "confirmation_code" : event['confirmation_code']
+            "username" : event['username'],
+            "confirmation_code" : event['confirmation_code']
         }
-        return confirm_user(confirm_data_user)
-    else:
-        return None
+        validate(event)
+    except Exception as e:
+        response['error']  = True
+        response['message'] = str(e).replace("'","")  + " missing"
+        return response
+        
+    data = confirm_user(confirm_data_user)
+    response['error'] = False
+    response['data'] = data
+    
+    return response
