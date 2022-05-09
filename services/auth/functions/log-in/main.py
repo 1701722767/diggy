@@ -30,18 +30,28 @@ def log_in(user):
         return token_user
     
     except Exception as e:
-        print(str(e))
-        raise e
-    
-   
+        return str(e)
+        
 
+def validate(data):
+    for name in data.keys():
+        if not data[name]:
+            print(name," undefined")
+            return False
+    
+    return True
+    
+    
 def lambda_handler(event, context):
     # TODO implement
+
+    if validate(event):
+        user = {
+            "username" : event['username'],
+            "password" : event['password']
+        }
+        return log_in(user)
+    else:
+        return None
     
-    user = {
-        "username" : event['username'],
-        "password" : event['password']
-        
-    }
     
-    return log_in(user)

@@ -34,14 +34,24 @@ def init(push):
         print(str(e))
         raise e
 
+def validate(data):
+    for name in data.keys():
+        if not data[name]:
+            print(name," undefined")
+            return False
+    
+    return True
+
 
 def lambda_handler(event, context):
     message = json.loads(event['Records'][0]['Sns']['Message'])
 
-    push = {
-        "token" : message["token"],
-        "title" : message["title"],
-        "body" : message["body"]
-    }
-
-    return init(push)
+    if validate(event):
+        push = {
+            "token" : message["token"],
+            "title" : message["title"],
+            "body" : message["body"]
+        }
+        return init(push)
+    else:
+        return None

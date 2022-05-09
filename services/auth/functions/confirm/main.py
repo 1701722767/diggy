@@ -23,13 +23,22 @@ def confirm_user(confirm_data_user):
         print(str(e))
         raise e
 
+def validate(data):
+    for name in data.keys():
+        if not data[name]:
+            print(name," undefined")
+            return False
+    
+    return True
+
 def lambda_handler(event, context):
   
     
-    confirm_data_user = {
+    if validate(event):
+        confirm_data_user = {
         "username" : event['username'],
         "confirmation_code" : event['confirmation_code']
-    }
-    
-    
-    return confirm_user(confirm_data_user)
+        }
+        return confirm_user(confirm_data_user)
+    else:
+        return None
