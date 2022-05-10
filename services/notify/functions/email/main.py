@@ -5,10 +5,10 @@ from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 import templates
 
-
-
 AWS_REGION = "us-east-1"
-# Create a new SES resource and specify a region.
+CHARSET = "UTF-8"
+SENDER = "Diggy <sergio.1701510237@ucaldas.edu.co>"
+
 client = boto3.client('ses',region_name=AWS_REGION)
 
 class Request:
@@ -48,8 +48,6 @@ class Request:
         self.template = self.message['template']
         self.data = self.message['data']
 
-        print(self.email)
-
         return self.send_email()
 
     def getBodyHtml(self):
@@ -57,14 +55,12 @@ class Request:
 
 
     def send_email(self):
-        SENDER = "Diggy <sergio.1701510237@ucaldas.edu.co>"
         RECIPIENT = self.email
         SUBJECT = self.subject
-        CHARSET = "UTF-8"
 
         bodyHtml = self.getBodyHtml()
 
-        response = client.send_email(
+        client.send_email(
             Destination={
                 'ToAddresses': [
                     RECIPIENT,
