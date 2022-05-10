@@ -2,7 +2,7 @@ name: Build zips
 
 on:
   push:
-    branches: [ create-lambda-for-send-emails ]
+    branches: [ main ]
 
 jobs:
   build:
