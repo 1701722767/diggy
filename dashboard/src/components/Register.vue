@@ -3,6 +3,11 @@
         <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
             <div>
                 <v-tabs v-model="tab" show-arrows background-color="deep-purple accent-4" icons-and-text dark grow>
+                    <v-tabs-slider color="purple darken-4"></v-tabs-slider>
+                    <v-tab v-for="i in tabs" :key="i">
+                        <v-icon large>{{ i.icon }}</v-icon>
+                        <div class="caption py-1">{{ i.name }}</div>
+                    </v-tab>
                     <v-tab-item>
                         <v-card class="px-4">
                             <v-card-text>
@@ -63,9 +68,15 @@
                                             <v-text-field block v-model="verify" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, passwordMatch]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Confirme la contraseña" counter @click:append="show1 = !show1"></v-text-field>
                                         </v-col>
                                         <v-spacer></v-spacer>
-                                        <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
+                                        <v-col class="d-flex ml-auto" cols="12" sm="2" xsm="20"> 
+                                            <v-btn x-large block :disabled="!valid" color="success" @click="validate" href="/Login" >Login</v-btn>
+                                            <v-spacer></v-spacer>
                                             <v-btn x-large block :disabled="!valid" color="success" @click="validate">Registrar</v-btn>
                                         </v-col>
+                                        <v-col class="d-flex ml-auto" cols="12" sm="2" xsm="1">
+                                            
+                                        </v-col>
+                    
                                     </v-row>
                                 </v-form>
                             </v-card-text>
@@ -109,7 +120,6 @@
     dialog: true,
     tab: 0,
     tabs: [
-        {name:"Iniciar sesión", icon:"mdi-account"},
         {name:"Registro", icon:"mdi-account-outline"}
     ],
     valid: true,
