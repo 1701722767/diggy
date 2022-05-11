@@ -22,11 +22,20 @@
                                         </v-col>
                                         <v-col class="d-flex" cols="12" sm="6" xsm="12">
                                         </v-col>
-                                        <v-spacer></v-spacer>
-                                        <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                                          <v-btn x-large block :disabled="!valid" color="success" @click="validate"> Login </v-btn>
-                                        </v-col>
+
+                                        <v-row>
+                                          <br/>
+                                          <v-col class="d-flex" align-left>
+                                            <v-btn x-large block :disabled="!valid" color="success"  href="/register"> Registrarse </v-btn>
+                                          </v-col>
+                                         <v-spacer></v-spacer>
+                                          <v-col class="d-flex" align-right>
+                                            <v-btn x-large block :disabled="!valid" color="success"  @click="validate"> Login </v-btn>
+                                          </v-col>
+                                        </v-row>
+                                        
                                     </v-row>
+                                    <br/>
                                 </v-form>
                             </v-card-text>
                         </v-card>

@@ -68,13 +68,14 @@
                                             <v-text-field block v-model="verify" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, passwordMatch]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Confirme la contraseña" counter @click:append="show1 = !show1"></v-text-field>
                                         </v-col>
                                         <v-spacer></v-spacer>
+                                        <br/>
                                         <v-col class="d-flex ml-auto" cols="12" sm="2" xsm="20"> 
-                                            <v-btn x-large block :disabled="!valid" color="success" @click="validate" href="/Login" >Login</v-btn>
-                                            <v-spacer></v-spacer>
-                                            <v-btn x-large block :disabled="!valid" color="success" @click="validate">Registrar</v-btn>
+                                            <v-btn x-large block :disabled="!valid" color="success" @click="validate" href="/Login" >Iniciar sesión</v-btn>
                                         </v-col>
-                                        <v-col class="d-flex ml-auto" cols="12" sm="2" xsm="1">
-                                            
+
+                                        <v-spacer></v-spacer>
+                                        <v-col  class="d-flex ml-auto">
+                                            <v-btn x-large block :disabled="!valid" color="success" @click="validate">Registrar</v-btn>
                                         </v-col>
                     
                                     </v-row>
