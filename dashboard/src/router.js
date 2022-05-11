@@ -16,6 +16,7 @@ export default new Router({
         {
             path: '/',
             name: 'home',
+            name: 'dashboard',
             component: HelloWorld,
         },
         {
@@ -34,5 +35,5 @@ export default new Router({
           component: EventRegister
         }
     ],
-    
 });
+    
