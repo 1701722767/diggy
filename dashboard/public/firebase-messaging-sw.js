@@ -2,10 +2,10 @@
 // Note that you can only use Firebase Messaging here. Other Firebase libraries
 // are not available in the service worker.
 importScripts(
-  "https://www.gstatic.com/firebasejs/9.2.0/firebase-app-compat.js"
+  'https://www.gstatic.com/firebasejs/9.2.0/firebase-app-compat.js'
 );
 importScripts(
-  "https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging-compat.js"
+  'https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging-compat.js'
 );
 
 // Initialize the Firebase app in the service worker by passing in
@@ -13,13 +13,13 @@ importScripts(
 // https://firebase.google.com/docs/web/setup#config-object
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCA4EFY7icetRO5ebk9IEZXTiVGb7Nd9NI",
-  authDomain: "encoded-keyword-270113.firebaseapp.com",
-  projectId: "encoded-keyword-270113",
-  storageBucket: "encoded-keyword-270113.appspot.com",
-  messagingSenderId: "607844518648",
-  appId: "1:607844518648:web:430bd204cad711954c090d",
-  measurementId: "G-CN3426KT9V",
+  apiKey: 'AIzaSyCA4EFY7icetRO5ebk9IEZXTiVGb7Nd9NI',
+  authDomain: 'encoded-keyword-270113.firebaseapp.com',
+  projectId: 'encoded-keyword-270113',
+  storageBucket: 'encoded-keyword-270113.appspot.com',
+  messagingSenderId: '607844518648',
+  appId: '1:607844518648:web:430bd204cad711954c090d',
+  measurementId: 'G-CN3426KT9V',
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -37,7 +37,7 @@ const messaging = firebase.messaging();
 // https://firebase.google.com/docs/cloud-messaging/concept-options
 messaging.onBackgroundMessage(function (payload) {
   console.log(
-    "[firebase-messaging-sw.js] Received background message ",
+    '[firebase-messaging-sw.js] Received background message ',
     payload
   );
 });
