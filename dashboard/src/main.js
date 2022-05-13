@@ -1,8 +1,4 @@
-import Vue from 'vue';
-import App from './App.vue';
-import vuetify from './plugins/vuetify';
-import router from './router'
-import 'vuetify/dist/vuetify.min.css';
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
@@ -62,13 +58,5 @@ onMessage(messaging, (payload) => {
   console.log('Message received. ', payload);
   // ...
 });
-
-Vue.config.productionTip = false;
-
-Vue.component('HelloWorld', {
-  /* ... */
-});
-
-Vue.use(vuetify);
 
 
