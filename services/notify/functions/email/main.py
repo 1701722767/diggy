@@ -8,6 +8,7 @@ import templates
 AWS_REGION = "us-east-1"
 CHARSET = "UTF-8"
 SENDER = "Diggy <sergio.1701510237@ucaldas.edu.co>"
+REQUIRED_INPUTS = ['email','subject','template','data'];
 
 client = boto3.client('ses',region_name=AWS_REGION)
 
@@ -20,21 +21,10 @@ class Request:
         self.err = None
 
     def validate(self):
-        if self.message.get('email',None) is None:
-            print("missing email")
-            return False
-
-        if self.message.get('subject',None) is None:
-            print("missing subject")
-            return False
-
-        if self.message.get('template',None) is None:
-            print("missing template")
-            return False
-
-        if self.message.get('data',None) is None:
-            print("missing data")
-            return False
+        for input in REQUIRED_INPUTS:
+            if self.message.get(input,None) is None or self.message[input] == "":
+                print("missing "+input)
+                return False
 
         return True
 
@@ -51,6 +41,9 @@ class Request:
         return self.send_email()
 
     def getBodyHtml(self):
+        if templates.EMAILS_TEMPLATES.get(self.template,None) is None:
+            return "" # for resturn a default in template
+
         return templates.EMAILS_TEMPLATES[self.template]
 
 

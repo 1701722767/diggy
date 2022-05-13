@@ -51,3 +51,24 @@ def test_handler_failed():
 		]
 	}, {})
 	assert str(response) == 'Unable to locate credentials', "Validate output error"
+
+
+
+def test_handler_missing_params(mocker):
+	response = main.lambda_handler({
+		'Records': [
+			{
+				'Sns' : {
+					'Message' : json.dumps(
+						{
+							"email":"",
+							"subject": "test",
+							"template": "register",
+							"data" : "data"
+						}
+					),
+				}
+			}
+		]
+	}, {})
+	assert response == None, "Validate output none"
