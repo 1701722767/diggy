@@ -11,6 +11,14 @@
 
       <v-spacer></v-spacer>
 
+      <v-switch
+      v-model="switch1"
+      color="primary"
+      :label="`${switch1 ? 'Mapa' : 'Lista'}`"
+      value="John"
+      hide-details
+    ></v-switch>
+
       <v-btn icon>
         <v-icon>mdi-home</v-icon>
       </v-btn>
@@ -44,6 +52,8 @@
         </v-list>
       </v-menu>
     </v-app-bar>
+
+    
   
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
@@ -65,6 +75,7 @@
   name: 'App',
   data(){
     return {
+      switch1: false,
       appTitle: 'DIGGY',
       sidebar: false,
       menuItems: [
@@ -72,6 +83,15 @@
           { title: 'Sign Out', path: '/Login' }
      ]
     }
-  }
+  },
+  methods: {
+    toggleViews(){
+      if (switch1==false) {
+        this.$router.push('dashboard/login')
+      }else{
+        this.$router.push('dashboard/register')
+      }
+    }
+  },
   };
 </script>

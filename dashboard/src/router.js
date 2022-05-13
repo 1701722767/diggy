@@ -4,6 +4,7 @@ import Login from './components/Login.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import Register from './components/Register.vue'
 import EventRegister from './components/EventRegister.vue'
+import Map from './components/map.vue'
 
 
 Vue.use(Router);
@@ -20,7 +21,7 @@ export default new Router({
             component: HelloWorld,
         },
         {
-            path: '/loginLogin',
+            path: '/login',
             name: 'login',
             component: Login,
         },
@@ -33,7 +34,12 @@ export default new Router({
           path: '/eventregister',
           name: 'Event-register',
           component: EventRegister
-        }
+        },
+        {
+          path: '/map',
+          name: 'map',
+          component: Map
+        },
     ],
 });
     
