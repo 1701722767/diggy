@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import vuetify from './plugins/vuetify';
-import router from './router';
+import router from './router'
 import 'vuetify/dist/vuetify.min.css';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
@@ -71,8 +71,4 @@ Vue.component('HelloWorld', {
 
 Vue.use(vuetify);
 
-new Vue({
-  vuetify,
-  router,
-  render: h => h(App),
-}).$mount('#app');
+
