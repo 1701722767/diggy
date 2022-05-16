@@ -1,7 +1,13 @@
 import boto3
+import json
+import base64
 
-dynamodb = boto3.resource('dynamodb')
-eventsTable = dynamodb.Table('my-table')
+PAGE_SIZE = 2
+AWS_REGION = "us-east-1"
+
+dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
+eventsTable = dynamodb.Table('events')
+
 
 class Request:
     """
@@ -10,20 +16,39 @@ class Request:
     def __init__(self):
         self.err = None
 
+    def encodeJSONToBase64(self,jsonData):
+        stringJSON = json.dumps(jsonData)
+        json_bytes = stringJSON.encode('ascii')
+        base64_bytes = base64.b64encode(json_bytes)
+        return base64_bytes.decode('ascii')
+
+    def decodeBase64ToJson(self,base64Data):
+        base64_bytes = base64Data.encode('ascii')
+        message_bytes = base64.b64decode(base64_bytes)
+        return json.loads(message_bytes.decode('ascii'))
+
     def process(self,event):
-        response = eventsTable.scan()
-        data = response['Items']
+        response = None
+        if event.get("start_key","") !=  "":
+            response = eventsTable.scan(
+                 Limit=PAGE_SIZE,
+                 ExclusiveStartKey= self.decodeBase64ToJson(event["start_key"])
+            )
+        else:
+            response = eventsTable.scan(Limit=PAGE_SIZE)
+
+        data = {
+            "items":response['Items']
+        }
+
+        if 'LastEvaluatedKey' in response:
+            data["start_key"] = self.encodeJSONToBase64(response['LastEvaluatedKey'])
 
         return {
             "error": False,
             "message": "Eventos listados correctamente",
-            "data" : response
+            "data" : data
         }
-
-        # while 'LastEvaluatedKey' in response:
-        #     response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
-        #     data.extend(response['Items'])
-        # print("process")
 
 
 
@@ -37,6 +62,7 @@ def lambda_handler(event, context):
         return req.process(event)
 
     except Exception as err:
+        print(err)
         return {
             "error": True,
             "message": "Error interno en el servidor",
