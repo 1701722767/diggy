@@ -1,8 +1,9 @@
 import boto3
 import json
 import base64
+from boto3.dynamodb.conditions import Key
 
-PAGE_SIZE = 2
+PAGE_SIZE = 15
 AWS_REGION = "us-east-1"
 
 dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
@@ -33,6 +34,11 @@ class Request:
             response = eventsTable.scan(
                  Limit=PAGE_SIZE,
                  ExclusiveStartKey= self.decodeBase64ToJson(event["start_key"])
+            )
+        elif event.get("category_id","") !=  "":
+            response = eventsTable.query(
+                KeyConditionExpression=Key('category_id').eq(event["category_id"]),
+                Limit=PAGE_SIZE
             )
         else:
             response = eventsTable.scan(Limit=PAGE_SIZE)
