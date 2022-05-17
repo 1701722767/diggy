@@ -5,7 +5,7 @@ from decimal import Decimal
 client = boto3.resource('dynamodb')
 table = client.Table("events")
 
-def create_event(event=None):
+def create_event(event):
     
     # this will search for dynamoDB table 
     
