@@ -1,0 +1,110 @@
+{
+  "resource": "/events",
+  "path": "/events",
+  "httpMethod": "DELETE",
+  "headers": {
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Content-Type": "application/json",
+      "diggy-token": "eyJraWQiOiJ4VXQyV1ZEMFdCRTJ2OTlQUmhPOVRXeTZZQXllRUlScFZGVkI5dHVieFc4PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI3NWZiYWI2Ni0zNDQ2LTQ2OGUtYWJlNC01NzFjZGQyNmVkNTQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImJpcnRoZGF0ZSI6IjQgU2VwIDE5OTgiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9pb09RSW5FNFQiLCJwaG9uZV9udW1iZXJfdmVyaWZpZWQiOnRydWUsImNvZ25pdG86dXNlcm5hbWUiOiJuaWNvbGFzY3IxODEiLCJvcmlnaW5fanRpIjoiYTA3ZTZiN2EtOTExMC00NmExLWIwMzMtZjJhOTQwNzFkNmE2IiwiYXVkIjoiM2c2bG9qYXV2Zmw2Nmd2aW5wcXJlZ3YzbWYiLCJldmVudF9pZCI6IjVmMjM5MDNlLTNlNWItNDU5Yy04ODYyLTFkZDQ5OWJiYjM2OCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjUyOTg0NDIzLCJuYW1lIjoiTmljb2xhcyBDYXJkb25hIiwicGhvbmVfbnVtYmVyIjoiKzU3MzIzNDQ0MDU4NyIsImV4cCI6MTY1Mjk4ODAyMywiaWF0IjoxNjUyOTg0NDIzLCJqdGkiOiJmOGZiYjM0Yy01ZjVhLTQ0MWEtOWQwYi03MjY5MzRiZmMyODkiLCJlbWFpbCI6Im5pY29sYXNjcjE4MUBnbWFpbC5jb20ifQ.VAQtq7shiTpgxgrgttYurlK-ha_B9VTlFKPL8uIo4jmUYDxRp8gEflL0QJBvm_iFtEj0vvpaDLmIZGGA4j9xiJexXgIKdzOsX6NbI88nxl3PbM5EXgHu1LLnsD0S4AaW6fq3vCSrrcuzu3KLTR_yx7HN-Tb2vMOz_VbTAiyqHw5s2ZCshbOo2DZrbi6f2PGvB6RJrE0fv4rBTaFtweljOpYpf-ZQXlcMS0JfJX9lB72FLXFHoD0iczDLglSvsKJGi9LWubNbINTeUujK9umvpdYz5ptTrBZOJZ-f76gCqVvtbROBUB9vuoSvh7xNFS-r1_svyfFJkA0t5OmbI69qhg",
+      "Host": "2u2gqvqykj.execute-api.us-east-1.amazonaws.com",
+      "Postman-Token": "841b3005-a4d4-4efa-a776-c0475ea9180b",
+      "User-Agent": "PostmanRuntime/7.29.0",
+      "X-Amzn-Trace-Id": "Root=1-62868a6a-581965db7406f79a4aa5a309",
+      "X-Forwarded-For": "179.19.105.164",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+      "Accept": [
+          "*/*"
+      ],
+      "Accept-Encoding": [
+          "gzip, deflate, br"
+      ],
+      "Content-Type": [
+          "application/json"
+      ],
+      "diggy-token": [
+          "eyJraWQiOiJ4VXQyV1ZEMFdCRTJ2OTlQUmhPOVRXeTZZQXllRUlScFZGVkI5dHVieFc4PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI3NWZiYWI2Ni0zNDQ2LTQ2OGUtYWJlNC01NzFjZGQyNmVkNTQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImJpcnRoZGF0ZSI6IjQgU2VwIDE5OTgiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9pb09RSW5FNFQiLCJwaG9uZV9udW1iZXJfdmVyaWZpZWQiOnRydWUsImNvZ25pdG86dXNlcm5hbWUiOiJuaWNvbGFzY3IxODEiLCJvcmlnaW5fanRpIjoiYTA3ZTZiN2EtOTExMC00NmExLWIwMzMtZjJhOTQwNzFkNmE2IiwiYXVkIjoiM2c2bG9qYXV2Zmw2Nmd2aW5wcXJlZ3YzbWYiLCJldmVudF9pZCI6IjVmMjM5MDNlLTNlNWItNDU5Yy04ODYyLTFkZDQ5OWJiYjM2OCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjUyOTg0NDIzLCJuYW1lIjoiTmljb2xhcyBDYXJkb25hIiwicGhvbmVfbnVtYmVyIjoiKzU3MzIzNDQ0MDU4NyIsImV4cCI6MTY1Mjk4ODAyMywiaWF0IjoxNjUyOTg0NDIzLCJqdGkiOiJmOGZiYjM0Yy01ZjVhLTQ0MWEtOWQwYi03MjY5MzRiZmMyODkiLCJlbWFpbCI6Im5pY29sYXNjcjE4MUBnbWFpbC5jb20ifQ.VAQtq7shiTpgxgrgttYurlK-ha_B9VTlFKPL8uIo4jmUYDxRp8gEflL0QJBvm_iFtEj0vvpaDLmIZGGA4j9xiJexXgIKdzOsX6NbI88nxl3PbM5EXgHu1LLnsD0S4AaW6fq3vCSrrcuzu3KLTR_yx7HN-Tb2vMOz_VbTAiyqHw5s2ZCshbOo2DZrbi6f2PGvB6RJrE0fv4rBTaFtweljOpYpf-ZQXlcMS0JfJX9lB72FLXFHoD0iczDLglSvsKJGi9LWubNbINTeUujK9umvpdYz5ptTrBZOJZ-f76gCqVvtbROBUB9vuoSvh7xNFS-r1_svyfFJkA0t5OmbI69qhg"
+      ],
+      "Host": [
+          "2u2gqvqykj.execute-api.us-east-1.amazonaws.com"
+      ],
+      "Postman-Token": [
+          "841b3005-a4d4-4efa-a776-c0475ea9180b"
+      ],
+      "User-Agent": [
+          "PostmanRuntime/7.29.0"
+      ],
+      "X-Amzn-Trace-Id": [
+          "Root=1-62868a6a-581965db7406f79a4aa5a309"
+      ],
+      "X-Forwarded-For": [
+          "179.19.105.164"
+      ],
+      "X-Forwarded-Port": [
+          "443"
+      ],
+      "X-Forwarded-Proto": [
+          "https"
+      ]
+  },
+  "queryStringParameters": null,
+  "multiValueQueryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+      "resourceId": "2mere0",
+      "authorizer": {
+          "claims": {
+              "sub": "75fbab66-3446-468e-abe4-571cdd26ed54",
+              "email_verified": "false",
+              "birthdate": "4 Sep 1998",
+              "iss": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_ioOQInE4T",
+              "phone_number_verified": "true",
+              "cognito:username": "nicolascr181",
+              "origin_jti": "a07e6b7a-9110-46a1-b033-f2a94071d6a6",
+              "aud": "3g6lojauvfl66gvinpqregv3mf",
+              "event_id": "5f23903e-3e5b-459c-8862-1dd499bbb368",
+              "token_use": "id",
+              "auth_time": "1652984423",
+              "name": "Nicolas Cardona",
+              "phone_number": "+573234440587",
+              "exp": "Thu May 19 19:20:23 UTC 2022",
+              "iat": "Thu May 19 18:20:23 UTC 2022",
+              "jti": "f8fbb34c-5f5a-441a-9d0b-726934bfc289",
+              "email": "nicolascr181@gmail.com"
+          }
+      },
+      "resourcePath": "/events",
+      "httpMethod": "DELETE",
+      "extendedRequestId": "SYqQqGPpIAMFxFg=",
+      "requestTime": "19/May/2022:18:20:26 +0000",
+      "path": "/deploy/events",
+      "accountId": "605550406178",
+      "protocol": "HTTP/1.1",
+      "stage": "deploy",
+      "domainPrefix": "2u2gqvqykj",
+      "requestTimeEpoch": 1652984426493,
+      "requestId": "fcc870b8-b4a1-482e-91d9-48a7de91fe68",
+      "identity": {
+          "cognitoIdentityPoolId": null,
+          "accountId": null,
+          "cognitoIdentityId": null,
+          "caller": null,
+          "sourceIp": "179.19.105.164",
+          "principalOrgId": null,
+          "accessKey": null,
+          "cognitoAuthenticationType": null,
+          "cognitoAuthenticationProvider": null,
+          "userArn": null,
+          "userAgent": "PostmanRuntime/7.29.0",
+          "user": null
+      },
+      "domainName": "2u2gqvqykj.execute-api.us-east-1.amazonaws.com",
+      "apiId": "2u2gqvqykj"
+  },
+  "body": "{\r\n    \"category_id\" : \"CAT300\",\r\n    \"event_id\" : \"E101\"\r\n}",
+  "isBase64Encoded": false
+}

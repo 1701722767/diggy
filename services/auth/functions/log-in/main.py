@@ -2,10 +2,9 @@ import json
 import os
 import boto3
 
+client = boto3.client("cognito-idp", region_name="us-east-1")
+
 def log_in(user):
-
-    client = boto3.client("cognito-idp", region_name="us-east-1")
-
 
     username = user['username']
     password = user['password']
@@ -38,8 +37,6 @@ def validate(data):
 
 
 def lambda_handler(event, context):
-    # TODO implement
-
     response = {
         "error" : False,
         "message": "Todo bien",
@@ -52,14 +49,17 @@ def lambda_handler(event, context):
             "password" : event['password']
         }
         validate(event)
+
+        data = log_in(user)
+        response['error'] = False
+        response['data'] = data
+
     except Exception as e:
         response['error']  = True
         response['message'] = str(e).replace("'","")  + " missing"
         return response
 
-    data = log_in(user)
-    response['error'] = False
-    response['data'] = data
+
 
     return response
 
