@@ -5,6 +5,8 @@ import HelloWorld from './components/HelloWorld.vue';
 import Register from './components/Register.vue'
 import EventRegister from './components/EventRegister.vue'
 import Map from './components/map.vue'
+import List from './components/eventList.vue'
+
 
 
 Vue.use(Router);
@@ -18,7 +20,7 @@ export default new Router({
             path: '/',
             name: 'home',
             name: 'dashboard',
-            component: HelloWorld,
+            component: Map,
         },
         {
             path: '/login',
@@ -39,6 +41,11 @@ export default new Router({
           path: '/map',
           name: 'map',
           component: Map
+        },
+        {
+          path: '/list',
+          name: 'list',
+          component: List
         },
     ],
 });

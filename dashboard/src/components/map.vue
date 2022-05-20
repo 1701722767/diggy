@@ -6,13 +6,14 @@
 </template>
 
 <script>
+import { latLng } from 'leaflet';
 import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
 
 export default {
   components: {
     LMap,
     LTileLayer,
-    LMarker
+    LMarker,
   },
   data () {
     return {
@@ -21,7 +22,7 @@ export default {
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       zoom: 16,
       center: [5.05690, -75.50356],
-      markerLatLng: [5.05690, -75.50356]
+      markerLatLng:[5.05690, -75.50356]
     };
   }
 }

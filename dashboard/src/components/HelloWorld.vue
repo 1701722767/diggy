@@ -38,8 +38,7 @@
         <v-spacer></v-spacer>
           <v-list-item link>
             <v-list-item-icon>
-                
-                  <v-btn icon href="/Login" target="_blank"> <v-icon>
+                  <v-btn icon href="/list" target="_blank"> <v-icon>
                     mdi-calendar
                     </v-icon> </v-btn>
                   

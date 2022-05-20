@@ -6,7 +6,7 @@
                     <v-tabs-slider color="purple darken-4"></v-tabs-slider>
                     <v-tab v-for="i in tabs" :key="i">
                         <v-icon large>{{ i.icon }}</v-icon>
-                        <div class="caption py-1">{{ i.name }}</div>
+                        <div class="caption py-1">{ { i.name }}</div>
                     </v-tab>
                     <v-tab-item>
                         <v-card class="px-4">
@@ -70,7 +70,7 @@
                                         <v-spacer></v-spacer>
                                         <br/>
                                         <v-col class="d-flex ml-auto" cols="12" sm="2" xsm="20"> 
-                                            <v-btn x-large block :disabled="!valid" color="success" @click="validate" href="/Login" >Iniciar sesión</v-btn>
+                                            <v-btn x-large block :disabled="!valid" color="primary" @click="validate" href="/Login" >Iniciar sesión</v-btn>
                                         </v-col>
 
                                         <v-spacer></v-spacer>

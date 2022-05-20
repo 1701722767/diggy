@@ -26,7 +26,7 @@
                                         <v-row>
                                           <br/>
                                           <v-col class="d-flex" align-left>
-                                            <v-btn x-large block :disabled="!valid" color="success"  href="/register"> Registrarse </v-btn>
+                                            <v-btn x-large block :disabled="!valid" color="primary"  href="/register"> Registrarse </v-btn>
                                           </v-col>
                                          <v-spacer></v-spacer>
                                           <v-col class="d-flex" align-right>

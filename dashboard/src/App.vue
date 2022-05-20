@@ -7,23 +7,23 @@
       dense
       dark
     >
-      <v-toolbar-title>DIGGY</v-toolbar-title>
+      <v-toolbar-title>
+        <v-btn href="/map" width="60px" icon> 
+        DIGGY
+        </v-btn>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-      <v-switch
-      v-model="switch1"
-      color="primary"
-      :label="`${switch1 ? 'Mapa' : 'Lista'}`"
-      value="John"
-      hide-details
-    ></v-switch>
-
-      <v-btn icon>
-        <v-icon>mdi-home</v-icon>
+      <v-btn href="/map" icon>
+        <v-icon>mdi-map-marker</v-icon>
       </v-btn>
 
-      <v-btn icon>
+      <v-btn href="/list" icon>
+        <v-icon>mdi-playlist-star</v-icon>
+      </v-btn>
+
+      <v-btn  icon>
         <v-icon >mdi-magnify</v-icon>
       </v-btn>
 
