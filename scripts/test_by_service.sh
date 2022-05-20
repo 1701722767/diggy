@@ -11,7 +11,7 @@ for d in ./services/* ; do
   ## Run test by service
   python -m pytest -v
 
-  if [ $? -e 1 ]; then
+  if [ $? -eq 1 ]; then
       exit 1
   fi
 
