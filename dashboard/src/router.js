@@ -34,7 +34,7 @@ export default new Router({
         },
         {
           path: '/eventregister',
-          name: 'Event-register',
+          name: 'Eventregister',
           component: EventRegister
         },
         {
