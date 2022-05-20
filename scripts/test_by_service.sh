@@ -11,11 +11,9 @@ for d in ./services/* ; do
   ## Run test by service
   python -m pytest -v
 
-  echo $?
-
-  # if [ $? -ne 0 ]; then
-  #     exit 1
-  # fi
+  if [ $? -e 1 ]; then
+      exit 1
+  fi
 
   cd -
 
