@@ -9,6 +9,7 @@ for d in ./services/* ; do
       continue
     fi
 
+    echo $f
     cd $f
 
 
