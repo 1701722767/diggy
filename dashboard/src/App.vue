@@ -5,37 +5,41 @@
       color="primary"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      <v-toolbar-title>
+        <v-btn href="/map" width="60px" icon> 
+        DIGGY
+        </v-btn>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
+      <v-btn href="/map" icon>
+        <v-icon>mdi-map-marker</v-icon>
+      </v-btn>
+
+      <v-btn href="/list" icon>
+        <v-icon>mdi-playlist-star</v-icon>
+      </v-btn>
+
+      <v-btn  icon>
+        <v-icon >mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-menu
+        left
+        bottom
       >
         <span class="mr-2">Latest Release</span>
         <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
     </v-app-bar>
+
+    
+  
+      <!-- Provides the application the proper gutter -->
+      <v-container fluid>
+        <!-- If using vue-router -->
+        <router-view></router-view>
+      </v-container>
 
     <v-main>
       <HelloWorld/>
@@ -48,13 +52,25 @@ import HelloWorld from './components/HelloWorld';
 
 export default {
   name: 'App',
-
-  components: {
-    HelloWorld,
+  data(){
+    return {
+      switch1: false,
+      appTitle: 'DIGGY',
+      sidebar: false,
+      menuItems: [
+          { title: 'Home', path: '/home'},
+          { title: 'Sign Out', path: '/Login' }
+     ]
+    }
   },
-
-  data: () => ({
-    //
-  }),
-};
+  methods: {
+    toggleViews(){
+      if (switch1==false) {
+        this.$router.push('dashboard/login')
+      }else{
+        this.$router.push('dashboard/register')
+      }
+    }
+  },
+  };
 </script>

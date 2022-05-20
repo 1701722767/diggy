@@ -83,6 +83,12 @@
                                                 prepend-icon="mdi-camera"
                                                 label="Inserte imagen del evento"
                                             ></v-file-input>
+                                        </v-col>
+                                          <v-button>
+
+                                          </v-button>
+                                        <v-col>
+                                            
                                         </v-col>  
                                         <v-spacer></v-spacer>
                                         <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="20"> 
@@ -106,6 +112,9 @@
 </template>
 
 <script>
+
+import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+
   export default {
     name: 'HelloWorld',
   methods: {

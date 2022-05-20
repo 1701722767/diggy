@@ -38,8 +38,7 @@
         <v-spacer></v-spacer>
           <v-list-item link>
             <v-list-item-icon>
-                
-                  <v-btn icon href="/Login" target="_blank"> <v-icon>
+                  <v-btn icon href="/list" target="_blank"> <v-icon>
                     mdi-calendar
                     </v-icon> </v-btn>
                   
@@ -66,10 +65,23 @@
 </template>
 
 <script>
+    import L from 'leaflet';
+    import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
   export default {
     name: 'HelloWorld',
-
-    data: () => ({
-    }),
+    components: {
+    LMap,
+    LTileLayer,
+    LMarker,
+    },
+    data: function() {
+      return{
+        zoom:13,
+        center: L.latLng(47.413220, -1.219482),
+        url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        marker: L.latLng(47.413220, -1.219482),
+      }
+    },
   }
 </script>
