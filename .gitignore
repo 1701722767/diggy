@@ -1,2 +1,5 @@
 .pytest_cache
 dashboard/src/Router.js
+dashboard/package-lock.json
+package-lock.json
+dashboard/package-lock.json
