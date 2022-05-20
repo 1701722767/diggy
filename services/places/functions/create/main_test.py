@@ -80,4 +80,4 @@ def test_handler_missin_name():
 
     response = main.lambda_handler(event,{})
     assert 400 == response["statusCode"], "Validate response"
-    assert '{"erro": true, "message": "Debe ingresar un nombre para el lugar"}' == response["body"], "Validate response"
+    assert '{"error": true, "message": "Debe ingresar un nombre para el lugar"}' == response["body"], "Validate response"

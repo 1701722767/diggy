@@ -6,6 +6,7 @@ for d in ./services/* ; do
 
   cd $d
 
+  rm -r ../.pytest_cache
 
   ## Run test by service
   python -m pytest -v
