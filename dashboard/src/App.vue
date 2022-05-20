@@ -1,10 +1,8 @@
 <template>
   <v-app>
-    <!-- Sizes your content based upon application components -->
-    <v-main> 
-      <v-app-bar
-      color="deep-purple accent-4"
-      dense
+    <v-app-bar
+      app
+      color="primary"
       dark
     >
       <v-toolbar-title>
@@ -31,26 +29,8 @@
         left
         bottom
       >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item
-            v-for="n in menuItems"
-            :key="n"
-            @click="() => {}"
-          >
-            <v-list-item-title> {{ n.title}}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+        <span class="mr-2">Latest Release</span>
+        <v-icon>mdi-open-in-new</v-icon>
     </v-app-bar>
 
     
@@ -60,18 +40,17 @@
         <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>
-    </v-main>
 
-    <v-footer app>
-      <!-- -->
-    </v-footer>
+    <v-main>
+      <HelloWorld/>
+    </v-main>
   </v-app>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue';
+import HelloWorld from './components/HelloWorld';
 
- export default { 
+export default {
   name: 'App',
   data(){
     return {
