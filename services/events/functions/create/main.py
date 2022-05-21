@@ -4,12 +4,7 @@ from decimal import Decimal
 from boto3.dynamodb.conditions import Key, Attr
 import uuid
 
-client = boto3.resource('dynamodb')
-
-# this will search for dynamoDB table 
-events_table = client.Table("events")
-categories_table = client.Table("categories")
-
+AWS_REGION = "us-east-1"
 KEY_ERROR_MESSAGE = {
     "category_id": "La categoría no existe o no fue seleccionada",
     "user_id" : "No se indicó el usuario al cual le pertenece el evento",
@@ -24,6 +19,11 @@ KEY_ERROR_MESSAGE = {
     "datestart": "Debe ingresar la hora y fecha de inicio del evento",
     "dateend": "Debe ingresar la hora y fecha en la cual termina el evento"
 }
+
+client = boto3.resource('dynamodb',region_name=AWS_REGION)
+# this will search for dynamoDB table 
+events_table = client.Table("events")
+categories_table = client.Table("categories")
 
 # UUID, Universal Unique Identifier, is a python library which helps
 # in generating random objects of 128 bits as ids. 
@@ -108,7 +108,6 @@ def lambda_handler(event, context):
     message = {
         "error" : False,
         "message": "El evento fue creado exitosamente",
-        "data": None
     }
     
     response = {
@@ -139,7 +138,7 @@ def lambda_handler(event, context):
             "dateend": event_data['dateend']
         }
         validate(new_event)
-        data = create_event(new_event)
+        create_event(new_event)
        
         
     except KeyError as e:
@@ -153,7 +152,7 @@ def lambda_handler(event, context):
         response['statusCode'] = 500
         
     
-    response['body'] = json.dumps(message)
+    response['body'] = json.dumps(message,ensure_ascii=False)
     return response
         
     
