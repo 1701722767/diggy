@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
+    <v-dialog v-model="dialog" persistent max-width="1000px" min-width="360px">
       <div>
         <v-tabs
           v-model="tab"
@@ -13,47 +13,51 @@
           <v-tabs-slider color="purple darken-4"></v-tabs-slider>
           <v-tab v-for="i in tabs" :key="i">
             <v-icon large>{{ i.icon }}</v-icon>
-            <div class="caption py-1">{ { i.name }}</div>
+            <div class="caption py-1">{{ i.name }}</div>
           </v-tab>
           <v-tab-item>
             <v-card class="px-4">
               <v-card-text>
                 <v-form ref="registerForm" v-model="valid" lazy-validation>
                   <v-row>
-                    <v-col cols="12" sm="6" md="6">
+                    <v-col cols="12">
                       <v-text-field
-                        v-model="firstName"
-                        label="Nombre completo"
+                        v-model="nombre"
+                        label="Nombre del evento"
                         maxlength="40"
                         required
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
                       <v-text-field
-                        v-model="username"
+                        v-model="descripcion"
                         :rules="[rules.required]"
-                        label="Username"
+                        label="Descripción del evento"
                         required
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" sm="6" md="6">
+                      <v-select
+                        v-model="select"
+                        :hint="`${select.category}`"
+                        :items="items"
+                        item-text="category"
+                        item-value="category"
+                        label="Seleccione categoría"
+                        persistent-hint
+                        return-object
+                        single-line
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="numberValue"
-                        :rules="[rules.required]"
+                        v-model="valor"
                         type="number"
-                        label="Número telefónico"
+                        label="Valor de ingreso"
                         required
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="email"
-                        :rules="emailRules"
-                        label="Correo electrónico"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" sm="6" md="6">
                       <v-menu
                         ref="menu"
                         v-model="menu"
@@ -66,7 +70,7 @@
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
                             v-model="date"
-                            label="Fecha de nacimiento"
+                            label="Fecha del evento"
                             prepend-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -76,7 +80,7 @@
                         <v-date-picker
                           v-model="date"
                           :active-picker.sync="activePicker"
-                          :max="
+                          :min="
                             new Date(
                               Date.now() -
                                 new Date().getTimezoneOffset() * 60000
@@ -84,60 +88,41 @@
                               .toISOString()
                               .substr(0, 10)
                           "
-                          min="1950-01-01"
+                          max="2024-03-20"
                           @change="save"
                         ></v-date-picker>
                       </v-menu>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="password"
-                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                        :rules="[rules.required, rules.min]"
-                        :type="show1 ? 'text' : 'password'"
-                        name="input-10-1"
-                        label="Contraseña"
-                        hint="At least 8 characters"
-                        counter
-                        @click:append="show1 = !show1"
+                        v-model="aforo"
+                        :rules="[rules.required]"
+                        type="number"
+                        label="Aforo máximo"
+                        required
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12">
-                      <v-text-field
-                        block
-                        v-model="verify"
-                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                        :rules="[rules.required, passwordMatch]"
-                        :type="show1 ? 'text' : 'password'"
-                        name="input-10-1"
-                        label="Confirme la contraseña"
-                        counter
-                        @click:append="show1 = !show1"
-                      ></v-text-field>
+                    <v-col cols="12" sm="6" md="6">
+                      <v-file-input
+                        v-model="imagen"
+                        :rules="rules"
+                        accept="image/png, image/jpeg, image/bmp"
+                        placeholder="Pick an avatar"
+                        prepend-icon="mdi-camera"
+                        label="Inserte imagen del evento"
+                      ></v-file-input>
                     </v-col>
+                    <v-button> </v-button>
+                    <v-col> </v-col>
                     <v-spacer></v-spacer>
-                    <br />
-                    <v-col class="d-flex ml-auto" cols="12" sm="2" xsm="20">
-                      <v-btn
-                        x-large
-                        block
-                        :disabled="!valid"
-                        color="primary"
-                        @click="validate"
-                        href="/Login"
-                        >Iniciar sesión</v-btn
-                      >
-                    </v-col>
-
-                    <v-spacer></v-spacer>
-                    <v-col class="d-flex ml-auto">
+                    <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="20">
                       <v-btn
                         x-large
                         block
                         :disabled="!valid"
                         color="success"
                         @click="validate"
-                        >Registrar</v-btn
+                        >Crear evento</v-btn
                       >
                     </v-col>
                   </v-row>
@@ -147,19 +132,16 @@
           </v-tab-item>
         </v-tabs>
       </div>
+      <div></div>
     </v-dialog>
   </v-app>
 </template>
 
 <script>
+import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+
 export default {
-  name: "HelloWorld",
-  computed: {
-    passwordMatch() {
-      return () =>
-        this.password === this.verify || "Las contraseñas deben coincidir";
-    },
-  },
+  name: "EventRegister",
   methods: {
     validate() {
       if (this.$refs.loginForm.validate()) {
@@ -180,26 +162,22 @@ export default {
     menu: false,
     dialog: true,
     tab: 0,
-    tabs: [{ name: "Registro", icon: "mdi-account-outline" }],
+    tabs: [{ name: "Registro de evento", icon: "mdi-calendar-edit" }],
     valid: true,
 
     nombre: "",
-    apellido: "",
-    username: "",
-    telefono: "",
-    correo: "",
+    descripcion: "",
+    valor: "",
+    imagen: null,
     fecha_nacimiento: null,
-    password: "",
-    verify: "",
-    loginPassword: "",
-    loginEmail: "",
-    loginEmailRules: [
-      (v) => !!v || "Campo obligatorio",
-      (v) => /.+@.+\..+/.test(v) || "El correo debe ser valido",
-    ],
-    emailRules: [
-      (v) => !!v || "Campo obligatorio",
-      (v) => /.+@.+\..+/.test(v) || "El correo debe ser valido",
+    aforo: "",
+    select: { category: "" },
+    items: [
+      { category: "Fiesta" },
+      { category: "Deporte" },
+      { category: "Cultura" },
+      { category: "Musica" },
+      { category: "Educacion" },
     ],
 
     show1: false,

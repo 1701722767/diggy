@@ -1,11 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Login from './components/Login.vue';
-import HelloWorld from './components/HelloWorld.vue';
 import Register from './components/Register.vue'
-import EventRegister from './components/EventRegister.vue'
-import Map from './components/map.vue'
-import List from './components/eventList.vue'
+import EventRegister from './components/Events/Register.vue'
+import Map from './components/Map.vue'
+import EventList from './components/Events/List.vue'
 
 
 
@@ -15,7 +14,7 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
 
-    routes: [        
+    routes: [
         {
             path: '/',
             name: 'home',
@@ -33,20 +32,14 @@ export default new Router({
           component: Register
         },
         {
-          path: '/eventregister',
+          path: '/event-register',
           name: 'Eventregister',
           component: EventRegister
         },
         {
-          path: '/map',
-          name: 'map',
-          component: Map
-        },
-        {
-          path: '/list',
+          path: '/events-list',
           name: 'list',
-          component: List
+          component: EventList
         },
     ],
 });
-    
