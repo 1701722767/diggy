@@ -3,7 +3,6 @@
     <v-app-bar color="deep-purple accent-4" dense dark>
       <template v-if="width > 700">
         <v-toolbar-title>Diggy</v-toolbar-title>
-
         <v-spacer></v-spacer>
         <div class="navbar_options">
           <v-btn
