@@ -20,8 +20,4 @@ export default {
   padding: 0;
   height: 100vh;
 }
-
-.v-main {
-  height: 100vh;
-}
 </style>
