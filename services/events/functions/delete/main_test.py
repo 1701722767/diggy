@@ -26,8 +26,16 @@ def test_handler():
 
     req = main.Request()
 
-    f = open('./samples/event.json')
-    event = json.load(f)
+    event = {
+        "requestContext": {
+            "authorizer": {
+                "claims": {
+                    "sub": "75fbab66-3446-468e-abe4-571cdd26ed54"
+                }
+            }
+        },
+        "body" : '{    "category_id" : "CAT300",    "event_id" : "E101"}'
+    }
 
     response = main.lambda_handler(event,{})
     assert '{"error": false, "message": "Evento eliminado correctamente"}' == response["body"], "Validate response"

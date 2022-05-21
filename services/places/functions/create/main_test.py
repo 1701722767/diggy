@@ -27,10 +27,16 @@ def test_handler():
 
     main.dynamodb = DynamoMock()
 
-    req = main.Request()
-
-    f = open('./samples/event.json')
-    event = json.load(f)
+    event = {
+        "requestContext": {
+            "authorizer": {
+                "claims": {
+                    "sub": "75fbab66-3446-468e-abe4-571cdd26ed54"
+                }
+            }
+        },
+        "body" : '{"category_id" : "CAT300","name" : "Nuevo evento", "coordinates": {"latitude" : 5.074297,"longitude" : -75.491561}}'
+    }
 
     response = main.lambda_handler(event,{})
     assert '{"error": false, "message": "Lugar agregado correctamente"}' == response["body"], "Validate response"
@@ -61,11 +67,16 @@ def test_handler_missin_name():
 
     main.dynamodb = DynamoMock()
 
-    req = main.Request()
-
-    f = open('./samples/event.json')
-    event = json.load(f)
-    event["body"] = '{"category_id":"CA101"}'
+    event = {
+        "requestContext": {
+            "authorizer": {
+                "claims": {
+                    "sub": "75fbab66-3446-468e-abe4-571cdd26ed54"
+                }
+            }
+        },
+        "body" : '{"category_id":"CA101"}'
+    }
 
     response = main.lambda_handler(event,{})
     assert 400 == response["statusCode"], "Validate response"
