@@ -15,7 +15,7 @@ KEY_ERROR_MESSAGE = {
     "range_age": "El rango de edad debe ser selecionado",
     "price": "Debe indicar el precio del evento",
     "slots": "Debe indicar los cupos disponibles actuales del evento",
-    "max": "Debe ingresar la cantidad maxima de personas al evento",
+    "max": "Debe ingresar la cantidad máxima de personas al evento",
     "datestart": "Debe ingresar la hora y fecha de inicio del evento",
     "dateend": "Debe ingresar la hora y fecha en la cual termina el evento"
 }
