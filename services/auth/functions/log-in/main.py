@@ -20,7 +20,6 @@ def log_in(user):
         AuthParameters={"USERNAME": username, "PASSWORD": password},
     )
 
-    # Getting the user details.
     access_token = response["AuthenticationResult"]["IdToken"]
 
     return {

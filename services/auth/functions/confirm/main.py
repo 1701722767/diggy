@@ -2,9 +2,6 @@ import json
 import os
 import boto3
 
-"""
-Confirm new user by confirmation_code
-"""
 client = boto3.client("cognito-idp", region_name="us-east-1")
 
 KEY_ERROR_MESSAGE = {
