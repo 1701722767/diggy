@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
+  <v-dialog v-model="dialog" max-width="600px" min-width="360px">
     <v-snackbar v-model="showAlert" color="deep-purple accent-4">
       {{ alertMessage }}
 

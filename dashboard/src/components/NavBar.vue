@@ -65,6 +65,7 @@ export default {
       width: 0,
       sheet: false,
       items: [
+        { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
         { icon: "mdi-account-plus-outline", title: "Registrarme", path: "register" },
         { icon: "mdi-account-key-outline", title: "Iniciar sesión", path: "login" },
       ],
@@ -85,7 +86,8 @@ export default {
     },
     goToPath(path){
       this.sheet = false;
-      this.$router.push({path:path})
+      console.log(this.$router);
+      this.$router.push({path:path});
     }
   },
 };
