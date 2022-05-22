@@ -1,7 +1,9 @@
 import boto3
 import json
 import base64
-from boto3.dynamodb.conditions import Key
+import traceback
+from decimal import Decimal
+from boto3.dynamodb.conditions import Attr
 
 PAGE_SIZE = 15
 AWS_REGION = "us-east-1"
@@ -10,10 +12,10 @@ dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
 eventsTable = dynamodb.Table('events')
 
 
+"""
+Request is the class used for handling the request
+"""
 class Request:
-    """
-    Request is the class used for handling the request
-    """
     def __init__(self):
         self.err = None
 
@@ -26,18 +28,22 @@ class Request:
     def decodeBase64ToJson(self,base64Data):
         base64_bytes = base64Data.encode('ascii')
         message_bytes = base64.b64decode(base64_bytes)
-        return json.loads(message_bytes.decode('ascii'))
+        return json.loads(message_bytes.decode('ascii'), parse_float=Decimal)
 
     def process(self,event):
+        body = event.get("queryStringParameters",{})
         response = None
-        if event.get("start_key","") !=  "":
+
+        if body == None:
+            response = eventsTable.scan(Limit=PAGE_SIZE)
+        elif body.get("start_key","") !=  "":
             response = eventsTable.scan(
                  Limit=PAGE_SIZE,
-                 ExclusiveStartKey= self.decodeBase64ToJson(event["start_key"])
+                 ExclusiveStartKey= self.decodeBase64ToJson(body["start_key"])
             )
-        elif event.get("category_id","") !=  "":
-            response = eventsTable.query(
-                KeyConditionExpression=Key('category_id').eq(event["category_id"]),
+        elif body.get("category_id","") !=  "":
+            response = eventsTable.scan(
+                FilterExpression=Attr("category_id").eq(body["category_id"]),
                 Limit=PAGE_SIZE
             )
         else:
@@ -57,22 +63,35 @@ class Request:
         }
 
 
-
+"""
+lambda_handler function that starts the lambda
+"""
 def lambda_handler(event, context):
-    """
-    lambda_handler function that starts the lambda
-    """
     _ = context
     req = Request()
     try:
-        return req.process(event)
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Content-Type': 'application/json'
+            },
+            'body': json.dumps(req.process(event),default=str)
+        }
 
     except Exception as err:
         print(err)
+        print(traceback.format_exc())
         return {
-            "error": True,
-            "message": "Error interno en el servidor",
+            'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json'
+            },
+            'body': json.dumps({
+                "error": True,
+                "message": "Error interno en el servidor",
+            })
         }
+        return
     finally:
         if req.err is None:
             print(req.err)
