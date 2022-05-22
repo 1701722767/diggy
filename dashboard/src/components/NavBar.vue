@@ -1,7 +1,16 @@
 <template>
   <div>
+    <v-snackbar v-model="showAlert" color="deep-purple accent-4">
+      {{ alertMessage }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn color="grey" text v-bind="attrs" @click="showAlert = false">
+          Cerrar
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-app-bar color="deep-purple accent-4" dense dark>
-      <template v-if="width > 700">
+      <template v-if="width > 800">
         <v-toolbar-title>Diggy</v-toolbar-title>
         <v-spacer></v-spacer>
         <div class="navbar_options">
@@ -12,7 +21,7 @@
             dark
             v-for="item in items"
             :key="item.title"
-            @click="goToPath(item.path)"
+            @click="doAction(item.path)"
           >
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.title }}
@@ -38,7 +47,7 @@
               <v-list-item
                 class="mobil_menu"
                 :key="item.title"
-                @click="goToPath(item.path)"
+                @click="doAction(item)"
               >
                 <v-list-item-avatar>
                   <v-avatar size="32px" tile>
@@ -56,8 +65,16 @@
 </template>
 
 <script>
+import { isAuthenticate, logOut } from "../services/Auth";
+import Emitter from "../services/Emitter.js";
+
 export default {
   name: "NavBar",
+  setup() {
+    return {
+      Emitter,
+    };
+  },
   data() {
     return {
       drawer: false,
@@ -66,13 +83,30 @@ export default {
       sheet: false,
       items: [
         { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
-        { icon: "mdi-account-plus-outline", title: "Registrarme", path: "register" },
-        { icon: "mdi-account-key-outline", title: "Iniciar sesión", path: "login" },
+        {
+          icon: "mdi-account-plus-outline",
+          title: "Registrarme",
+          path: "register",
+        },
+        {
+          icon: "mdi-account-key-outline",
+          title: "Iniciar sesión",
+          path: "login",
+        },
       ],
+
+      alertMessage: "",
+      showAlert: false,
     };
   },
   mounted() {
     this.width = window.innerWidth;
+    this.setItems();
+
+    Emitter.off("reload-navbar-items");
+    Emitter.on("reload-navbar-items", () => {
+      this.setItems();
+    });
   },
   created() {
     window.addEventListener("resize", this.onResize);
@@ -81,14 +115,67 @@ export default {
     window.removeEventListener("resize", this.onResize);
   },
   methods: {
+    async setItems() {
+      let isAuth = await isAuthenticate();
+      if (!isAuth) {
+        this.items = [
+          { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
+          {
+            icon: "mdi-account-plus-outline",
+            title: "Registrarme",
+            path: "register",
+          },
+          {
+            icon: "mdi-account-key-outline",
+            title: "Iniciar sesión",
+            path: "login",
+          },
+        ];
+        return;
+      }
+
+      this.items = [
+        { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
+        { icon: "mdi-calendar-star", title: "Mis eventos", path: "/my-events" },
+        {
+          icon: "mdi-map-marker-outline",
+          title: "Mis sitios",
+          path: "/my-places",
+        },
+        { icon: "mdi-currency-usd", title: "Balance", path: "/my-balance" },
+        {
+          icon: "mdi-logout",
+          title: "Cerrar sesión",
+          action: () => {
+            logOut()
+              .then((res) => {
+                this.setItems();
+                this.alertMessage = "Sesión cerrada con exito";
+                this.showAlert = true;
+              })
+              .catch(() => {
+                this.alertMessage = "Ocurrió un error al cerrar sesión";
+                this.showAlert = true;
+              });
+          },
+        },
+      ];
+    },
     onResize(e) {
       this.width = window.innerWidth;
     },
-    goToPath(path){
+    doAction(item) {
       this.sheet = false;
-      console.log(this.$router);
-      this.$router.push({path:path});
-    }
+      if (item.path) {
+        this.$router.push({ path: item.path });
+        return;
+      }
+
+      if (item.action) {
+        item.action();
+        return;
+      }
+    },
   },
 };
 </script>

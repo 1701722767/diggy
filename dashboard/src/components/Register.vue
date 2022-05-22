@@ -111,9 +111,7 @@
                     <v-text-field
                       block
                       v-model="confirmPassword"
-                      :append-icon="
-                        showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
-                      "
+                      :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="showConfirmPassword ? 'text' : 'password'"
                       name="input-10-1"
                       label="Confirme la contraseña"

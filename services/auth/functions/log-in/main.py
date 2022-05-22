@@ -1,45 +1,42 @@
 import json
 import os
 import boto3
+from botocore.exceptions import ClientError
 
 client = boto3.client("cognito-idp", region_name="us-east-1")
 
-def log_in(user):
+KEY_ERROR_MESSAGE = {
+    "username" : "Debe escribir su nombre de usuario",
+    "password" : "Debe escribir su contraseña"
+}
 
+def log_in(user):
     username = user['username']
     password = user['password']
 
-    try:
+    response = client.initiate_auth(
+    ClientId=os.getenv("COGNITO_USER_CLIENT_ID"),
+        AuthFlow="USER_PASSWORD_AUTH",
+        AuthParameters={"USERNAME": username, "PASSWORD": password},
+    )
 
-        response = client.initiate_auth(
-        ClientId=os.getenv("COGNITO_USER_CLIENT_ID"),
-            AuthFlow="USER_PASSWORD_AUTH",
-            AuthParameters={"USERNAME": username, "PASSWORD": password},
-        )
+    access_token = response["AuthenticationResult"]["IdToken"]
 
-        # Getting the user details.
-        access_token = response["AuthenticationResult"]["IdToken"]
-
-        return {
-            "access_token" : access_token
-        }
-
-    except Exception as e:
-        return str(e)
+    return {
+        "access_token" : access_token
+    }
 
 
 def validate(data):
-
     for name in data.keys():
         if not data[name]:
-            print(name," missing")
-            raise Exception(str(name))
+            raise KeyError(str(name))
 
 
 def lambda_handler(event, context):
     response = {
         "error" : False,
-        "message": "Todo bien",
+        "message": "Inicio de sesión exitoso",
         "data": None
     }
 
@@ -48,18 +45,25 @@ def lambda_handler(event, context):
             "username" : event['username'],
             "password" : event['password']
         }
-        validate(event)
-
+        validate(user)
         data = log_in(user)
         response['error'] = False
         response['data'] = data
 
-    except Exception as e:
+    except KeyError as e:
+        print(e)
         response['error']  = True
-        response['message'] = str(e).replace("'","")  + " missing"
-        return response
-
-
+        response['message'] = KEY_ERROR_MESSAGE[e.args[0]]
+    except ClientError as e:
+        response['error']  = True
+        if e.response['Error']['Code'] == 'NotAuthorizedException':
+            response['message'] = "Credenciales incorrectas."
+        else:
+            response['message'] = "Error interno del servidor"
+    except Exception as e:
+        print(e)
+        response['error']  = True
+        response['message'] = "Error interno del servidor"
 
     return response
 

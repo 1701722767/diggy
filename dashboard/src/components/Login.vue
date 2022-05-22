@@ -37,16 +37,15 @@
                   <v-col cols="12">
                     <v-text-field
                       v-model="model.password"
-                      :append-icon="showPassword ? 'eye' : 'eye-off'"
-                      :rules="[rules.required]"
+                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="showPassword ? 'text' : 'password'"
                       name="input-10-1"
                       label="Contraseña"
                       counter
                       @click:append="showPassword = !showPassword"
+                      :rules="[rules.required]"
                     ></v-text-field>
                   </v-col>
-                  <v-col class="d-flex" cols="12" sm="6" xsm="12"> </v-col>
 
                   <v-row>
                     <br />
@@ -62,6 +61,7 @@
                         block
                         color="success"
                         @click="doLoginRequest"
+                        :loading="loading"
                       >
                         Login
                       </v-btn>
@@ -79,11 +79,13 @@
 </template>
 
 <script>
-import { postJSON } from "../helpers/Request";
+import { logIn } from "../services/Auth.js";
+import Emitter from "../services/Emitter.js";
 export default {
   name: "Login",
   data: () => ({
     dialog: true,
+    loading: false,
     valid: true,
 
     model: {
@@ -108,12 +110,29 @@ export default {
         return;
       }
 
-      postJSON("/log-in", this.model, false)
+      this.loading = true;
+
+      logIn(this.model.username, this.model.password)
         .then((res) => {
-          console.log(res);
+          this.loading = false;
+          this.showAlert = true;
+          this.alertMessage = `Bienvenido ${res.attributes.name}`;
+
+          Emitter.emit("reload-navbar-items");
+          setTimeout(() => {
+            this.$router.push({ path: "/" });
+          }, 2000);
         })
-        .then((res) => {
-          console.log(err);
+        .catch((err) => {
+          this.loading = false;
+          if (err.code == "NotAuthorizedException") {
+            this.showAlert = true;
+            this.alertMessage = "Credenciales incorrectas";
+            return;
+          }
+
+          this.showAlert = true;
+          this.alertMessage = "Ocurrió un error al hacer la petición";
         });
     },
   },
