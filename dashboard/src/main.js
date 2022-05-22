@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
-//import router from './router'
+import router from './router'
 import 'vuetify/dist/vuetify.min.css'
 import "leaflet/dist/leaflet.css";
 
@@ -66,8 +66,6 @@ onMessage(messaging, (payload) => {
 });
 
 Vue.config.productionTip = false
-
-Vue.component('HelloWorld', { /* ... */ })
 
 Vue.use(vuetify)
 

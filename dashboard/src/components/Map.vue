@@ -1,5 +1,5 @@
 <template>
-  <l-map style="height: 900px" :zoom="zoom" :center="center">
+  <l-map style="height: 100%" :zoom="zoom" :center="center">
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
     <l-marker :lat-lng="markerLatLng"></l-marker>
   </l-map>
@@ -10,6 +10,7 @@ import { latLng } from 'leaflet';
 import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
 
 export default {
+  name: "Map",
   components: {
     LMap,
     LTileLayer,
