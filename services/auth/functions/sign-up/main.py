@@ -34,8 +34,6 @@ def validate(data):
 
 
 def lambda_handler(event, context):
-
-
     response = {
         "error" : False,
         "message": "Cuenta creada exitosamente",
@@ -57,12 +55,19 @@ def lambda_handler(event, context):
     except KeyError as e:
         response['error']  = True
         response['message'] = KEY_ERROR_MESSAGE[e.args[0]]
+
+        return reponse
     except ClientError as e:
+        print(e)
         response['error']  = True
         if e.response['Error']['Code'] == 'UsernameExistsException':
             response['message'] = "El usuario ya existe"
+        elif e.response['Error']['Code'] == 'CodeDeliveryFailureException':
+            response['message'] = "No se logro enviar el email de verificación"
         else:
-            response['message'] = "Error interno del servidor"
+            response['message'] = "Error interno del servidor 1"
+
+        return response
     except Exception as e:
         print(e)
         response['error']  = True

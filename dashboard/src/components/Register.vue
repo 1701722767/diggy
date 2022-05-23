@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
+  <v-dialog v-model="dialog" max-width="600px" min-width="360px">
     <v-snackbar v-model="showAlert" color="deep-purple accent-4">
       {{ alertMessage }}
 
@@ -111,9 +111,7 @@
                     <v-text-field
                       block
                       v-model="confirmPassword"
-                      :append-icon="
-                        showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
-                      "
+                      :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="showConfirmPassword ? 'text' : 'password'"
                       name="input-10-1"
                       label="Confirme la contraseña"
