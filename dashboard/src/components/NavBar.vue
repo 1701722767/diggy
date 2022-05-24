@@ -147,7 +147,7 @@ export default {
         },
         { icon: "mdi-calendar-star", 
           title: "Mis eventos", 
-          path: "/my-events" 
+          path: "/my-events",
         },
         {
           icon: "mdi-map-marker-outline",

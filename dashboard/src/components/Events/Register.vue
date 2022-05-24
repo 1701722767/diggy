@@ -125,7 +125,7 @@
                       <transition name="slide" appear>
                         <div class="modal" v-if="showModal">
                             <h1>Seleccione la ubicación del evento</h1>
-                            <l-map style="height: 100%" :zoom="zoom" :center="center">
+                            <l-map style="height: 250px" :zoom="zoom" :center="center">
                               <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                               <l-marker :lat-lng="markerLatLng"></l-marker>
                             </l-map>
@@ -186,41 +186,43 @@ export default {
       }
     },
   },
-  data: () => ({
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    attribution:
-        '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    zoom: 16,
-    center: [5.05690, -75.50356],
-    markerLatLng:[5.05690, -75.50356],
-    menu: false,
-    dialog: true,
-    tab: 0,
-    tabs: [{ name: "Registro de evento", icon: "mdi-calendar-edit" }],
-    valid: true,
+  data(){
+    return {
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution:
+          '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      zoom: 16,
+      center: [5.05690, -75.50356],
+      markerLatLng:[5.05690, -75.50356],
+      menu: false,
+      dialog: true,
+      tab: 0,
+      tabs: [{ name: "Registro de evento", icon: "mdi-calendar-edit" }],
+      valid: true,
 
-    nombre: "",
-    descripcion: "",
-    valor: "",
-    imagen: null,
-    fecha_nacimiento: null,
-    aforo: "",
-    select: { category: "" },
-    items: [
-      { category: "Fiesta" },
-      { category: "Deporte" },
-      { category: "Cultura" },
-      { category: "Musica" },
-      { category: "Educacion" },
-    ],
+      nombre: "",
+      descripcion: "",
+      valor: "",
+      imagen: null,
+      fecha_nacimiento: null,
+      aforo: "",
+      select: { category: "" },
+      items: [
+        { category: "Fiesta" },
+        { category: "Deporte" },
+        { category: "Cultura" },
+        { category: "Musica" },
+        { category: "Educacion" },
+      ],
 
-    show1: false,
-    showModal:false,
-    rules: {
-      required: (value) => !!value || "Campo requerido",
-      min: (v) => (v && v.length >= 8) || "Debe contener al menos 8 caracteres",
-    },
-  }),
+      show1: false,
+      showModal:false,
+      rules: {
+        required: (value) => !!value || "Campo requerido",
+        min: (v) => (v && v.length >= 8) || "Debe contener al menos 8 caracteres",
+      }
+    };
+  }
 };
 </script>
 
