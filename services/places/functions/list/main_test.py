@@ -27,14 +27,14 @@ class TableMock():
 @pytest.mark.parametrize(
     "input,expected",[
         ({ 'queryStringParameters' : None},
-        '{"error": false, "message": "Lugares listados correctamente", "data": {"Items": [{"name": "PollosMarios", "id": "P01"}, {"name": "PollosJC", "id": "P02"}], "last_evaluated_key": "IlAwMSI="}}'
+        '{"error": false, "message": "Lugares listados correctamente", "data": {"Items": [{"name": "PollosMarios", "id": "P01"}, {"name": "PollosJC", "id": "P02"}], "start_key": "IlAwMSI="}}'
         ),
         ({ 'queryStringParameters' : {
-            'last_evaluated_key': 'IlAwMSI='}},
-        '{"error": false, "message": "Lugares listados correctamente", "data": {"Items": [{"name": "PollosMarios", "id": "P01"}, {"name": "PollosJC", "id": "P02"}], "last_evaluated_key": "IlAwMSI="}}'
+            'start_key': 'IlAwMSI='}},
+        '{"error": false, "message": "Lugares listados correctamente", "data": {"Items": [{"name": "PollosMarios", "id": "P01"}, {"name": "PollosJC", "id": "P02"}], "start_key": "IlAwMSI="}}'
         ),
         ({ 'queryStringParameters' : {
-            'last_evaluated_key': 'P01'}},
+            'start_key': 'P01'}},
         '{"error": true, "message": "Error interno del servidor", "data": null}'
         )
     ]

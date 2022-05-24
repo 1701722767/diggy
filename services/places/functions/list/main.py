@@ -18,13 +18,13 @@ def list_places(event):
         'Items' : []
     }
     
-    if ((queryStringParameters) and ('last_evaluated_key' in queryStringParameters) and
-        (queryStringParameters['last_evaluated_key'])):
+    if ((queryStringParameters) and ('start_key' in queryStringParameters) and
+        (queryStringParameters['start_key'])):
             
-        last_evaluated_key = queryStringParameters['last_evaluated_key']
+        start_key = queryStringParameters['start_key']
         response = places_table.scan(
             Limit = PAGE_SIZE,
-            ExclusiveStartKey = decodeBase64ToJson(last_evaluated_key)
+            ExclusiveStartKey = decodeBase64ToJson(start_key)
         )
         
     else:
@@ -35,7 +35,7 @@ def list_places(event):
     items['Items'] = response['Items']
     
     if 'LastEvaluatedKey' in response:
-        items['last_evaluated_key'] = encodeJSONToBase64(response['LastEvaluatedKey'])
+        items['start_key'] = encodeJSONToBase64(response['LastEvaluatedKey'])
         
     validate_dynamodb_response(response)
     
