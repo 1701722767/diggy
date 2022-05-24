@@ -50,7 +50,7 @@
                   <v-row>
                     <br />
                     <v-col class="d-flex" align-left>
-                      <v-btn x-large block color="primary" href="/register">
+                      <v-btn x-large block color="primary" @click="$router.push({ path: '/register' });">
                         Registrarse
                       </v-btn>
                     </v-col>

@@ -34,27 +34,23 @@ export const logOut = () => {
   }
 };
 
-export const getToken = () => {
-  try {
-    Auth.currentSession()
-      .then((res) => {
-        let accessToken = res.getIdToken();
-        return accessToken.getJwtToken();
-      })
-      .catch((err) => {
-        console.log(err);
-        throw "Ocurrió un error al obtener credenciales";
-      });
-  } catch (err) {
-    console.log(err);
-    throw "Ocurrió un error al obtener credenciales";
-  }
+export const getToken = async () => {
+  let token = await Auth.currentSession()
+    .then((res) => {
+      let accessToken = res.getIdToken();
+      return accessToken.getJwtToken();
+    })
+    .catch((err) => {
+      console.log(err);
+      throw "Ocurrió un error al obtener credenciales";
+    });
+
+  return token;
 };
 
 export const isAuthenticate = async () => {
   try {
     let response = await Auth.currentSession();
-    console.log(response);
     if (response) {
       return true;
     }
