@@ -21,7 +21,7 @@
             dark
             v-for="item in items"
             :key="item.title"
-            @click="doAction(item.path)"
+            @click="doAction(item)"
           >
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.title }}
@@ -82,7 +82,10 @@ export default {
       width: 0,
       sheet: false,
       items: [
-        { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
+        { icon: "mdi-map-search-outline", 
+          title: "Ver mapa", 
+          path: "/" 
+        },
         {
           icon: "mdi-account-plus-outline",
           title: "Registrarme",
@@ -119,7 +122,10 @@ export default {
       let isAuth = await isAuthenticate();
       if (!isAuth) {
         this.items = [
-          { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
+          { icon: "mdi-map-search-outline", 
+            title: "Ver mapa", 
+            path: "/" 
+          },
           {
             icon: "mdi-account-plus-outline",
             title: "Registrarme",
