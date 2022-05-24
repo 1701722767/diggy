@@ -3,7 +3,7 @@ import main
 
 def test_handler():
     class TableMock:
-        def scan(self,Limit=50):
+        def scan(self,FilterExpression={},Limit=50):
             return {
                 "Items": {
                     "category_id" : "category_id",
@@ -23,13 +23,16 @@ def test_handler():
     req = main.Request()
 
 
+    response = main.lambda_handler({
+        "queryStringParameters": {
+            "category_id": "C01"
+        }
+    },{})
+    assert '{"error": false, "message": "Eventos listados correctamente", "data": {"items": {"category_id": "category_id", "event_id": "event_id"}}}' == response["body"], "Validate response 1"
+
     response = main.lambda_handler({},{})
-    assert {
-        "data": {
-            "items": {"category_id": "category_id", "event_id": "event_id"}},
-            "error": False,
-            "message": "Eventos listados correctamente"
-    } == response, "Validate response"
+    assert '{"error": false, "message": "Eventos listados correctamente", "data": {"items": {"category_id": "category_id", "event_id": "event_id"}}}' == response["body"], "Validate response 2"
+
 
 def test_enconde_decode():
 

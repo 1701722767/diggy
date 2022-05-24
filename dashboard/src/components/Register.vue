@@ -1,159 +1,254 @@
 <template>
-    <v-app>
-        <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
-            <div>
-                <v-tabs v-model="tab" show-arrows background-color="deep-purple accent-4" icons-and-text dark grow>
-                    <v-tabs-slider color="purple darken-4"></v-tabs-slider>
-                    <v-tab v-for="i in tabs" :key="i">
-                        <v-icon large>{{ i.icon }}</v-icon>
-                        <div class="caption py-1">{ { i.name }}</div>
-                    </v-tab>
-                    <v-tab-item>
-                        <v-card class="px-4">
-                            <v-card-text>
-                                <v-form ref="registerForm" v-model="valid" lazy-validation>
-                                    <v-row>
-                                        <v-col cols="12" sm="6" md="6">
-                                            <v-text-field v-model="firstName"  label="Nombre completo" maxlength="40" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-text-field v-model="username" :rules="[rules.required]" label="Username" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-text-field v-model="numberValue" :rules="[rules.required]" type="number" label="Número telefónico" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-text-field v-model="email" :rules="emailRules" label="Correo electrónico" required></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12">
-                                           <v-menu
-                                                ref="menu"
-                                                v-model="menu"
-                                                :rules="[rules.required]"
-                                                :close-on-content-click="false"
-                                                transition="scale-transition"
-                                                offset-y
-                                                min-width="auto"
-                                              >
-                                                <template v-slot:activator="{ on, attrs }">
-                                                  <v-text-field
-                                                    v-model="date"
-                                                    label="Fecha de nacimiento"
-                                                    prepend-icon="mdi-calendar"
-                                                    readonly
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                  ></v-text-field>
-                                                </template>
-                                                <v-date-picker
-                                                  v-model="date"
-                                                  :active-picker.sync="activePicker"
-                                                  :max="
-                                                    new Date(
-                                                      Date.now() -
-                                                        new Date().getTimezoneOffset() * 60000
-                                                    )
-                                                      .toISOString()
-                                                      .substr(0, 10)
-                                                  "
-                                                  min="1950-01-01"
-                                                  @change="save"
-                                                ></v-date-picker>
-                                              </v-menu>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Contraseña" hint="At least 8 characters" counter @click:append="show1 = !show1"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-text-field block v-model="verify" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, passwordMatch]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Confirme la contraseña" counter @click:append="show1 = !show1"></v-text-field>
-                                        </v-col>
-                                        <v-spacer></v-spacer>
-                                        <br/>
-                                        <v-col class="d-flex ml-auto" cols="12" sm="2" xsm="20"> 
-                                            <v-btn x-large block :disabled="!valid" color="primary" @click="validate" href="/Login" >Iniciar sesión</v-btn>
-                                        </v-col>
+  <v-dialog v-model="dialog" max-width="600px" min-width="360px">
+    <v-snackbar v-model="showAlert" color="deep-purple accent-4">
+      {{ alertMessage }}
 
-                                        <v-spacer></v-spacer>
-                                        <v-col  class="d-flex ml-auto">
-                                            <v-btn x-large block :disabled="!valid" color="success" @click="validate">Registrar</v-btn>
-                                        </v-col>
-                    
-                                    </v-row>
-                                </v-form>
-                            </v-card-text>
-                        </v-card>
-                    </v-tab-item>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="grey" text v-bind="attrs" @click="showAlert = false">
+          Cerrar
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <div>
+      <v-tabs
+        show-arrows
+        background-color="deep-purple accent-4"
+        icons-and-text
+        dark
+        grow
+      >
+        <v-tabs-slider color="purple darken-4"></v-tabs-slider>
+        <v-tab>
+          <div class="caption py-1">Registro</div>
+          <v-icon large>mdi-account-outline</v-icon>
+        </v-tab>
+        <v-tab-item>
+          <v-card class="px-4">
+            <v-card-text>
+              <v-form ref="registerForm" :v-model="true">
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="model.name"
+                      label="Nombre completo"
+                      :rules="nameRules"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="model.username"
+                      label="Nombre de usuario"
+                      :rules="userNameRules"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="model.phone_number"
+                      type="text"
+                      label="Número telefónico"
+                      :rules="phoneRules"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="model.email"
+                      label="Correo electrónico"
+                      :rules="emailRules"
+                    ></v-text-field>
+                  </v-col>
+                  <!-- BIRTHDAY -->
+                  <v-col cols="12">
+                    <v-menu
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="model.birthdate"
+                          :rules="dateRules"
+                          label="Fecha de nacimiento"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="model.birthdate"
+                        :active-picker.sync="activePicker"
+                        :max="
+                          new Date(
+                            Date.now() - new Date().getTimezoneOffset() * 60000
+                          )
+                            .toISOString()
+                            .substr(0, 10)
+                        "
+                        min="1950-01-01"
+                        @change="saveBirthDate"
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <!-- END BIRTHDAY -->
 
-                </v-tabs>
-            </div>
-
-        </v-dialog>
-    </v-app>
-  
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="model.password"
+                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="showPassword ? 'text' : 'password'"
+                      name="input-10-1"
+                      label="Contraseña"
+                      hint="At least 8 characters"
+                      counter
+                      @click:append="showPassword = !showPassword"
+                      :rules="passwordRules"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      block
+                      v-model="confirmPassword"
+                      :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="showConfirmPassword ? 'text' : 'password'"
+                      name="input-10-1"
+                      label="Confirme la contraseña"
+                      counter
+                      @click:append="showConfirmPassword = !showConfirmPassword"
+                      :rules="passwordRules"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col class="d-flex ml-auto">
+                    <v-btn
+                      x-large
+                      block
+                      color="success"
+                      @click="register"
+                      :loading="loading"
+                      >Registrarme</v-btn
+                    >
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </div>
+  </v-dialog>
 </template>
 
 <script>
-  export default {
-    name: 'HelloWorld',
-    computed: {
+import { postJSON } from "../helpers/Request.js";
+
+export default {
+  name: "Register",
+  computed: {
     passwordMatch() {
-      return () => this.password === this.verify || "Las contraseñas deben coincidir";
-    }
+      return () =>
+        this.password === this.verify || "Las contraseñas deben coincidir";
+    },
+  },
+  data() {
+    return {
+      dialog: true,
+      loading: false,
+
+      model: {
+        username: "",
+        password: "",
+        email: "",
+        phone_number: "",
+        birthdate: "",
+        name: "",
+      },
+      confirmPassword: "",
+      showPassword: false,
+      showConfirmPassword: false,
+
+      activePicker: null,
+      date: null,
+      menu: false,
+
+      alertMessage: "",
+      showAlert: false,
+
+      nameRules: [(v) => !!v || "Debe ingresar su nombre completo"],
+      userNameRules: [
+        (v) => !!v || "Debe ingresar su nombre de usuario",
+        (v) =>
+          /^[a-z|A-Z]*$/.test(v) ||
+          "Ingrese un nombre de usuario válido (solo letras)",
+      ],
+      emailRules: [
+        (v) => !!v || "Debe ingresar su correo electrónico",
+        (v) => /.+@.+\..+/.test(v) || "Ingrese un correo válido",
+      ],
+      phoneRules: [
+        (v) => !!v || "Debe ingresar su número telefónico",
+        (v) =>
+          /^\+\d{12}$/.test(v) ||
+          "Ingrese un número telefónico válido (+573214567890)",
+      ],
+      dateRules: [(v) => !!v || "Debe ingresar su fecha de nacimiento"],
+      passwordRules: [
+        (v) => !!v || "Debe ingresar la contraseña",
+        (v) =>
+          this.model.password === this.confirmPassword ||
+          "Las contraseñas no coinciden",
+        (v) => v.length >= 8 || "La contraseña debe tener almenos 8 caracter",
+        (v) =>
+          /\d+/.test(v) || "La contraseña debe contener al menos un número",
+        (v) =>
+          /[a-z]+/.test(v) ||
+          "La contraseña debe contener al menos una letra minuscula",
+        (v) =>
+          /[A-Z]+/.test(v) ||
+          "La contraseña debe contener al menos una letra mayuscula",
+        (v) =>
+          /[#$%&/()=]+/.test(v) ||
+          "La contraseña debe contener al menos una caracter especial",
+      ],
+    };
+  },
+  watch: {
+    menu(val) {
+      val && setTimeout(() => (this.activePicker = "YEAR"));
+    },
   },
   methods: {
-    validate() {
-      if (this.$refs.loginForm.validate()) {
-        // submit form to server/API here...
-      }
-    },
-    reset() {
-      this.$refs.form.reset();
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation();
-    },
-    save (date) {
-        this.$refs.menu.save(date)
-      },
-  },
-  data: () => ({
-    menu: false,
-    dialog: true,
-    tab: 0,
-    tabs: [
-        {name:"Registro", icon:"mdi-account-outline"}
-    ],
-    valid: true,
-    
-    nombre: "",
-    apellido: "",
-    username:"",
-    telefono:"",
-    correo: "",
-    fecha_nacimiento:null,
-    password: "",
-    verify: "",
-    loginPassword: "",
-    loginEmail: "",
-    loginEmailRules: [
-      v => !!v || "Campo obligatorio",
-      v => /.+@.+\..+/.test(v) || "El correo debe ser valido"
-    ],
-    emailRules: [
-      v => !!v || "Campo obligatorio",
-      v => /.+@.+\..+/.test(v) || "El correo debe ser valido"
-    ],
+    register() {
+      if (!this.$refs.registerForm.validate()) {
+        this.alertMessage = "";
+        this.showAlert = false;
 
-    show1: false,
-    rules: {
-      required: value => !!value || "Campo requerido",
-      min: v => (v && v.length >= 8) || "Debe contener al menos 8 caracteres"
-    }
-  })
-  }
+        return;
+      }
+
+      this.loading = true;
+      postJSON("/users", this.model, false)
+        .then((res) => {
+          this.showAlert = true;
+          this.alertMessage = res.message;
+          this.loading = false;
+
+          if (!res.error) {
+            this.$router.push({ path: "/confirm" });
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+          this.showAlert = true;
+          this.alertMessage = "Ocurrió un error al hacer la petición";
+        });
+    },
+    saveBirthDate(date) {
+      this.$refs.menu.save(date);
+    },
+  },
+};
 </script>
 
-
-<style>
-
-</style>
+<style></style>

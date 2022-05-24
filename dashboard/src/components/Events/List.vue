@@ -88,6 +88,7 @@
 
 <script>
   export default {
+    name: 'EventList',
     data: () => ({
       alignments: [
         'start',

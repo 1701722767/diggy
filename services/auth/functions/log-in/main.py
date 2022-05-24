@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+from botocore.exceptions import ClientError
 
 client = boto3.client("cognito-idp", region_name="us-east-1")
 
@@ -10,7 +11,6 @@ KEY_ERROR_MESSAGE = {
 }
 
 def log_in(user):
-
     username = user['username']
     password = user['password']
 
@@ -28,7 +28,6 @@ def log_in(user):
 
 
 def validate(data):
-
     for name in data.keys():
         if not data[name]:
             raise KeyError(str(name))
@@ -55,7 +54,13 @@ def lambda_handler(event, context):
         print(e)
         response['error']  = True
         response['message'] = KEY_ERROR_MESSAGE[e.args[0]]
-    except Exepcion as e:
+    except ClientError as e:
+        response['error']  = True
+        if e.response['Error']['Code'] == 'NotAuthorizedException':
+            response['message'] = "Credenciales incorrectas."
+        else:
+            response['message'] = "Error interno del servidor"
+    except Exception as e:
         print(e)
         response['error']  = True
         response['message'] = "Error interno del servidor"
