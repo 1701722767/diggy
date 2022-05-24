@@ -125,7 +125,7 @@
                       <transition name="slide" appear>
                         <div class="modal" v-if="showModal">
                             <h1>Seleccione la ubicación del evento</h1>
-                            <l-map style="height: 250px" :zoom="zoom" :center="center">
+                            <l-map style="height: 250px" :zoom="zoom" :center="center" @click="addMarker">
                               <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                               <l-marker :lat-lng="markerLatLng"></l-marker>
                             </l-map>
@@ -185,6 +185,12 @@ export default {
         this.showModal=!this.showModal
       }
     },
+    addMarker(event) {
+      this.markers.push(event.latlng);
+      alert("Las coordenadas seleccionadas son " + event.latlng);
+      this.ubicacion= event.latLng;
+
+    },
   },
   data(){
     return {
@@ -193,13 +199,17 @@ export default {
           '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       zoom: 16,
       center: [5.05690, -75.50356],
-      markerLatLng:[5.05690, -75.50356],
+       markers:[
+        L.latLng(5.05690, -75.50356),
+        L.latLng(4.05690, -74.50356),
+        L.latLng(.05690, -73.50356),
+      ],
       menu: false,
       dialog: true,
       tab: 0,
       tabs: [{ name: "Registro de evento", icon: "mdi-calendar-edit" }],
       valid: true,
-
+      ubicacion: "",
       nombre: "",
       descripcion: "",
       valor: "",
