@@ -10,7 +10,7 @@
       </template>
     </v-snackbar>
     <v-app-bar color="deep-purple accent-4" dense dark>
-      <template v-if="width > 800">
+      <template v-if="width > 1000">
         <v-toolbar-title>Diggy</v-toolbar-title>
         <v-spacer></v-spacer>
         <div class="navbar_options">
@@ -21,7 +21,7 @@
             dark
             v-for="item in items"
             :key="item.title"
-            @click="doAction(item.path)"
+            @click="doAction(item)"
           >
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.title }}
