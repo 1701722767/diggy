@@ -141,14 +141,22 @@ export default {
       }
 
       this.items = [
-        { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
-        { icon: "mdi-calendar-star", title: "Mis eventos", path: "/my-events" },
+        { icon: "mdi-map-search-outline", 
+          title: "Ver mapa", 
+          path: "/" 
+        },
+        { icon: "mdi-calendar-star", 
+          title: "Mis eventos", 
+          path: "/my-events" 
+        },
         {
           icon: "mdi-map-marker-outline",
           title: "Mis sitios",
           path: "/my-places",
         },
-        { icon: "mdi-currency-usd", title: "Balance", path: "/my-balance" },
+        { icon: "mdi-currency-usd",
+          title: "Balance", 
+          path: "/my-balance" },
         {
           icon: "mdi-logout",
           title: "Cerrar sesión",

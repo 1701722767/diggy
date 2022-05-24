@@ -112,10 +112,28 @@
                         label="Inserte imagen del evento"
                       ></v-file-input>
                     </v-col>
-                    <v-button> </v-button>
-                    <v-col> </v-col>
+                    <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="25">
+                      <v-btn
+                        x-large
+                        block
+                        color="secondary"
+                        @click="showModal=true"> Inserte dirección                 
+                      </v-btn>
+                      <transition name="fade" appear>
+                        <div class="modal-overlay" v-if="showModal" @click="showModal=false"></div>
+                      </transition>  
+                      <transition name="slide" appear>
+                        <div class="modal" v-if="showModal">
+                            <h1>Seleccione la ubicación del evento</h1>
+                            <l-map style="height: 100%" :zoom="zoom" :center="center">
+                              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                              <l-marker :lat-lng="markerLatLng"></l-marker>
+                            </l-map>
+                        </div>
+                      </transition> 
+                    </v-col>
                     <v-spacer></v-spacer>
-                    <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="20">
+                    <v-col>
                       <v-btn
                         x-large
                         block
@@ -142,6 +160,11 @@ import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 
 export default {
   name: "EventRegister",
+  components:{
+    LMap,
+    LTileLayer,
+    LMarker,
+  },
   methods: {
     validate() {
       if (this.$refs.loginForm.validate()) {
@@ -157,8 +180,19 @@ export default {
     save(date) {
       this.$refs.menu.save(date);
     },
+    openDialog() {
+      if (this.showModal) {
+        this.showModal=!this.showModal
+      }
+    },
   },
   data: () => ({
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution:
+        '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    zoom: 16,
+    center: [5.05690, -75.50356],
+    markerLatLng:[5.05690, -75.50356],
     menu: false,
     dialog: true,
     tab: 0,
@@ -181,6 +215,7 @@ export default {
     ],
 
     show1: false,
+    showModal:false,
     rules: {
       required: (value) => !!value || "Campo requerido",
       min: (v) => (v && v.length >= 8) || "Debe contener al menos 8 caracteres",
@@ -189,4 +224,75 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+  * {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+}
+
+body {
+ font-family: 'montserrat', sans-serif;
+}
+
+#app {
+ position: relative;
+ 
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ 
+ width: 100vw;
+ min-height: 100vh;
+ overflow-x: hidden;
+}
+
+.button {
+ transition: 0.4s ease-out;
+}
+
+.modal-overlay {
+ position: absolute;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ z-index: 98;
+ background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modal {
+ position: fixed;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ z-index: 99;
+ 
+ width: 100%;
+ max-width: 600px;
+ background-color: #FFF;
+ border-radius: 16px;
+ 
+ padding: 25px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+ transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+ opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+ transition: transform .5s;
+}
+
+.slide-enter,
+.slide-leave-to {
+ transform: translateY(-50%) translateX(100vw);
+}
+</style>
