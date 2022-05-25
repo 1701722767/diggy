@@ -18,6 +18,9 @@ def get_event(composite_key):
     if 'Item' not in response:
         raise KeyError("No existe dicho evento")
     
+    if 'user_id' in response['Item']:
+        del response['Item']['user_id']
+        
     return response['Item']
 
 
