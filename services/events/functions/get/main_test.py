@@ -2,7 +2,7 @@ import pytest
 import main
 
 class TableEventMock:
-    def get_item(self,Key,ExpressionAttributeNames,ProjectionExpression):
+    def get_item(self,Key,ExpressionAttributeNames=None,ProjectionExpression=None):
 
         response = { }
 
