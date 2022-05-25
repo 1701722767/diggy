@@ -44,14 +44,33 @@
         <v-divider class="mx-4"></v-divider>
 
         <v-card-text>
-         <strong> Estado </strong> : En curso
+          <div>
+             <strong> Inicia </strong> : 24 de Mayo 23:00:00
+          </div>
+          <div>
+             <strong> Termina </strong> : 24 de Mayo 23:00:00
+          </div>
+          <div>
+             <strong> Aforo Máximo </strong> : 13
+          </div>
+          <div>
+             <strong> Cupos disponibles</strong> : 8
+          </div>
+          <div>
+             <strong> Rango de edad </strong> : +18
+          </div>
+        
         </v-card-text>
+
 
         <v-divider class="mx-4"></v-divider>
 
-        <v-card-title>24 de Mayo del 2022</v-card-title>
 
-        <v-card-text>
+        <!--This info can be used for a place info>
+
+        <!--<v-card-title>24 de Mayo del 2022</v-card-title>-->
+
+        <!--<v-card-text>
           <v-chip-group
             v-model="selection"
             active-class="deep-purple accent-4 white--text"
@@ -65,7 +84,7 @@
 
          
           </v-chip-group>
-        </v-card-text>
+        </v-card-text> -->
 
         <v-card-actions>
           <v-btn
