@@ -125,10 +125,27 @@
                       <transition name="slide" appear>
                         <div class="modal" v-if="showModal">
                             <h1>Seleccione la ubicación del evento</h1>
-                            <l-map style="height: 250px" :zoom="zoom" :center="center" @click="addMarker">
+                            <br>
+                            <l-map style="height: 250px" :zoom="zoom" :center="center" @click="coordenadas($event)">
                               <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                               <l-marker :lat-lng="markerLatLng"></l-marker>
                             </l-map>
+                            <br>
+                            <v-col>
+                              <v-row>
+                                <h1>Coordenadas seleccionadas: </h1>
+                                <v-text-field
+                                  v-model="ubicacion"
+                                  solo
+                                >{{ubicacion}}</v-text-field>
+                              </v-row>           
+                              <v-btn
+                              x-large
+                              block
+                              :disabled="!valid"
+                              color="success"               
+                              >Guardar dirección</v-btn>
+                            </v-col>
                         </div>
                       </transition> 
                     </v-col>
@@ -185,8 +202,8 @@ export default {
         this.showModal=!this.showModal
       }
     },
-    addMarker(event) {
-      this.markers.push(event.latlng);
+    coordenadas: function addMarker(event) {
+      //this.markers.push(event.latlng);
       alert("Las coordenadas seleccionadas son " + event.latlng);
       this.ubicacion= event.latLng;
 
