@@ -44,7 +44,7 @@
         <v-divider class="mx-4"></v-divider>
 
         <v-card-text>
-         <strong> Estado </strong> : En curso 
+         <strong> Estado </strong> : En curso
         </v-card-text>
 
         <v-divider class="mx-4"></v-divider>
@@ -127,6 +127,8 @@ export default {
       center: [5.0569, -75.50356],
       markerLatLng: [5.0569, -75.50356],
 
+      selection: 1,
+
       items: [
           {
             src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
@@ -140,10 +142,18 @@ export default {
           {
             src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
           },
-        ]
+        ],
+    
+      
     };
   },
-};
+
+  methods : {
+      reserve () {
+        console.log('click')
+      },
+    },
+  };
 </script>
 
 <style>
