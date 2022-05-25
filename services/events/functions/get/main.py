@@ -3,6 +3,7 @@ import boto3
 from decimal import Decimal
 import base64
 
+
 AWS_REGION = "us-east-1"
 
 client = boto3.resource('dynamodb',region_name=AWS_REGION)
@@ -12,8 +13,6 @@ events_table = client.Table("events")
 def get_event(composite_key):
     response = events_table.get_item(
         Key=decodeBase64ToJson(composite_key),
-        ExpressionAttributeNames= { '#max' : 'max', '#name' : 'name'},
-        ProjectionExpression='#name,coordinates,datestart,dateend,description,images,#max,price,range_age,slots'
     )
     
     if 'Item' not in response:
