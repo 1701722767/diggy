@@ -8,6 +8,7 @@ import { AWS_CONFIG } from "./services/Auth.js";
 import Amplify from "aws-amplify";
 import { Hub } from "aws-amplify";
 
+
 Amplify.configure(AWS_CONFIG.Auth);
 
 const listener = (data) => {

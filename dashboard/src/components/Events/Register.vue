@@ -20,25 +20,32 @@
               <v-card-text>
                 <v-form ref="registerForm" v-model="valid" lazy-validation>
                   <v-row>
+                    <!-- NOMBRE DEL EVENTO -->
                     <v-col cols="12">
                       <v-text-field
-                        v-model="nombre"
+                        v-model="model.nombre"
                         label="Nombre del evento"
                         maxlength="40"
                         required
                       ></v-text-field>
                     </v-col>
+                    <!-- FIN NOMBRE EVENTO -->
+                    <!--RANGO EDAD-->
+                    <!--FIN RANGO EDAD-->
+                    <!-- DESCRIPCION EVENTO  -->
                     <v-col cols="12">
                       <v-text-field
-                        v-model="descripcion"
+                        v-model="model.descripcion"
                         :rules="[rules.required]"
                         label="Descripción del evento"
                         required
                       ></v-text-field>
                     </v-col>
+                    <!-- FIN DESCRIPCION EVENTO -->
+                    <!-- SELECCION DE CATEGORIA -->
                     <v-col cols="12" sm="6" md="6">
                       <v-select
-                        v-model="select"
+                        v-model="model.category"
                         :hint="`${select.category}`"
                         :items="items"
                         item-text="category"
@@ -49,14 +56,18 @@
                         single-line
                       ></v-select>
                     </v-col>
+                    <!-- FIN SELECCION CATEGORIA -->
+                    <!-- VALOR DE INGRESO -->
                     <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="valor"
+                        v-model="model.valor"
                         type="number"
                         label="Valor de ingreso"
                         required
                       ></v-text-field>
                     </v-col>
+                    <!-- FIN VALOR DE INGRESO -->
+                    <!-- FECHA DE INICIO -->
                     <v-col cols="12" sm="6" md="6">
                       <v-menu
                         ref="menu"
@@ -69,8 +80,8 @@
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="date"
-                            label="Fecha del evento"
+                            v-model="model.fecha_inicio_evento"
+                            label="Fecha de inicio de evento"
                             prepend-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -78,7 +89,7 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                          v-model="date"
+                          v-model="model.fecha_inicio_evento"
                           :active-picker.sync="activePicker"
                           :min="
                             new Date(
@@ -93,18 +104,60 @@
                         ></v-date-picker>
                       </v-menu>
                     </v-col>
+                    <!-- FIN FECHA DE INICIO -->
+                    <!-- FECHA DE FIN -->
+                    <v-col cols="12" sm="6" md="6">
+                      <v-menu
+                        ref="menu2"
+                        v-model="menu2"
+                        :rules="[rules.required]"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="model.fecha_fin_evento"
+                            label="Fecha de fin de evento"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="model.fecha_fin_evento"
+                          :active-picker.sync="activePicker"
+                          :min="
+                            new Date(
+                              Date.now() -
+                                new Date().getTimezoneOffset() * 60000
+                            )
+                              .toISOString()
+                              .substr(0, 10)
+                          "
+                          max="2024-03-20"
+                          @change="save2"
+                        ></v-date-picker>
+                      </v-menu>
+                    </v-col>
+                    <!-- FIN FECHA DE FIN -->
+                    <!-- AFORO -->
                     <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="aforo"
+                        v-model="model.aforo"
                         :rules="[rules.required]"
                         type="number"
                         label="Aforo máximo"
                         required
                       ></v-text-field>
                     </v-col>
+                    <!-- FIN AFORO -->
+                    <!-- IMAGEN -->
                     <v-col cols="12" sm="6" md="6">
                       <v-file-input
-                        v-model="imagen"
+                        v-model="model.imagen"
                         :rules="rules"
                         accept="image/png, image/jpeg, image/bmp"
                         placeholder="Pick an avatar"
@@ -112,6 +165,8 @@
                         label="Inserte imagen del evento"
                       ></v-file-input>
                     </v-col>
+                    <!-- FIN IMAGEN -->
+                    <!-- COORDENADAS -->
                     <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="25">
                       <v-btn
                         x-large
@@ -126,40 +181,51 @@
                         <div class="modal" v-if="showModal">
                             <h1>Seleccione la ubicación del evento</h1>
                             <br>
-                            <l-map style="height: 250px" :zoom="zoom" :center="center" @click="coordenadas($event)">
+                            <l-map style="height: 250px" :zoom="zoom" :center="center" @click="addMarker($event)">
                               <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                               <l-marker :lat-lng="markerLatLng"></l-marker>
                             </l-map>
                             <br>
-                            <v-col>
+                            <v-col> 
                               <v-row>
-                                <h1>Coordenadas seleccionadas: </h1>
-                                <v-text-field
-                                  v-model="ubicacion"
-                                  solo
-                                >{{ubicacion}}</v-text-field>
-                              </v-row>           
+                                <h1>Coordenadas seleccionadas:</h1>
+                                   <v-col cols="12" sm="6" md="6">
+                                     <v-text-field
+                                      v-model="model.coordinates.latitud"
+                                      solo
+                                    ></v-text-field>
+                                   </v-col>
+                                    <v-col cols="12" sm="6" md="6">
+                                     <v-text-field
+                                      v-model="model.coordinates.longitud"
+                                      solo
+                                    ></v-text-field>
+                                   </v-col>
+                                   
+                              </v-row>  
                               <v-btn
                               x-large
                               block
                               :disabled="!valid"
-                              color="success"               
+                              color="success"
+                              @click="showModal=false"
                               >Guardar dirección</v-btn>
-                            </v-col>
+                            </v-col> 
                         </div>
                       </transition> 
                     </v-col>
                     <v-spacer></v-spacer>
-                    <v-col>
+                    <v-col cols="12" sm="6" md="6">
                       <v-btn
                         x-large
                         block
                         :disabled="!valid"
                         color="success"
-                        @click="validate"
+                        @click="register"
                         >Crear evento</v-btn
                       >
                     </v-col>
+                    <!-- FIN COORDENADA -->
                   </v-row>
                 </v-form>
               </v-card-text>
@@ -175,6 +241,7 @@
 <script>
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import { Icon } from 'leaflet';
+import { postJSON } from "../../helpers/Request.js";
 
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
@@ -191,10 +258,26 @@ export default {
     LMarker,
   },
   methods: {
-    validate() {
-      if (this.$refs.loginForm.validate()) {
-        // submit form to server/API here...
+    register() {
+      if (!this.$refs.registerForm.validate()) {
+        this.alertMessage = "";
+        this.showAlert = false;
+
+        return;
       }
+
+      this.loading = true;
+      postJSON("/events", this.model, true)
+        .then((res) => {
+          this.showAlert = true;
+          this.alertMessage = res.message;
+          this.loading = false;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.showAlert = true;
+          this.alertMessage = "Ocurrió un error al hacer la petición";
+        });
     },
     reset() {
       this.$refs.form.reset();
@@ -202,19 +285,26 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-    save(date) {
-      this.$refs.menu.save(date);
+    save(date1) {
+      this.$refs.menu.save(date1);
+    },
+    save2(date2) {
+      this.$refs.menu2.save(date2);
     },
     openDialog() {
       if (this.showModal) {
         this.showModal=!this.showModal
       }
     },
-    coordenadas: function addMarker(event) {
+    addMarker(event) {
       //this.markers.push(event.latlng);
-      alert("Las coordenadas seleccionadas son " + event.latlng);
-      this.ubicacion= event.latLng;
-
+      alert("Las coordenadas seleccionadas son" + event.latlng);
+      let latitud= event.latlng.lat;
+      let longitud= event.latlng.lng;
+      console.log(event);
+      this.model.coordinates= {
+        latitud, longitud 
+      };
     },
   },
   data(){
@@ -226,21 +316,27 @@ export default {
       center: [5.05690, -75.50356],
        markers:[
         L.latLng(5.05690, -75.50356),
-        L.latLng(4.05690, -74.50356),
-        L.latLng(.05690, -73.50356),
       ],
       menu: false,
+      menu2:false,
       dialog: true,
       tab: 0,
       tabs: [{ name: "Registro de evento", icon: "mdi-calendar-edit" }],
       valid: true,
-      ubicacion: "",
-      nombre: "",
-      descripcion: "",
-      valor: "",
-      imagen: null,
-      fecha_nacimiento: null,
-      aforo: "",
+      model: {
+        name: "",
+        description: "",
+        price: "",
+        slots:"",
+        images: null,
+        datestart: "",
+        dateend: "",
+        max: "",
+        category:"",
+        coordinates:{}
+      },
+      date1:null,
+      date2:null,
       select: { category: "" },
       items: [
         { category: "Fiesta" },
