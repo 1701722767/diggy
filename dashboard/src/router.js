@@ -64,5 +64,9 @@ export default new Router({
           name: 'list',
           component: EventList
         },
+        {
+          path: '*',
+          redirect: "/directory/map"
+        }
     ],
 });
