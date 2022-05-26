@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <notification/>
     <nav-bar> </nav-bar>
     <v-main>
       <router-view></router-view>
@@ -9,9 +10,10 @@
 
 <script>
 import NavBar from "./components/NavBar.vue";
+import Notification from './components/Notification.vue';
 
 export default {
-  components: { NavBar },
+  components: { NavBar, Notification },
   name: "App",
 };
 </script>

@@ -1,14 +1,5 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px" min-width="360px">
-    <v-snackbar v-model="showAlert" color="deep-purple accent-4">
-      {{ alertMessage }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn color="grey" text v-bind="attrs" @click="showAlert = false">
-          Cerrar
-        </v-btn>
-      </template>
-    </v-snackbar>
     <div>
       <v-tabs
         show-arrows
@@ -111,7 +102,9 @@
                     <v-text-field
                       block
                       v-model="confirmPassword"
-                      :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                      :append-icon="
+                        showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
+                      "
                       :type="showConfirmPassword ? 'text' : 'password'"
                       name="input-10-1"
                       label="Confirme la contraseña"
@@ -142,6 +135,7 @@
 
 <script>
 import { postJSON } from "../helpers/Request.js";
+import { notification } from "@/helpers/Notifications.js";
 
 export default {
   name: "Register",
@@ -171,9 +165,6 @@ export default {
       activePicker: null,
       date: null,
       menu: false,
-
-      alertMessage: "",
-      showAlert: false,
 
       nameRules: [(v) => !!v || "Debe ingresar su nombre completo"],
       userNameRules: [
@@ -221,8 +212,9 @@ export default {
   methods: {
     register() {
       if (!this.$refs.registerForm.validate()) {
-        this.alertMessage = "";
-        this.showAlert = false;
+         notification({
+            message: "Verifique los datos ingresados",
+          });
 
         return;
       }
@@ -230,9 +222,11 @@ export default {
       this.loading = true;
       postJSON("/users", this.model, false)
         .then((res) => {
-          this.showAlert = true;
-          this.alertMessage = res.message;
           this.loading = false;
+
+          notification({
+            message: res.message,
+          });
 
           if (!res.error) {
             this.$router.push({ path: "/confirm" });
@@ -240,8 +234,9 @@ export default {
         })
         .catch(() => {
           this.loading = false;
-          this.showAlert = true;
-          this.alertMessage = "Ocurrió un error al hacer la petición";
+          notification({
+            message: "Ocurrió un error al hacer la petición",
+          });
         });
     },
     saveBirthDate(date) {
