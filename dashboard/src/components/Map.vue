@@ -1,9 +1,8 @@
 <template>
   <l-map style="height: 100%" :zoom="zoom" :center="center">
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-    <l-marker :lat-lng="markerLatLng">
+    <l-marker :lat-lng="markerLatLng" @click="getEvent">
       <l-popup> 
-
           <v-carousel hide-delimiters height=100 >
             <v-carousel-item
               v-for="(item,i) in items"
@@ -12,7 +11,7 @@
             ></v-carousel-item>
           </v-carousel>
 
-          <v-card-title>Noche Acústica</v-card-title>
+          <v-card-title>{{this.model.name}}</v-card-title>
 
           <v-card-text>
             <v-row
@@ -34,10 +33,10 @@
             </v-row>
 
             <div class="my-4 text-subtitle-1">
-              $ • 5000
+              $ • {{this.model.price}}
             </div>
 
-            <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
+            <div>{{this.model.description}}</div>
 
         
           </v-card-text>
@@ -45,19 +44,19 @@
 
         <v-card-text>
           <div>
-             <strong> Inicia </strong> : 24 de Mayo 23:00:00
+             <strong> Inicia </strong> : {{ this.model.datestart}}
           </div>
           <div>
-             <strong> Termina </strong> : 24 de Mayo 23:00:00
+             <strong> Termina </strong> : {{ this.model.dateend}}
           </div>
           <div>
-             <strong> Aforo Máximo </strong> : 13
+             <strong> Aforo Máximo </strong> : {{ this.model.max}}
           </div>
           <div>
-             <strong> Cupos disponibles</strong> : 8
+             <strong> Cupos disponibles</strong> : {{ this.model.slots}}
           </div>
           <div>
-             <strong> Rango de edad </strong> : +18
+             <strong> Rango de edad </strong> : {{this.model.range_age[0]}} - {{this.model.range_age[1]}} años
           </div>
         
         </v-card-text>
@@ -146,6 +145,24 @@ export default {
       center: [5.0569, -75.50356],
       markerLatLng: [5.0569, -75.50356],
 
+      model: {
+        
+        event_id : "",
+        name: "",
+        description: "",
+        dateend: "",
+        datestart: "",
+        max: "",
+        name: "",
+        price: "",
+        range_age: "",
+        slots: "",
+      },
+
+      params :{
+        composite_key: "ewogICJldmVudF9pZCI6ICJFYjMyZTMyZmUtZGRlNi00YjNjLTkxNjAtZjAxYTY3ZDYwYWIxIiwKICAiY2F0ZWdvcnlfaWQiOiAiQzAxIgp9"
+      },
+
       selection: 1,
 
       items: [
@@ -171,12 +188,28 @@ export default {
       reserve () {
         console.log('click')
       },
+
+      getEvent (){
+        getJSON("/find", this.params, false)
+          .then((res) => {
+            this.model = res.data;
+            console.log(res);
+
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
     },
   };
 </script>
 
 <style>
 
+.leaflet-popup-content{
+  width:400px;
+}
 
 </style>
 
