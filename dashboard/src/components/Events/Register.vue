@@ -188,24 +188,10 @@
                               <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                               <l-marker :lat-lng="markerLatLng"></l-marker>
                             </l-map>
-                            <br>
-                            <v-col> 
-                              <v-row>
-                                <h1>Coordenadas seleccionadas: {{model}}</h1>
-                                   <v-col cols="12" sm="6" md="6">
-                                     <v-text-field
-                                      v-model="model.coordinates.latitude"
-                                      solo
-                                    ></v-text-field>
-                                   </v-col>
-                                    <v-col cols="12" sm="6" md="6">
-                                     <v-text-field
-                                      v-model="model.coordinates.longitude"
-                                      solo
-                                    ></v-text-field>
-                                   </v-col>
-                                   
-                              </v-row>  
+                            <v-col>                     
+                                <h1>Coordenadas seleccionadas:</h1>
+                                <h3>{{model.coordinates}}</h3>
+                                <br>
                               <v-btn
                               x-large
                               block
