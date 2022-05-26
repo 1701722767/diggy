@@ -1,14 +1,5 @@
 <template>
   <div>
-    <v-snackbar v-model="showAlert" color="deep-purple accent-4">
-      {{ alertMessage }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn color="grey" text v-bind="attrs" @click="showAlert = false">
-          Cerrar
-        </v-btn>
-      </template>
-    </v-snackbar>
     <v-app-bar color="deep-purple accent-4" dense dark>
       <template v-if="width > 1000">
         <v-toolbar-title>Diggy</v-toolbar-title>
@@ -67,6 +58,7 @@
 <script>
 import { isAuthenticate, logOut } from "../services/Auth";
 import Emitter from "../services/Emitter.js";
+import { notification } from "@/helpers/Notifications.js";
 
 export default {
   name: "NavBar",
@@ -82,21 +74,18 @@ export default {
       width: 0,
       sheet: false,
       items: [
-        { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
+        { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/directory/map" },
         {
           icon: "mdi-account-plus-outline",
           title: "Registrarme",
-          path: "register",
+          path: "/register",
         },
         {
           icon: "mdi-account-key-outline",
           title: "Iniciar sesión",
-          path: "login",
+          path: "/login",
         },
       ],
-
-      alertMessage: "",
-      showAlert: false,
     };
   },
   mounted() {
@@ -119,23 +108,31 @@ export default {
       let isAuth = await isAuthenticate();
       if (!isAuth) {
         this.items = [
-          { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
+          {
+            icon: "mdi-map-search-outline",
+            title: "Ver mapa",
+            path: "/directory/map",
+          },
           {
             icon: "mdi-account-plus-outline",
             title: "Registrarme",
-            path: "register",
+            path: "/register",
           },
           {
             icon: "mdi-account-key-outline",
             title: "Iniciar sesión",
-            path: "login",
+            path: "/login",
           },
         ];
         return;
       }
 
       this.items = [
-        { icon: "mdi-map-search-outline", title: "Ver mapa", path: "/" },
+        {
+          icon: "mdi-map-search-outline",
+          title: "Ver mapa",
+          path: "/directory/map",
+        },
         { icon: "mdi-calendar-star", title: "Mis eventos", path: "/my-events" },
         {
           icon: "mdi-map-marker-outline",
@@ -150,12 +147,14 @@ export default {
             logOut()
               .then((res) => {
                 this.setItems();
-                this.alertMessage = "Sesión cerrada con exito";
-                this.showAlert = true;
+                notification({
+                  message: "Sesión cerrada con exito",
+                });
               })
               .catch(() => {
-                this.alertMessage = "Ocurrió un error al cerrar sesión";
-                this.showAlert = true;
+                notification({
+                  message: "Ocurrió un error al cerrar sesión",
+                });
               });
           },
         },
