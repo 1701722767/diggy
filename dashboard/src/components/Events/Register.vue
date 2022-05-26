@@ -18,41 +18,109 @@
           <v-tab-item>
             <v-card class="px-4">
               <v-card-text>
-                <v-form ref="registerForm" v-model="valid" lazy-validation>
+                <v-form ref="registerForm" :v-model="true" lazy-validation>
                   <v-row>
                     <!-- NOMBRE DEL EVENTO -->
                     <v-col cols="12">
                       <v-text-field
-                        v-model="model.nombre"
+                        v-model="model.name"
                         label="Nombre del evento"
                         maxlength="40"
                         required
                       ></v-text-field>
                     </v-col>
                     <!-- FIN NOMBRE EVENTO -->
-                    <!--RANGO EDAD-->
-                    <!--FIN RANGO EDAD-->
                     <!-- DESCRIPCION EVENTO  -->
                     <v-col cols="12">
                       <v-text-field
-                        v-model="model.descripcion"
+                        v-model="model.description"
                         :rules="[rules.required]"
                         label="Descripción del evento"
                         required
                       ></v-text-field>
                     </v-col>
                     <!-- FIN DESCRIPCION EVENTO -->
+                    <!--RANGO EDAD-->
+                    <v-col cols="12">
+                      <h3>Seleccione el rango de edad:</h3>
+                      <v-range-slider
+                        color="purple darken-4"
+                      
+                        :tick-labels="edades"
+                        v-model="model.range_age"
+                        min="0"
+                        max="80"
+                        step="10"
+                        ticks="always"
+                        tick-size="1"
+                        >
+                        <template v-slot:thumb-label="props">
+                          <v-icon dark>
+                            {{ season(props.value) }}
+                          </v-icon>
+                        </template>
+                      </v-range-slider>
+                    </v-col>
+                    <!--FIN RANGO EDAD-->
+                    <!--FECHA DE INICIO-->
+                    <v-col cols="12" sm="6" md="6">
+                      <v-datetime-picker 
+                        v-model="model.datestart"
+                        color="purple darken-4"
+                        label="Fecha y hora de inicio"
+                        :min="
+                            new Date(
+                              Date.now() -
+                                new Date().getTimezoneOffset() * 60000
+                            )
+                              .toISOString()
+                              .substr(0, 10)
+                          " 
+                        max="2024-03-20"
+                        > 
+                        <template slot="dateIcon">
+                            <v-icon>mdi-calendar</v-icon>
+                            </template>
+                            <template slot="timeIcon">
+                              <v-icon>mdi-clock</v-icon>
+                        </template>
+                      </v-datetime-picker>
+                    </v-col>
+                    <!--FIN FECHA DE INICIO-->
+                    <!--FECHA DE FIN-->
+                    <v-col cols="12" sm="6" md="6">
+                      <v-datetime-picker 
+                            color="purple darken-4"
+                            label="Fecha y hora de fin" 
+                            v-model="model.dateend"
+                            :min="
+                              new Date(
+                                Date.now() -
+                                  new Date().getTimezoneOffset() * 60000
+                                )
+                                .toISOString()
+                                .substr(0, 10)
+                            " 
+                            max="2024-03-20"
+                            >    
+                            <template slot="dateIcon">
+                              <v-icon>mdi-calendar</v-icon>
+                            </template>
+                            <template slot="timeIcon">
+                              <v-icon>mdi-clock</v-icon>
+                            </template>
+                      </v-datetime-picker>
+                    </v-col>
+                    <!--FIN FECHA DE FIN-->
                     <!-- SELECCION DE CATEGORIA -->
                     <v-col cols="12" sm="6" md="6">
                       <v-select
-                        v-model="model.category"
-                        :hint="`${select.category}`"
-                        :items="items"
-                        item-text="category"
-                        item-value="category"
+                        v-model="model.category_id"
+                        :items="categories"
+                        item-text="name"
+                        item-value="id"
                         label="Seleccione categoría"
                         persistent-hint
-                        return-object
                         single-line
                       ></v-select>
                     </v-col>
@@ -60,101 +128,36 @@
                     <!-- VALOR DE INGRESO -->
                     <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="model.valor"
+                        v-model="model.price"
                         type="number"
                         label="Valor de ingreso"
                         required
                       ></v-text-field>
                     </v-col>
                     <!-- FIN VALOR DE INGRESO -->
-                    <!-- FECHA DE INICIO -->
-                    <v-col cols="12" sm="6" md="6">
-                      <v-menu
-                        ref="menu"
-                        v-model="menu"
-                        :rules="[rules.required]"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            v-model="model.fecha_inicio_evento"
-                            label="Fecha de inicio de evento"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="model.fecha_inicio_evento"
-                          :active-picker.sync="activePicker"
-                          :min="
-                            new Date(
-                              Date.now() -
-                                new Date().getTimezoneOffset() * 60000
-                            )
-                              .toISOString()
-                              .substr(0, 10)
-                          "
-                          max="2024-03-20"
-                          @change="save"
-                        ></v-date-picker>
-                      </v-menu>
-                    </v-col>
-                    <!-- FIN FECHA DE INICIO -->
-                    <!-- FECHA DE FIN -->
-                    <v-col cols="12" sm="6" md="6">
-                      <v-menu
-                        ref="menu2"
-                        v-model="menu2"
-                        :rules="[rules.required]"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            v-model="model.fecha_fin_evento"
-                            label="Fecha de fin de evento"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="model.fecha_fin_evento"
-                          :active-picker.sync="activePicker"
-                          :min="
-                            new Date(
-                              Date.now() -
-                                new Date().getTimezoneOffset() * 60000
-                            )
-                              .toISOString()
-                              .substr(0, 10)
-                          "
-                          max="2024-03-20"
-                          @change="save2"
-                        ></v-date-picker>
-                      </v-menu>
-                    </v-col>
-                    <!-- FIN FECHA DE FIN -->
                     <!-- AFORO -->
                     <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="model.aforo"
+                        v-model="model.max"
                         :rules="[rules.required]"
                         type="number"
                         label="Aforo máximo"
                         required
                       ></v-text-field>
                     </v-col>
+                     <v-col cols="12" sm="6" md="6">
+                      <v-text-field
+                        v-model="model.slots"
+                        :rules="[rules.required]"
+                        type="number"
+                        label="Espacios disponible"
+                        required
+                        
+                      ></v-text-field>
+                    </v-col>
                     <!-- FIN AFORO -->
                     <!-- IMAGEN -->
+                    <!--
                     <v-col cols="12" sm="6" md="6">
                       <v-file-input
                         v-model="model.imagen"
@@ -164,7 +167,7 @@
                         prepend-icon="mdi-camera"
                         label="Inserte imagen del evento"
                       ></v-file-input>
-                    </v-col>
+                    </v-col>-->
                     <!-- FIN IMAGEN -->
                     <!-- COORDENADAS -->
                     <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="25">
@@ -188,16 +191,16 @@
                             <br>
                             <v-col> 
                               <v-row>
-                                <h1>Coordenadas seleccionadas:</h1>
+                                <h1>Coordenadas seleccionadas: {{model}}</h1>
                                    <v-col cols="12" sm="6" md="6">
                                      <v-text-field
-                                      v-model="model.coordinates.latitud"
+                                      v-model="model.coordinates.latitude"
                                       solo
                                     ></v-text-field>
                                    </v-col>
                                     <v-col cols="12" sm="6" md="6">
                                      <v-text-field
-                                      v-model="model.coordinates.longitud"
+                                      v-model="model.coordinates.longitude"
                                       solo
                                     ></v-text-field>
                                    </v-col>
@@ -242,6 +245,8 @@
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import { Icon } from 'leaflet';
 import { postJSON } from "../../helpers/Request.js";
+import { getJSON } from "../../helpers/Request.js";
+
 
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
@@ -257,11 +262,16 @@ export default {
     LTileLayer,
     LMarker,
   },
+  mounted() {
+    this.getCategories();
+  },
   methods: {
     register() {
+      console.log("Entre")
       if (!this.$refs.registerForm.validate()) {
         this.alertMessage = "";
         this.showAlert = false;
+        console.log("Hola");
 
         return;
       }
@@ -272,24 +282,30 @@ export default {
           this.showAlert = true;
           this.alertMessage = res.message;
           this.loading = false;
+          console.log(res);
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err)
           this.loading = false;
           this.showAlert = true;
           this.alertMessage = "Ocurrió un error al hacer la petición";
         });
     },
+    getCategories (){
+        getJSON("/categories", this.params, false)
+          .then((res) => {
+            this.categories = res.data.items;
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
     reset() {
       this.$refs.form.reset();
     },
     resetValidation() {
       this.$refs.form.resetValidation();
-    },
-    save(date1) {
-      this.$refs.menu.save(date1);
-    },
-    save2(date2) {
-      this.$refs.menu2.save(date2);
     },
     openDialog() {
       if (this.showModal) {
@@ -299,12 +315,18 @@ export default {
     addMarker(event) {
       //this.markers.push(event.latlng);
       alert("Las coordenadas seleccionadas son" + event.latlng);
-      let latitud= event.latlng.lat;
-      let longitud= event.latlng.lng;
+      let latitude= event.latlng.lat;
+      let longitude= event.latlng.lng;
       console.log(event);
       this.model.coordinates= {
-        latitud, longitud 
+        latitude, longitude
       };
+    },
+    season (val) {
+        return this.icons[val]
+      },
+    setSlot(aforo){
+      return this.slots=this.max;
     },
   },
   data(){
@@ -328,15 +350,17 @@ export default {
         description: "",
         price: "",
         slots:"",
-        images: null,
+        max:"",
+        range_age:[0,1],
+        //images: null,
         datestart: "",
         dateend: "",
-        max: "",
-        category:"",
+        category_id:"",
         coordinates:{}
       },
       date1:null,
       date2:null,
+      categories:"",
       select: { category: "" },
       items: [
         { category: "Fiesta" },
@@ -345,7 +369,28 @@ export default {
         { category: "Musica" },
         { category: "Educacion" },
       ],
-
+      edades: [
+        '0',
+        '10',
+        '20',
+        '30',
+        '40',
+        '50',
+        '60',
+        '70',
+        '80',
+      ],
+      icons: [
+        'mdi-teddy-bear',
+        'mdi-football',
+        'mdi-football',
+        'mdi-football',
+        'mdi-football',
+        'mdi-human-male',
+        'mdi-human-male',
+        'mdi-human-male',
+        'mdi-human-male',
+      ],
       show1: false,
       showModal:false,
       rules: {

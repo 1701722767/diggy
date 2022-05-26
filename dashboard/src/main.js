@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import { AWS_CONFIG } from "./services/Auth.js";
 import Amplify from "aws-amplify";
 import { Hub } from "aws-amplify";
+import DatetimePicker from 'vuetify-datetime-picker';
 
 
 Amplify.configure(AWS_CONFIG.Auth);
@@ -88,6 +89,7 @@ onMessage(messaging, (payload) => {
 
 Vue.config.productionTip = false;
 Vue.use(vuetify);
+Vue.use(DatetimePicker);
 
 new Vue({
   vuetify,
