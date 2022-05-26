@@ -225,6 +225,7 @@
                         :disabled="!valid"
                         color="success"
                         @click="register"
+                        :loading="loading"
                         >Crear evento</v-btn
                       >
                     </v-col>
@@ -246,6 +247,7 @@ import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import { Icon } from 'leaflet';
 import { postJSON } from "../../helpers/Request.js";
 import { getJSON } from "../../helpers/Request.js";
+import { notification } from "@/helpers/Notifications.js";
 
 
 delete Icon.Default.prototype._getIconUrl;
@@ -267,28 +269,36 @@ export default {
   },
   methods: {
     register() {
-      console.log("Entre")
       if (!this.$refs.registerForm.validate()) {
-        this.alertMessage = "";
-        this.showAlert = false;
-        console.log("Hola");
-
         return;
       }
 
       this.loading = true;
       postJSON("/events", this.model, true)
         .then((res) => {
-          this.showAlert = true;
-          this.alertMessage = res.message;
           this.loading = false;
-          console.log(res);
+
+          if(res.error){
+            notification({
+            message: res.message,
+            icon: "mdi-alert-circle"
+          });
+          }else{
+            notification({
+            message: res.message,
+            icon: "mdi-check-bold"
+          });
+          } 
+
+          if (!res.error) {
+            this.$router.push({ path: "/directory/map" });
+          }
         })
         .catch((err) => {
-          console.log(err)
           this.loading = false;
-          this.showAlert = true;
-          this.alertMessage = "Ocurrió un error al hacer la petición";
+          notification({
+            message: "Ocurrió un error al hacer la petición",
+          });
         });
     },
     getCategories (){
