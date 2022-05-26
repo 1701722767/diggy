@@ -2,40 +2,35 @@ import json
 import os
 import boto3
 
+client = boto3.client("cognito-idp", region_name="us-east-1")
 
-"""
-Confirm new user by confirmation_code
-"""
+KEY_ERROR_MESSAGE = {
+    "username" : "Debe indicar su nombre de usuario",
+    "confirmation_code" : "Debe escribir el número de confirmación enviado a su celular"
+}
+
 def confirm_user(confirm_data_user):
   
     
-    client = boto3.client("cognito-idp", region_name="us-east-1")
-    
-    try :
-        response = client.confirm_sign_up(
-            ClientId=os.getenv("COGNITO_USER_CLIENT_ID"),
-            Username=confirm_data_user["username"],
-            ConfirmationCode=confirm_data_user["confirmation_code"]
-        )
+    response = client.confirm_sign_up(
+        ClientId=os.getenv("COGNITO_USER_CLIENT_ID"),
+        Username=confirm_data_user["username"],
+        ConfirmationCode=confirm_data_user["confirmation_code"]
+    )
         
-        return response
-    except Exception as e:
-        print(str(e))
-        raise e
-
+    return response
+   
 def validate(data):
     
     for name in data.keys():
         if not data[name]:
-            print(name," missing")
-            raise Exception(str(name))
+            raise KeyError(str(name))
 
 def lambda_handler(event, context):
 
     response = {
         "error" : False,
-        "message": "Todo bien",
-        "data": None
+        "message": "Tu cuenta ha sido confirmada satisfactoriamente",
     }
     
     try :
@@ -43,14 +38,17 @@ def lambda_handler(event, context):
             "username" : event['username'],
             "confirmation_code" : event['confirmation_code']
         }
-        validate(event)
-    except Exception as e:
+        validate(confirm_data_user)
+        confirm_user(confirm_data_user)
+        response['error'] = False
+    except KeyError as e:
+        print(e)
         response['error']  = True
-        response['message'] = str(e).replace("'","")  + " missing"
-        return response
+        response['message'] = KEY_ERROR_MESSAGE[e.args[0]]
+    except Exception as e:
+        print(e)
+        response['error']  = True
+        response['message'] = "Error interno del servidor"
         
-    data = confirm_user(confirm_data_user)
-    response['error'] = False
-    response['data'] = data
     
     return response

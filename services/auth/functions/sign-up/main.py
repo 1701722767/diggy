@@ -26,7 +26,6 @@ def sign_up(new_user):
             {"Name": "name","Value": new_user['name']},]
     )
     return response
-
 def validate(data):
     for name in data.keys():
         if not data[name]:
