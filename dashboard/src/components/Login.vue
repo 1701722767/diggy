@@ -1,14 +1,5 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px" min-width="360px">
-    <v-snackbar v-model="showAlert" color="deep-purple accent-4">
-      {{ alertMessage }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn color="grey" text v-bind="attrs" @click="showAlert = false">
-          Cerrar
-        </v-btn>
-      </template>
-    </v-snackbar>
     <div>
       <v-tabs
         show-arrows
@@ -54,7 +45,6 @@
                         Registrarse
                       </v-btn>
                     </v-col>
-                    <v-spacer></v-spacer>
                     <v-col class="d-flex" align-right>
                       <v-btn
                         x-large
@@ -81,6 +71,8 @@
 <script>
 import { logIn } from "../services/Auth.js";
 import Emitter from "../services/Emitter.js";
+import { notification } from "@/helpers/Notifications.js";
+
 export default {
   name: "Login",
   data: () => ({
@@ -98,15 +90,13 @@ export default {
       required: (value) => !!value || "Campo requerido",
       min: (v) => (v && v.length >= 8) || "Debe contener al menos 8 caracteres",
     },
-
-    alertMessage: "",
-    showAlert: false,
   }),
   methods: {
     doLoginRequest() {
       if (!this.$refs.loginForm.validate()) {
-        this.alertMessage = "Debe ingresar todos los campos";
-        this.showAlert = true;
+        notification({
+          message: "Debe ingresar todos los campos",
+        });
         return;
       }
 
@@ -114,25 +104,28 @@ export default {
 
       logIn(this.model.username, this.model.password)
         .then((res) => {
-          this.loading = false;
-          this.showAlert = true;
-          this.alertMessage = `Bienvenido ${res.attributes.name}`;
+          notification({
+            icon: "mdi-account",
+            message: `Bienvenido ${res.attributes.name}`,
+          });
 
           Emitter.emit("reload-navbar-items");
           setTimeout(() => {
-            this.$router.push({ path: "/" });
+            this.$router.push({ path: "/directory/map" });
           }, 2000);
         })
         .catch((err) => {
           this.loading = false;
           if (err.code == "NotAuthorizedException") {
-            this.showAlert = true;
-            this.alertMessage = "Credenciales incorrectas";
+            notification({
+              message: "Credenciales incorrectas",
+            });
             return;
           }
 
-          this.showAlert = true;
-          this.alertMessage = "Ocurrió un error al hacer la petición";
+          notification({
+            message: "Ocurrió un error al hacer la petición",
+          });
         });
     },
   },

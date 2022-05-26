@@ -4,7 +4,10 @@ import Login from './components/Login.vue';
 import Register from './components/Register.vue'
 import Confirm from './components/Confirm.vue'
 import EventRegister from './components/Events/Register.vue'
-import Map from './components/Map.vue'
+import Container from './components/Directory/Container.vue'
+import Map from './components/Directory/Map.vue'
+import EventsPublicList from './components/Directory/Events.vue'
+import PlacesPublicList from './components/Directory/Places.vue'
 import EventList from './components/Events/List.vue'
 
 
@@ -17,10 +20,24 @@ export default new Router({
 
     routes: [
         {
-            path: '/',
+            path: '/directory/',
             name: 'home',
-            name: 'dashboard',
-            component: Map,
+            name: 'Directory',
+            component: Container,
+            children: [
+              {
+                path: 'map',
+                component: Map
+              },
+              {
+                path: 'events',
+                component: EventsPublicList
+              },
+              {
+                path: 'places',
+                component: PlacesPublicList
+              }
+            ]
         },
         {
             path: '/login',
