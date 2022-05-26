@@ -15,7 +15,7 @@ KEY_ERROR_MESSAGE = {
     "range_age": "El rango de edad debe ser selecionado",
     "price": "Debe indicar el precio del evento",
     "slots": "Debe indicar los cupos disponibles actuales del evento",
-    "max": "Debe ingresar la cantidad maxima de personas al evento",
+    "max": "Debe ingresar la cantidad máxima de personas al evento",
     "datestart": "Debe ingresar la hora y fecha de inicio del evento",
     "dateend": "Debe ingresar la hora y fecha en la cual termina el evento"
 }
@@ -31,12 +31,12 @@ def create_id():
 def exists(category_id):
     
     select = "SPECIFIC_ATTRIBUTES"
-    projection_expression = "category_id"
+    projection_expression = "id"
     
     response = categories_table.query(
         Select = select,
         ProjectionExpression=projection_expression,
-        KeyConditionExpression=Key('category_id').eq(category_id)
+        KeyConditionExpression=Key('id').eq(category_id)
     )
     if response['Count'] == 0:
         raise KeyError("category_id")
@@ -51,7 +51,7 @@ def create_event(event):
         "category_id":event['category_id'],
         "name": event['name'],
         "coordinates": event['coordinates'],
-        "images": event['images'],
+        #"images": event['images'],
         "description": event['description'],
         "range_age": event['range_age'],
         "price": event['price'],
@@ -100,7 +100,7 @@ def lambda_handler(event, context):
             "user_id": user_id,
             "name": event_data['name'],
             "coordinates": event_data['coordinates'],
-            "images": event_data['images'],
+            #"images": event_data['images'],
             "description": event_data['description'],
             "range_age": event_data['range_age'],
             "price": event_data['price'],
