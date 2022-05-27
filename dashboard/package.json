@@ -17,7 +17,8 @@
     "vue-router": "^3.2.0",
     "vue2-leaflet": "2.5.2",
     "vuetify": "^2.6.0",
-    "vuetify-datetime-picker": "^2.1.1"
+    "vuetify-datetime-picker": "^2.1.1",
+    "moment": "^2.29.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

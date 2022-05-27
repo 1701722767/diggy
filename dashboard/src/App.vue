@@ -17,9 +17,25 @@ export default {
   name: "App",
 };
 </script>
+<style>
+html{
+  overflow: hidden !important;
+}
+</style>
 <style scoped>
-.container {
+html, body, #app{
+  height: 100%;
   padding: 0;
+  margin: 0;
+  overflow: hidden !important;
+}
+
+notification{
+  z-index: 1000000000 !important;
+}
+
+.v-main {
   height: 100vh;
+  padding-bottom: 49px !important;
 }
 </style>
