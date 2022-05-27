@@ -293,7 +293,7 @@ export default {
           .catch((err) => {
             console.log(err);
             notification({
-            message: err.message,
+            message: "Error al obtener las categorias",
           });
 
           });
