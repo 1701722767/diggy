@@ -49,10 +49,10 @@
 
         <v-card-text>
           <div>
-             <span style= "font-weight: bold"> Inicia </span> : {{ this.model.datestart}}
+             <span style= "font-weight: bold"> Inicia </span> : {{ formatDateAndTime(this.model.datestart)}}
           </div>
           <div>
-             <span style= "font-weight: bold"> Termina </span> : {{ this.model.dateend}}
+             <span style= "font-weight: bold"> Termina </span> : {{formatDateAndTime(this.model.dateend)}}
           </div>
           <div>
              <span style= "font-weight: bold"> Aforo Máximo </span> : {{ this.model.max}}
@@ -94,13 +94,13 @@
 
 <script>
 import { getJSON } from "../helpers/Request";
+import { formatDateAndTime } from "@/helpers/Date"
+import { notification } from "@/helpers/Notifications";
 
   export default {
 
     data: () => ({
         dialog : false,
-
-       
 
         model: {
         
@@ -134,8 +134,8 @@ import { getJSON } from "../helpers/Request";
     }),
 
     methods: {
+        formatDateAndTime,
         show(resource,params) {
-            this.dialog = true;
             this.getItem(resource,params);
         },
         hide(){
@@ -145,13 +145,24 @@ import { getJSON } from "../helpers/Request";
             /// not implemented yet
         },
         getItem(resource, params){
-
             getJSON(resource, params, false)
             .then((res) => {
-                this.model = res.data;
+                if (res.error) {
+                    notification({
+                        message: res.message,
+                    }); 
+                }
+                else{
+                    this.model = res.data;
+                    this.dialog = true;
+                    
+                }
             })
             .catch((err) => {
-                console.log(err);
+
+                notification({
+                    message: "Ocurrió un error al hacer la petición",
+                });
             });
         }
     }    
