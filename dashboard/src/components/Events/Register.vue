@@ -291,7 +291,6 @@ export default {
             this.categories = res.data.items;
           })
           .catch((err) => {
-            console.log(err);
             notification({
             message: "Error al obtener las categorias",
           });
