@@ -309,8 +309,7 @@ export default {
       }
     },
     addMarker(event) {
-      //this.markers.push(event.latlng);
-      alert("Las coordenadas seleccionadas son" + event.latlng);
+      this.markers.push(event.latlng);
       let latitude= event.latlng.lat;
       let longitude= event.latlng.lng;
       console.log(event);
