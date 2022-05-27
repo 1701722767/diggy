@@ -39,12 +39,12 @@
 </template>
 
 <script>
-import { getJSON } from "../../helpers/Request";
-import { notification } from "../../helpers/Notifications";
-import { formatDateAndTime } from "../../helpers/Date"
+import { getJSON } from "@/helpers/Request";
+import { notification } from "@/helpers/Notifications";
+import { formatDateAndTime } from "@/helpers/Date"
 
 export default {
-  name: "Posts",
+  name: "Events",
   data() {
     return {
       items:  [],
