@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="show" color="deep-purple accent-4">
+  <v-snackbar class="notification" v-model="show" color="deep-purple accent-4">
     <v-icon>{{ icon }}</v-icon>
     {{ message }}
 
@@ -33,3 +33,9 @@ export default {
   },
 };
 </script>
+<style>
+.notification{
+  z-index: 9999999 !important;
+}
+
+</style>
