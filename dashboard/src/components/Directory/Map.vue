@@ -14,7 +14,7 @@
 
 <script>
 import { latLng } from "leaflet";
-import { LMap, LTileLayer, LMarker, LPopup, LTooltip ,LControl } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker, LPopup} from "vue2-leaflet";
 import { getJSON } from "../../helpers/Request";
 import { Icon } from 'leaflet';
 import PopUp from '../PopUp';
@@ -36,8 +36,6 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
-    LTooltip,
-    LControl,
     PopUp
   },
   mounted() {
@@ -59,8 +57,6 @@ export default {
       center: [5.0569, -75.50356],
       markerLatLng: [5.0569, -75.50356],
 
-      selection: 1,
-
       params :{
           composite_key: "ew0KICAiZXZlbnRfaWQiIDogIkU0MzAzN2I5ZC0zNGMzLTQ1MmQtYTQzZC1lOGYwNjhjZDQ0N2YiICwNCiAgImNhdGVnb3J5X2lkIiA6ICJDMDEiDQp9"
       },
@@ -75,9 +71,4 @@ export default {
     },
   };
 </script>
-
-<style>
-
-
-</style>
 
