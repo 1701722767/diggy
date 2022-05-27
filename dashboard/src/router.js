@@ -9,6 +9,7 @@ import Map from './components/Directory/Map.vue'
 import EventsPublicList from './components/Directory/Events.vue'
 import PlacesPublicList from './components/Directory/Places.vue'
 import EventList from './components/Events/List.vue'
+import MyEvents from './views/myEvents.vue'
 
 
 
@@ -63,6 +64,11 @@ export default new Router({
           path: '/events-list',
           name: 'list',
           component: EventList
+        },
+        {
+          path: '/my-events',
+          name: 'list',
+          component: MyEvents
         },
     ],
 });

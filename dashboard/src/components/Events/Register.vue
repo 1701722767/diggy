@@ -277,7 +277,7 @@ export default {
           } 
 
           if (!res.error) {
-            this.$router.push({ path: "/directory/map" });
+            this.$router.push({ path: "/my-events" });
           }
         })
         .catch((err) => {
