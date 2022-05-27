@@ -28,27 +28,25 @@ categories_table = client.Table("categories")
 def create_id():    
     return "E" + str(uuid.uuid4())
 
-def exists(category_id):
+def put_category(category_id):
     
-    select = "SPECIFIC_ATTRIBUTES"
-    projection_expression = "id"
-    
-    response = categories_table.query(
-        Select = select,
-        ProjectionExpression=projection_expression,
-        KeyConditionExpression=Key('id').eq(category_id)
+    response = categories_table.get_item(
+        Key = { 'id' : category_id}
     )
-    if response['Count'] == 0:
-        raise KeyError("category_id")
+    if 'Item' not in response:
+        raise KeyError('category_id')
+        
+    return response['Item']['name']
     
 def create_event(event):
 
-    exists(event['category_id'])
+    category = put_category(event['category_id'])
     response = events_table.put_item(
         Item= {
         "event_id": create_id(),
         "user_id": event['user_id'],
         "category_id":event['category_id'],
+        "category":category,
         "name": event['name'],
         "coordinates": event['coordinates'],
         #"images": event['images'],
@@ -80,11 +78,14 @@ def lambda_handler(event, context):
     message = {
         "error" : False,
         "message": "El evento fue creado exitosamente",
+        
     }
     
     response = {
         'statusCode': 200,
-        'headers': {'Content-Type': 'application/json'},
+        'headers': {'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
         'body': json.dumps(message)
     }
     
@@ -122,7 +123,7 @@ def lambda_handler(event, context):
     except Exception as e:
         print(e)
         message['error']  = True
-        message['message'] = "Error interno en el servidor"
+        message['message'] = "Error interno del servidor"
         response['statusCode'] = 500
         
     

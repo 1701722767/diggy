@@ -2,17 +2,24 @@ import pytest
 import main
 
 class TableCategoryMock:
-    def query(self,Select,ProjectionExpression,KeyConditionExpression):
+    def get_item(self,Key):
 
         # FAKE IDS FROM THE DATABASE 
-        categories_id = ['C01']
+        categories = [{
+            'id' : 'C01',
+            'name': 'Música'
+        },
+        {
+            'id' : 'C02',
+            'name': 'Deportes'
+        }]
 
-        response = {
-            'Count' : 1
-        }
+        response = {}
 
-        if KeyConditionExpression._values[1] not in categories_id:
-            response['Count'] = 0
+        for cat in categories:
+            if(cat['id'] == Key['id']):
+                response['Item'] = cat
+
         return response
 
 class TableEventMock:
@@ -27,18 +34,7 @@ class TableEventMock:
         
         return response
 
-@pytest.mark.parametrize(
-    "input",[
-        ("C010"),
-        ("B120"),
-        ("24324342")
-    ]
-)
-def test_exists_category_failure(input):    
-    main.categories_table = TableCategoryMock()
 
-    with pytest.raises(KeyError) as e:
-        main.exists(input)
 
 
 #Each tuple is a test case

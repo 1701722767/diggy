@@ -27,11 +27,11 @@ class TableMock():
 @pytest.mark.parametrize(
     "input,expected",[
         ({ 'queryStringParameters' : None},
-        '{"error": false, "message": "Lugares listados correctamente", "data": {"Items": [{"name": "PollosMarios", "id": "P01"}, {"name": "PollosJC", "id": "P02"}], "start_key": "IlAwMSI="}}'
+        '{"error": false, "message": "Lugares listados correctamente", "data": {"items": [{"name": "PollosMarios", "id": "P01"}, {"name": "PollosJC", "id": "P02"}], "start_key": "IlAwMSI="}}'
         ),
         ({ 'queryStringParameters' : {
             'start_key': 'IlAwMSI='}},
-        '{"error": false, "message": "Lugares listados correctamente", "data": {"Items": [{"name": "PollosMarios", "id": "P01"}, {"name": "PollosJC", "id": "P02"}], "start_key": "IlAwMSI="}}'
+        '{"error": false, "message": "Lugares listados correctamente", "data": {"items": [{"name": "PollosMarios", "id": "P01"}, {"name": "PollosJC", "id": "P02"}], "start_key": "IlAwMSI="}}'
         ),
         ({ 'queryStringParameters' : {
             'start_key': 'P01'}},
