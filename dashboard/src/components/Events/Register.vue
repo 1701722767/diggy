@@ -256,6 +256,9 @@ export default {
   methods: {
     register() {
       if (!this.$refs.registerForm.validate()) {
+        notification({
+            message: "Complete todos los campos.",
+          });
         return;
       }
 
@@ -269,16 +272,11 @@ export default {
             message: res.message,
             icon: "mdi-alert-circle"
           });
-          }else{
-            notification({
-            message: res.message,
-            icon: "mdi-check-bold"
-          });
-          } 
-
-          if (!res.error) {
-            this.$router.push({ path: "/my-events" });
+            return;
           }
+
+          this.$router.push({ path: "/my-events" });
+
         })
         .catch((err) => {
           this.loading = false;
@@ -291,10 +289,13 @@ export default {
         getJSON("/categories", this.params, false)
           .then((res) => {
             this.categories = res.data.items;
-            console.log(res);
           })
           .catch((err) => {
             console.log(err);
+            notification({
+            message: err.message,
+          });
+
           });
       },
     reset() {
@@ -309,10 +310,8 @@ export default {
       }
     },
     addMarker(event) {
-      this.markers.push(event.latlng);
       let latitude= event.latlng.lat;
       let longitude= event.latlng.lng;
-      console.log(event);
       this.model.coordinates= {
         latitude, longitude
       };
@@ -334,8 +333,6 @@ export default {
        markers:[
         L.latLng(5.05690, -75.50356),
       ],
-      menu: false,
-      menu2:false,
       dialog: true,
       tab: 0,
       tabs: [{ name: "Registro de evento", icon: "mdi-calendar-edit" }],
@@ -353,17 +350,8 @@ export default {
         category_id:"",
         coordinates:{}
       },
-      date1:null,
-      date2:null,
       categories:"",
       select: { category: "" },
-      items: [
-        { category: "Fiesta" },
-        { category: "Deporte" },
-        { category: "Cultura" },
-        { category: "Musica" },
-        { category: "Educacion" },
-      ],
       edades: [
         '0',
         '10',
@@ -390,14 +378,13 @@ export default {
       showModal:false,
       rules: {
         required: (value) => !!value || "Campo requerido",
-        min: (v) => (v && v.length >= 8) || "Debe contener al menos 8 caracteres",
       }
     };
   }
 };
 </script>
 
-<style>
+<style scoped>
   * {
  margin: 0;
  padding: 0;

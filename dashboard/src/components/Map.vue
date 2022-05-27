@@ -40,8 +40,3 @@ export default {
 };
 </script>
 
-<style>
-  .leaflet-marker-icon {
-    background-image: url(https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png);
-}
-</style>
