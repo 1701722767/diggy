@@ -56,9 +56,6 @@ export default {
       zoom: 16,
       center: [5.0569, -75.50356],
       markerLatLng: [5.0569, -75.50356],
-
-     
-
     };
   },
 
