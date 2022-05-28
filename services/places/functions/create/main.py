@@ -41,13 +41,15 @@ class Request:
             if places_data.get(attribute["key"],"") == "":
                 raise WrongInputException(attribute["message"])
 
-    def existsCategory(self,category_id):
-        response = categories_table.query(
-            KeyConditionExpression=Key('category_id').eq(category_id)
+    def put_category(self,category_id):
+        response = categories_table.get_item(
+            Key = { 'id' : category_id}
         )
 
-        if response['Count'] == 0:
+        if 'Item' not in response:
             raise WrongInputException(f"No se encontró la categoría seleccionada")
+            
+        return response['Item']['name']
 
 
 
@@ -57,10 +59,11 @@ class Request:
         places_data = json.loads(event["body"], parse_float=Decimal)
         self.validateData(places_data)
 
-        self.existsCategory(places_data["category_id"])
+        category = self.put_category(places_data["category_id"])
 
         places_data["id"] = "PL" + str(uuid.uuid4())
         places_data["user_id"] = user_id
+        places_data["category"] = category
 
         response = places_table.put_item( Item=places_data )
 
@@ -84,14 +87,20 @@ def lambda_handler(event, context):
     try:
         return {
             'statusCode': 200,
-            'headers': {'Content-Type': 'application/json'},
+            'headers': {
+                'Content-Type': 'application/json', 
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': json.dumps(req.process(event))
         }
 
     except WrongInputException as err:
         return {
             'statusCode': 400,
-            'headers': {'Content-Type': 'application/json'},
+            'headers': {
+                'Content-Type': 'application/json',
+                 'Access-Control-Allow-Origin': '*'
+            },
             'body': json.dumps(
                 {
                     "error": True,
@@ -104,7 +113,10 @@ def lambda_handler(event, context):
         print(err)
         return {
             'statusCode': 500,
-            'headers': {'Content-Type': 'application/json'},
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
             'body': json.dumps(
                 {
                     "error": True,
