@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import { postJSON } from "../helpers/Request.js";
+import { postJSON } from "@/helpers/Request.js";
 import { notification } from "@/helpers/Notifications.js";
 
 export default {
@@ -245,5 +245,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

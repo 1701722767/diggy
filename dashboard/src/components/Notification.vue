@@ -33,3 +33,9 @@ export default {
   },
 };
 </script>
+<style>
+.notification{
+  z-index: 9999999 !important;
+}
+
+</style>
