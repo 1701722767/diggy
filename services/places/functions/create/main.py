@@ -41,7 +41,7 @@ class Request:
             if places_data.get(attribute["key"],"") == "":
                 raise WrongInputException(attribute["message"])
 
-    def put_category(self,category_id):
+    def get_category_name(self,category_id):
         response = categories_table.get_item(
             Key = { 'id' : category_id}
         )
@@ -59,11 +59,11 @@ class Request:
         places_data = json.loads(event["body"], parse_float=Decimal)
         self.validateData(places_data)
 
-        category = self.put_category(places_data["category_id"])
+        category = self.get_category_name(places_data["category_id"])
 
         places_data["id"] = "PL" + str(uuid.uuid4())
         places_data["user_id"] = user_id
-        places_data["category"] = category
+        places_data["category_name"] = category
 
         response = places_table.put_item( Item=places_data )
 
