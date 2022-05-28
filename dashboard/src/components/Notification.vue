@@ -1,6 +1,6 @@
 <template>
   <v-snackbar class="notification" v-model="show" color="deep-purple accent-4">
-    <v-icon>{{ icon }}</v-icon>
+    <v-icon v-show="this.icon !== undefined && this.icon !== ''">{{ icon }}</v-icon>
     {{ message }}
 
     <template v-slot:action="{ attrs }">
@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       show: false,
-      icon: '',
+      icon: "",
       message: "",
     };
   },
