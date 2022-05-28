@@ -41,7 +41,6 @@ export default {
 <style scoped>
 .container-directory {
   height: 100%;
-  
 }
 
 .content {

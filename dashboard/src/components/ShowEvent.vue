@@ -64,7 +64,7 @@
              <span style= "font-weight: bold" > Rango de edad </span> : {{this.model.range_age[0]}} - {{this.model.range_age[1]}} años
           </div>
           <div>
-             <span style= "font-weight: bold" > Categoría </span> : {{ this.model.category}} 
+             <span style= "font-weight: bold" > Categoría </span> : {{ this.model.category_name}} 
           </div>
         </v-card-text>
 
@@ -135,8 +135,8 @@ import { notification } from "@/helpers/Notifications";
 
     methods: {
         formatDateAndTime,
-        show(resource,params) {
-            this.getItem(resource,params);
+        show(params) {
+            this.getItem(params);
         },
         hide(){
             this.dialog = false
@@ -144,8 +144,8 @@ import { notification } from "@/helpers/Notifications";
         reserve(){
             /// not implemented yet
         },
-        getItem(resource, params){
-            getJSON(resource, params, false)
+        getItem(params){
+            getJSON("/events/find", params, false)
             .then((res) => {
                 if (res.error) {
                     notification({

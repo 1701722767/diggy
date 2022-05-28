@@ -1,12 +1,12 @@
 <template>
   <l-map style="z-index:0; height: 100%" :zoom="zoom" :center="center">
 
-    <PopUp ref="PopUp"></PopUp>
+    <ShowEvent ref="ShowEvent"></ShowEvent>
 
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <l-marker 
           :lat-lng="markerLatLng" 
-          @click="showPopUp" >
+          @click="showInfoEvent('E43037b9d-34c3-452d-a43d-e8f068cd447f','C01')" >
       </l-marker>
 
   </l-map>
@@ -17,7 +17,7 @@ import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker, LPopup} from "vue2-leaflet";
 import { getJSON } from "../../helpers/Request";
 import { Icon } from 'leaflet';
-import PopUp from '../PopUp';
+import ShowEvent from '../ShowEvent';
 
 // If the marker icons are missing the issue lies in a problem with webpack, 
 // a quick fix is to run this snippet:
@@ -36,7 +36,7 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
-    PopUp
+    ShowEvent
   },
   mounted() {
     // Get events
@@ -57,16 +57,21 @@ export default {
       center: [5.0569, -75.50356],
       markerLatLng: [5.0569, -75.50356],
 
-      params :{
-          composite_key: "ew0KICAiZXZlbnRfaWQiIDogIkU0MzAzN2I5ZC0zNGMzLTQ1MmQtYTQzZC1lOGYwNjhjZDQ0N2YiICwNCiAgImNhdGVnb3J5X2lkIiA6ICJDMDEiDQp9"
-      },
+     
 
     };
   },
 
   methods : {
-      showPopUp (){
-        this.$refs.PopUp.show('/find', this.params);
+      showInfoEvent (event_id,category_id){
+        const keys = btoa(
+          `{
+            "event_id" : "${event_id}" ,
+            "category_id" : "${category_id}"
+            }`);
+        
+        const param = { composite_key : keys };
+        this.$refs.ShowEvent.show(param);
       },
     },
   };
