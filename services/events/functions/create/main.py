@@ -123,7 +123,7 @@ def lambda_handler(event, context):
     except Exception as e:
         print(e)
         message['error']  = True
-        message['message'] = "Error interno en el servidor"
+        message['message'] = "Error interno del servidor"
         response['statusCode'] = 500
         
     

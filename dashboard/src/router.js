@@ -66,6 +66,10 @@ export default new Router({
           component: EventList
         },
         {
+          path: '*',
+          redirect: "/directory/map"
+        },
+        {
           path: '/my-events',
           name: 'MyEvents',
           component: MyEvents
