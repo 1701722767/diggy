@@ -15,7 +15,7 @@ KEY_ERROR_MESSAGE = {
     "range_age": "El rango de edad debe ser selecionado",
     "price": "Debe indicar el precio del evento",
     "slots": "Debe indicar los cupos disponibles actuales del evento",
-    "max": "Debe ingresar la cantidad maxima de personas al evento",
+    "max": "Debe ingresar la cantidad máxima de personas al evento",
     "datestart": "Debe ingresar la hora y fecha de inicio del evento",
     "dateend": "Debe ingresar la hora y fecha en la cual termina el evento"
 }
@@ -28,30 +28,28 @@ categories_table = client.Table("categories")
 def create_id():    
     return "E" + str(uuid.uuid4())
 
-def exists(category_id):
+def get_category_name(category_id):
     
-    select = "SPECIFIC_ATTRIBUTES"
-    projection_expression = "category_id"
-    
-    response = categories_table.query(
-        Select = select,
-        ProjectionExpression=projection_expression,
-        KeyConditionExpression=Key('category_id').eq(category_id)
+    response = categories_table.get_item(
+        Key = { 'id' : category_id}
     )
-    if response['Count'] == 0:
+    if 'Item' not in response:
         raise KeyError("category_id")
+        
+    return response['Item']['name']
     
 def create_event(event):
 
-    exists(event['category_id'])
+    category = get_category_name(event['category_id'])
     response = events_table.put_item(
         Item= {
         "event_id": create_id(),
         "user_id": event['user_id'],
         "category_id":event['category_id'],
+        "category_name":category,
         "name": event['name'],
         "coordinates": event['coordinates'],
-        "images": event['images'],
+        #"images": event['images'],
         "description": event['description'],
         "range_age": event['range_age'],
         "price": event['price'],
@@ -80,11 +78,14 @@ def lambda_handler(event, context):
     message = {
         "error" : False,
         "message": "El evento fue creado exitosamente",
+        
     }
     
     response = {
         'statusCode': 200,
-        'headers': {'Content-Type': 'application/json'},
+        'headers': {'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
         'body': json.dumps(message)
     }
     
@@ -100,7 +101,7 @@ def lambda_handler(event, context):
             "user_id": user_id,
             "name": event_data['name'],
             "coordinates": event_data['coordinates'],
-            "images": event_data['images'],
+            #"images": event_data['images'],
             "description": event_data['description'],
             "range_age": event_data['range_age'],
             "price": event_data['price'],
