@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import { logIn } from "../services/Auth.js";
-import Emitter from "../services/Emitter.js";
+import { logIn } from "@/services/Auth.js";
+import Emitter from "@/services/Emitter.js";
 import { notification } from "@/helpers/Notifications.js";
 
 export default {

@@ -4,10 +4,12 @@ import json
 
 def test_handler():
     class TableMock:
-        def query(self,KeyConditionExpression):
-            assert None != KeyConditionExpression, "validate query"
+        def get_item(self,Key):
+            assert None != Key, "validate query"
             return {
-                "Count": 1
+                "Item": {
+                    "name" : 'Música'
+                }
             }
         def put_item(self,Item):
             assert "Nuevo evento" == Item["name"], "validate Item"

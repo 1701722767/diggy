@@ -60,3 +60,12 @@ export const isAuthenticate = async () => {
     return false;
   }
 };
+
+export const confirm = (username, code) => {
+  try {
+    return Auth.confirmSignUp(username, code);
+  } catch (err) {
+    console.log(err);
+    throw "Ocurrió un error al confirmar registro";
+  }
+};

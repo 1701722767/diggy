@@ -28,25 +28,25 @@ categories_table = client.Table("categories")
 def create_id():    
     return "E" + str(uuid.uuid4())
 
-def put_category(category_id):
+def get_category_name(category_id):
     
     response = categories_table.get_item(
         Key = { 'id' : category_id}
     )
     if 'Item' not in response:
-        raise KeyError('category_id')
+        raise KeyError("category_id")
         
     return response['Item']['name']
     
 def create_event(event):
 
-    category = put_category(event['category_id'])
+    category = get_category_name(event['category_id'])
     response = events_table.put_item(
         Item= {
         "event_id": create_id(),
         "user_id": event['user_id'],
         "category_id":event['category_id'],
-        "category":category,
+        "category_name":category,
         "name": event['name'],
         "coordinates": event['coordinates'],
         #"images": event['images'],
