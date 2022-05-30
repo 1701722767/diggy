@@ -68,14 +68,6 @@
                         v-model="model.datestart"
                         color="purple darken-4"
                         label="Fecha y hora de inicio"
-                        :min="
-                            new Date(
-                              Date.now() -
-                                new Date().getTimezoneOffset() * 60000
-                            )
-                              .toISOString()
-                              .substr(0, 10)
-                          " 
                         max="2024-03-20"
                         > 
                         <template slot="dateIcon">
@@ -93,14 +85,6 @@
                             color="purple darken-4"
                             label="Fecha y hora de fin" 
                             v-model="model.dateend"
-                            :min="
-                              new Date(
-                                Date.now() -
-                                  new Date().getTimezoneOffset() * 60000
-                                )
-                                .toISOString()
-                                .substr(0, 10)
-                            " 
                             max="2024-03-20"
                             >    
                             <template slot="dateIcon">
@@ -236,13 +220,6 @@ import { getJSON } from "../../helpers/Request.js";
 import { notification } from "@/helpers/Notifications.js";
 
 
-delete Icon.Default.prototype._getIconUrl;
-Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-});
-
 export default {
   name: "EventRegister",
   components:{
@@ -263,6 +240,10 @@ export default {
       }
 
       this.loading = true;
+
+      this.model.datestart = this.transformDate(this.model.datestart);
+      this.model.dateend = this.transformDate(this.model.dateend);
+
       postJSON("/events", this.model, true)
         .then((res) => {
           this.loading = false;
@@ -285,6 +266,17 @@ export default {
           });
         });
     },
+
+    transformDate(date){
+      date = new Date(date);
+      const hour = date.toLocaleTimeString();
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+
+      return `${year}-${month}-${day} ${hour}`;
+    },
+
     getCategories (){
         getJSON("/categories", this.params, false)
           .then((res) => {

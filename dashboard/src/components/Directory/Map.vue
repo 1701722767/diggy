@@ -50,6 +50,7 @@ import { LMap, LTileLayer, LMarker , LTooltip, LIcon} from "vue2-leaflet";
 import { getJSON } from "../../helpers/Request";
 import { Icon } from 'leaflet';
 import ShowEvent from '../ShowEvent';
+import { notification } from "@/helpers/Notifications";
 
 export default {
   name: "Map",
@@ -65,13 +66,19 @@ export default {
     // Get events
     getJSON("/events", null, false)
       .then((res) => {
-        this.events = res.data.items;
-        console.log(this.events)
-      })
-      .catch((err) => {
-        
+        if(res.error){
+          notification({
+            message: res.message,
+          });
+        }
+        else{
+          this.events = res.data.items;
+        } 
+    }).catch((err) => {
+         notification({
+            message: "Ocurrió un error al hacer la petición",
+          }); 
       });
-
      
   },
   data() {
@@ -111,9 +118,8 @@ export default {
         this.map.locate();
       },
 
-      onLocationFound(l) {
-        console.log(l);
-        this.location = l;
+      onLocationFound(currentLocation) {
+        this.location = currentLocation;
       },
 
     },
