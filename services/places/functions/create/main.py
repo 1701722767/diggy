@@ -1,33 +1,22 @@
 import boto3
 import json
 import uuid
-from boto3.dynamodb.conditions import Key
 from decimal import Decimal
 
 PAGE_SIZE = 15
 AWS_REGION = "us-east-1"
-REQUIRED_ATTRIBUTES = [
-    {
-        "key": "category_id",
-        "message" : "Debe seleccionar una categoría"
-    },
-    {
-        "key": "name",
-        "message" : "Debe ingresar un nombre para el lugar"
-    },
-    {
-        "key": "coordinates",
-        "message" : "Debe ingresar la ubicación del lugar"
-    }
-]
+REQUIRED_ATTRIBUTES = {
+    "category_id" : "Debe seleccionar una categoría",
+    "name" : "Debe ingresar un nombre para el lugar",
+    "coordinates" : "Debe ingresar una ubicaión"
+}
+  
 
 dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
 places_table = dynamodb.Table('places')
 categories_table = dynamodb.Table('categories')
 
-class WrongInputException(Exception):
-    """Base class for other exceptions"""
-    pass
+
 
 """
 Request is the class used for handling the request
@@ -37,9 +26,9 @@ class Request:
         self.err = None
 
     def validateData(self,places_data):
-        for attribute in REQUIRED_ATTRIBUTES:
-            if places_data.get(attribute["key"],"") == "":
-                raise WrongInputException(attribute["message"])
+        for attribute in REQUIRED_ATTRIBUTES.keys():
+            if attribute not in places_data or not places_data[attribute]:
+                raise KeyError(attribute)
 
     def get_category_name(self,category_id):
         response = categories_table.get_item(
@@ -94,7 +83,7 @@ def lambda_handler(event, context):
             'body': json.dumps(req.process(event))
         }
 
-    except WrongInputException as err:
+    except KeyError as err:
         return {
             'statusCode': 400,
             'headers': {
@@ -104,7 +93,7 @@ def lambda_handler(event, context):
             'body': json.dumps(
                 {
                     "error": True,
-                    "message": str(err),
+                    "message": REQUIRED_ATTRIBUTES[err.args[0]],
                 }
             )
         }
