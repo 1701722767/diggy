@@ -34,7 +34,7 @@
                     <v-col cols="12">
                       <v-textarea
                         :rules="[rules.required]"
-                        label="Descripción del lugar"
+                        label="Descripción del evento"
                         v-model="model.description"
                       ></v-textarea>
                     </v-col>

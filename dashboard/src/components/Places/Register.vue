@@ -95,7 +95,7 @@
                       </transition>
                       <transition name="slide" appear>
                         <div class="modal" v-if="showModal">
-                          <h1>Seleccione la ubicación del evento</h1>
+                          <h1>Seleccione la ubicación del lugar</h1>
                           <br />
                           <l-map
                             style="height: 250px"
@@ -187,6 +187,9 @@ export default {
       postJSON("/places", this.model, true)
         .then((res) => {
           this.loading = false;
+          notification({
+            message: "Evento creado con éxito",
+          });
 
           if (res.error) {
             notification({
