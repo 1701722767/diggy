@@ -187,9 +187,6 @@ export default {
       postJSON("/places", this.model, true)
         .then((res) => {
           this.loading = false;
-          notification({
-            message: "Evento creado con éxito",
-          });
 
           if (res.error) {
             notification({
@@ -197,7 +194,9 @@ export default {
               icon: "mdi-alert-circle",
             });
             return;
-          }
+          } notification({
+            message: "Evento creado con éxito",
+          });
 
           this.$router.push({ path: "/my-places" });
         })
