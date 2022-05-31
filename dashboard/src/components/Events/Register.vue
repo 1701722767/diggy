@@ -32,12 +32,11 @@
                     <!-- FIN NOMBRE EVENTO -->
                     <!-- DESCRIPCION EVENTO  -->
                     <v-col cols="12">
-                      <v-text-field
-                        v-model="model.description"
+                      <v-textarea
                         :rules="[rules.required]"
-                        label="Descripción del evento"
-                        required
-                      ></v-text-field>
+                        label="Descripción del lugar"
+                        v-model="model.description"
+                      ></v-textarea>
                     </v-col>
                     <!-- FIN DESCRIPCION EVENTO -->
                     <!--RANGO EDAD-->
