@@ -215,9 +215,9 @@
 <script>
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import { Icon } from 'leaflet';
-import { postJSON } from "../../helpers/Request.js";
-import { getJSON } from "../../helpers/Request.js";
+import { postJSON , getJSON } from "../../helpers/Request.js";
 import { notification } from "@/helpers/Notifications.js";
+import { transformDate } from "@/helpers/DateString.js";
 
 
 export default {
@@ -241,8 +241,8 @@ export default {
 
       this.loading = true;
 
-      this.model.datestart = this.transformDate(this.model.datestart);
-      this.model.dateend = this.transformDate(this.model.dateend);
+      this.model.datestart = transformDate(this.model.datestart);
+      this.model.dateend = transformDate(this.model.dateend);
 
       postJSON("/events", this.model, true)
         .then((res) => {
@@ -265,16 +265,6 @@ export default {
             message: "Ocurrió un error al hacer la petición",
           });
         });
-    },
-
-    transformDate(date){
-      date = new Date(date);
-      const hour = date.toLocaleTimeString();
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-
-      return `${year}-${month}-${day} ${hour}`;
     },
 
     getCategories (){
