@@ -259,7 +259,7 @@ export default {
         description: "",
         category_id: "",
         max: "",
-        calificacion:0.0,
+        score:0.0,
         coordinates: {},
       },
       categories: "",
