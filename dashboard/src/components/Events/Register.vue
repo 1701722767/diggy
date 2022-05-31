@@ -217,7 +217,7 @@ import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import { Icon } from 'leaflet';
 import { postJSON , getJSON } from "../../helpers/Request.js";
 import { notification } from "@/helpers/Notifications.js";
-import { transformDate } from "@/helpers/DateString.js";
+import { transformDate } from "@/helpers/Date.js";
 
 
 export default {
