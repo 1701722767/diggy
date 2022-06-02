@@ -64,7 +64,6 @@
 
 <script>
 import { confirm } from "@/services/Auth.js";
-import Emitter from "@/services/Emitter.js";
 import { notification } from "@/helpers/Notifications.js";
 
 export default {
