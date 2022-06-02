@@ -4,7 +4,6 @@
       <router-view></router-view>
     </div>
     <v-bottom-navigation color="deep-purple accent-4">
-
       <v-btn :to="{ path: '/directory/map' }">
         <span>Mapa</span>
 
@@ -52,5 +51,12 @@ export default {
 .v-bottom-navigation {
   bottom: 0;
   position: absolute;
+}
+
+@media only screen and (max-width: 900px) {
+  .content {
+    background-color: red;
+    padding-bottom: 156px;
+  }
 }
 </style>
