@@ -32,7 +32,7 @@
               ></v-rating>
 
               <div class="grey--text ms-4">
-                {{this.model.score}} ({{this.model.comments}})
+                {{this.model.score}} ({{this.model.total_comments}})
               </div>
 
             </v-row>
@@ -91,7 +91,7 @@ import { notification } from "@/helpers/Notifications";
             description: "",
             max: "",
             score: 0,
-            comments: 0
+            total_comments: 0
 
         },
 
