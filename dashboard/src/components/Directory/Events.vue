@@ -119,7 +119,7 @@ export default {
 
 .event-container {
   width: 100%;
-  height: 100%;
+  height: 100vh;
 }
 
 .icon-not-found-image{
