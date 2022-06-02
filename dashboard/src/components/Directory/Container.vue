@@ -40,13 +40,14 @@ export default {
 
 <style scoped>
 .container-directory {
-  height: 100%;
+  height: 100vh;
 }
 
 .content {
   height: 100vh;
-  max-height: 100%;
+  max-height: 100vh;
   overflow: auto;
+  padding-bottom: 106px;
 }
 
 .v-bottom-navigation {
