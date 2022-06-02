@@ -55,8 +55,11 @@ export default {
 
 @media only screen and (max-width: 900px) {
   .content {
-    background-color: red;
     padding-bottom: 156px;
+  }
+
+  .v-bottom-navigation {
+    bottom: 51px !important;
   }
 }
 </style>

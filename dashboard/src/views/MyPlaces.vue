@@ -11,7 +11,9 @@
 <script>
 export default {
   name: "MyPlaces",
-  data: {},
+  data: function() {
+return {};
+},
   methods: {},
 };
 </script>
