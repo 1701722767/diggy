@@ -23,7 +23,7 @@
               class="mx-0"
             >
               <v-rating
-                :value="4.5"
+                :value="Number(this.model.score)"
                 color="amber"
                 dense
                 half-increments
@@ -32,7 +32,7 @@
               ></v-rating>
 
               <div class="grey--text ms-4">
-                4.5 (413)
+                {{this.model.score}} ({{this.model.total_comments}})
               </div>
             </v-row>
 
@@ -105,7 +105,7 @@ import { notification } from "@/helpers/Notifications";
         model: {
         
             event_id : "",
-            category: "",
+            category_name: "",
             name: "",
             description: "",
             dateend: "",
@@ -115,6 +115,8 @@ import { notification } from "@/helpers/Notifications";
             price: "",
             range_age: "",
             slots: "",
+            score: "",
+            total_comments: ""
         },
 
         items: [

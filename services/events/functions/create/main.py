@@ -1,7 +1,6 @@
 import json
 import boto3
 from decimal import Decimal
-from boto3.dynamodb.conditions import Key, Attr
 import uuid
 
 AWS_REGION = "us-east-1"
@@ -56,7 +55,9 @@ def create_event(event):
         "slots": event['slots'],
         "max": event['max'],
         "datestart": event['datestart'],
-        "dateend": event['dateend']
+        "dateend": event['dateend'],
+        "score" : 0.0,
+        "total_comments" : 0
     })
     validate_dynamodb_response(response)
         
@@ -123,7 +124,7 @@ def lambda_handler(event, context):
     except Exception as e:
         print(e)
         message['error']  = True
-        message['message'] = "Error interno del servidor"
+        message['message'] = "Error interno en el servidor"
         response['statusCode'] = 500
         
     
