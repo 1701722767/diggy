@@ -1,19 +1,25 @@
 import json
+from json import JSONDecodeError
 import boto3
 from decimal import Decimal
+import base64
 
 AWS_REGION = "us-east-1"
 KEY_ERROR_MESSAGE = {
-    "event_id" : "No se indicó el evento al cual se comentará",
-    "category_id" : "No se indicó la categoría",
+    "composite_key" : "No se indicó el evento ni la categoría",
     "user_id" : "No se indicó el usuario que escribió el comentario",
     "full_name": "El nombre es obligatorio",
     "comment": "El comentario no puede estar vacío",
-    "score" : "Es obligatorio indicar el puntaje"
+    "score" : "Es obligatorio indicar el puntaje",
 }
 
 client = boto3.resource('dynamodb',region_name=AWS_REGION)
 events_table = client.Table("events")
+
+def decodeBase64ToJson(base64Data):
+    base64_bytes = base64Data.encode('ascii')
+    message_bytes = base64.b64decode(base64_bytes)
+    return json.loads(message_bytes.decode('ascii'))
 
 def put_comment(comment_info):
     
@@ -26,14 +32,13 @@ def put_comment(comment_info):
         "score": comment_info['score']
     }
     
-    key = {
-            "event_id" : comment_info['event_id'],
-            "category_id" : comment_info['category_id']
-         }
+    
+    key = comment_info['composite_key']
+    
     
     old_score, total = get_score_comments(key)
     
-    new_score = compute_score(old_score,total + 1 ,comment_info['score'])
+    new_score = round(compute_score(old_score,total + 1 ,comment_info['score']),1)
     
    
     response = events_table.update_item(
@@ -95,12 +100,13 @@ def lambda_handler(event, context):
     }
     
     try:
-        
-        user_id = event["requestContext"]["authorizer"]["claims"]["sub"]
-        event_data = json.loads(event["body"], parse_float=Decimal)
+        composite_key = event['queryStringParameters']['composite_key']
+        user_id = event['requestContext']['authorizer']['claims']['sub']
+        event_data = json.loads(event['body'], parse_float=Decimal)
         event_data['user_id'] = user_id
-        
+        event_data['composite_key'] = decodeBase64ToJson(composite_key)
         put_comment(event_data)
+        
 
     except KeyError as e:
         print(e)
@@ -108,6 +114,18 @@ def lambda_handler(event, context):
         message['message'] = KEY_ERROR_MESSAGE[e.args[0]]
         response['statusCode'] = 400
         
+    except JSONDecodeError as e:
+        print(e)
+        message['error']  = True
+        message['message'] = KEY_ERROR_MESSAGE['composite_key']
+        response['statusCode'] = 400
+    
+    except TypeError as e:
+        print(e)
+        message['error']  = True
+        message['message'] = KEY_ERROR_MESSAGE['composite_key']
+        response['statusCode'] = 400
+    
     except Exception as e:
         print(e)
         message['error']  = True

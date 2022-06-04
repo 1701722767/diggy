@@ -52,40 +52,34 @@ class TableEventMock:
 @pytest.mark.parametrize(
     "input,expected" ,[
         (
-             {   "requestContext": { 
+            {   "requestContext": { 
                     "authorizer" : {
                         "claims": {
                            "sub" : "abc"
                         }
                     } 
                 },
-               "body" : '{"event_id" : "E5b25ec9c-b545-421f-97d8-028aa27de16e","category_id" : "C01","full_name": "Nicolas Cardona","comment": "Me gustó","score": 3.2}'
+               "body" : '{"full_name": "Nicolas Cardona","comment": "Me gustó","score": 3.2}',
+               "queryStringParameters" : {
+                   "composite_key" : "ew0KICJldmVudF9pZCI6ICJFNWIyNWVjOWMtYjU0NS00MjFmLTk3ZDgtMDI4YWEyN2RlMTZlIiwNCiAiY2F0ZWdvcnlfaWQiOiAiQzAxIg0KfQ=="
+               }
            },
            '{"error": false, "message": "El comentario fue guardado exitosamente"}'
         ),
         (
-             {   "requestContext": { 
+            {   "requestContext": { 
                     "authorizer" : {
                         "claims": {
                            "sub" : "abc"
                         }
                     } 
                 },
-               "body" : '{"event_id" : "E1","category_id" : "C01","full_name": "Nicolas Cardona","comment": "Me gustó","score": 3.2}'
+               "body" : '{"full_name": "Nicolas Cardona","comment": "Me gustó","score": 3.2}',
+               "queryStringParameters" : {
+                   "composite_key" : ""
+               }
            },
-           '{"error": true, "message": "El evento no existe"}'
-        ),
-        (
-             {   "requestContext": { 
-                    "authorizer" : {
-                        "claims": {
-                           "sub" : "abc"
-                        }
-                    } 
-                },
-               "body" : '{"event_id" : "E1","category_id" : "C01","full_name": "Nicolas Cardona","comment": "Me gustó"}'
-           },
-           '{"error": true, "message": "Es obligatorio indicar el puntaje"}'
+           '{"error": true, "message": "No se indicó el evento ni la categoría"}'
         )
     ]
 )
