@@ -100,7 +100,7 @@ def lambda_handler(event, context):
 
     message = {
         'error': False,
-        'message': 'Eventos listados',
+        'message': 'Eventos listados correctamente',
         'data': None
     }
 

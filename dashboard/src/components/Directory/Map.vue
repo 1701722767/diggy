@@ -30,7 +30,7 @@
 
     <l-marker
       v-for="(place, i) in places"
-      :key="place.id"
+      :key="i"
       :lat-lng="[place.coordinates.latitude, place.coordinates.longitude]"
       @click="showInfoPlace(place.id, place.category_id)"
     >
@@ -61,7 +61,7 @@
 import { LMap, LTileLayer, LMarker, LTooltip, LIcon } from "vue2-leaflet";
 import { getJSON } from "../../helpers/Request";
 import ShowEvent from "../Events/Show";
-import ShowPlace from "../Events/Show";
+import ShowPlace from "../Places/Show";
 import { notification } from "@/helpers/Notifications";
 
 export default {

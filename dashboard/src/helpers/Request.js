@@ -65,7 +65,6 @@ const getHeaders = async (needToken) => {
   }
 
   let token = await getToken();
-  console.log("token:", token);
   if (token == null) {
     throw "No se pudo obtener el token";
   }

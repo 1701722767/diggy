@@ -9,7 +9,7 @@ PAGE_SIZE = 5
 AWS_REGION = "us-east-1"
 
 dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION)
-placessTable = dynamodb.Table('places')
+placesTable = dynamodb.Table('places')
 
 
 class CustomError(Exception):
@@ -62,16 +62,16 @@ class Request:
                     "category_id").eq(body["category_id"])
 
         if exclusiveStartkey == None and filterExpression == None:
-            return self.createResponse(placessTable.scan(Limit=PAGE_SIZE))
+            return self.createResponse(placesTable.scan(Limit=PAGE_SIZE))
 
         if exclusiveStartkey == None:
-            return self.createResponse(placessTable.scan(Limit=PAGE_SIZE, FilterExpression=filterExpression))
+            return self.createResponse(placesTable.scan(Limit=PAGE_SIZE, FilterExpression=filterExpression))
 
         if filterExpression == None:
-            return self.createResponse(placessTable.scan(Limit=PAGE_SIZE, ExclusiveStartKey=exclusiveStartkey))
+            return self.createResponse(placesTable.scan(Limit=PAGE_SIZE, ExclusiveStartKey=exclusiveStartkey))
 
         return self.createResponse(
-            placessTable.scan(
+            placesTable.scan(
                 ExclusiveStartKey=exclusiveStartkey,
                 FilterExpression=filterExpression,
                 Limit=PAGE_SIZE
@@ -100,7 +100,7 @@ def lambda_handler(event, context):
 
     message = {
         'error': False,
-        'message': 'Lugares listados',
+        'message': 'Lugares listados correctamente',
         'data': None
     }
 

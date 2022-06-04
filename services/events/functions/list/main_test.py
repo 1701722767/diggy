@@ -20,30 +20,20 @@ def test_handler():
 
     response = main.lambda_handler({
         "queryStringParameters": {
+            "type": "own",
+            "user_id": "user_id",
+            "category_id": "C01"
+        }
+    },{})
+    assert '{"error": false, "message": "Eventos listados correctamente", "data": {"items": {"category_id": "category_id", "event_id": "event_id"}}}' == response["body"], "Validate response 1"
+
+    response = main.lambda_handler({
+         "queryStringParameters": {
             "type": "default",
             "category_id": "C01"
         }
     },{})
-    assert '{"error": false, "message": "Eventos listados correctamente", "data": {"items": {"category_id": "category_id", "event_id": "event_id"}}}' == response["body"], "Validate response 1"
-
-    response = main.lambda_handler({},{})
     assert '{"error": false, "message": "Eventos listados correctamente", "data": {"items": {"category_id": "category_id", "event_id": "event_id"}}}' == response["body"], "Validate response 2"
-
-def test_handler_list_own():
-    main.eventsTable = TableMock()
-    main.dynamodb = DynamoMock()
-
-    response = main.lambda_handler({
-        "queryStringParameters": {
-            "type": "own",
-            "category_id": "C01"
-        }
-    },{})
-    assert '{"error": false, "message": "Eventos listados correctamente", "data": {"items": {"category_id": "category_id", "event_id": "event_id"}}}' == response["body"], "Validate response 1"
-
-    response = main.lambda_handler({},{})
-    assert '{"error": false, "message": "Eventos listados correctamente", "data": {"items": {"category_id": "category_id", "event_id": "event_id"}}}' == response["body"], "Validate response 2"
-
 
 def test_enconde_decode():
 

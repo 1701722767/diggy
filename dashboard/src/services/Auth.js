@@ -37,7 +37,6 @@ export const logOut = () => {
 export const getToken = async () => {
   let token = await Auth.currentSession()
     .then((res) => {
-      console.log(res);
       let accessToken = res.getIdToken();
       return accessToken.getJwtToken();
     })
