@@ -49,10 +49,10 @@
 
         <v-card-text>
           <div>
-             <span style= "font-weight: bold"> Inicia </span> : {{ formatDateAndTime(this.model.datestart)}}
+             <span style= "font-weight: bold"> Inicia </span> : {{ formatDateAndTime(this.model.date_start)}}
           </div>
           <div>
-             <span style= "font-weight: bold"> Termina </span> : {{formatDateAndTime(this.model.dateend)}}
+             <span style= "font-weight: bold"> Termina </span> : {{formatDateAndTime(this.model.date_end)}}
           </div>
           <div>
              <span style= "font-weight: bold"> Aforo Máximo </span> : {{ this.model.max}}
@@ -108,8 +108,8 @@ import { notification } from "@/helpers/Notifications";
             category_name: "",
             name: "",
             description: "",
-            dateend: "",
-            datestart: "",
+            date_end: "",
+            date_start: "",
             max: "",
             name: "",
             price: "",

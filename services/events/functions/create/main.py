@@ -54,8 +54,8 @@ def create_event(event):
         "price": event['price'],
         "slots": event['slots'],
         "max": event['max'],
-        "datestart": event['datestart'],
-        "dateend": event['dateend'],
+        "date_start": event['date_start'],
+        "date_end": event['date_end'],
         "score" : 0.0,
         "total_comments" : 0
     })
@@ -108,8 +108,8 @@ def lambda_handler(event, context):
             "price": event_data['price'],
             "slots": event_data['slots'],
             "max": event_data['max'],
-            "datestart": event_data['datestart'],
-            "dateend": event_data['dateend']
+            "date_start": event_data['date_start'],
+            "date_end": event_data['date_end']
         }
         validate(new_event)
         create_event(new_event)
