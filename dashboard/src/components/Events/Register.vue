@@ -64,7 +64,7 @@
                     <!--FECHA DE INICIO-->
                     <v-col cols="12" sm="6" md="6">
                       <v-datetime-picker 
-                        v-model="model.datestart"
+                        v-model="model.date_start"
                         color="purple darken-4"
                         label="Fecha y hora de inicio"
                         max="2024-03-20"
@@ -83,7 +83,7 @@
                       <v-datetime-picker 
                             color="purple darken-4"
                             label="Fecha y hora de fin" 
-                            v-model="model.dateend"
+                            v-model="model.date_end"
                             max="2024-03-20"
                             >    
                             <template slot="dateIcon">
@@ -240,8 +240,8 @@ export default {
 
       this.loading = true;
 
-      this.model.datestart = transformDate(this.model.datestart);
-      this.model.dateend = transformDate(this.model.dateend);
+      this.model.date_start = transformDate(this.model.date_start);
+      this.model.date_end = transformDate(this.model.date_end);
 
       postJSON("/events", this.model, true)
         .then((res) => {
@@ -325,8 +325,8 @@ export default {
         max:"",
         range_age:[0,1],
         //images: null,
-        datestart: "",
-        dateend: "",
+        date_start: "",
+        date_end: "",
         category_id:"",
         coordinates:{}
       },

@@ -23,7 +23,7 @@
               class="mx-0"
             >
               <v-rating
-                :value="4.5"
+                :value="Number(this.model.score)"
                 color="amber"
                 dense
                 half-increments
@@ -32,7 +32,7 @@
               ></v-rating>
 
               <div class="grey--text ms-4">
-                4.5 (413)
+                {{this.model.score}} ({{this.model.total_comments}})
               </div>
             </v-row>
 
@@ -49,10 +49,10 @@
 
         <v-card-text>
           <div>
-             <span style= "font-weight: bold"> Inicia </span> : {{ formatDateAndTime(this.model.datestart)}}
+             <span style= "font-weight: bold"> Inicia </span> : {{ formatDateAndTime(this.model.date_start)}}
           </div>
           <div>
-             <span style= "font-weight: bold"> Termina </span> : {{formatDateAndTime(this.model.dateend)}}
+             <span style= "font-weight: bold"> Termina </span> : {{formatDateAndTime(this.model.date_end)}}
           </div>
           <div>
              <span style= "font-weight: bold"> Aforo Máximo </span> : {{ this.model.max}}
@@ -105,16 +105,18 @@ import { notification } from "@/helpers/Notifications";
         model: {
         
             event_id : "",
-            category: "",
+            category_name: "",
             name: "",
             description: "",
-            dateend: "",
-            datestart: "",
+            date_end: "",
+            date_start: "",
             max: "",
             name: "",
             price: "",
             range_age: "",
             slots: "",
+            score: "",
+            total_comments: ""
         },
 
         items: [

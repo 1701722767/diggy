@@ -48,7 +48,7 @@ class TableEventMock:
                         }
                     } 
                 },
-               "body" : '{ "category_id": "C01", "name": "Noche acústica","coordinates": {"latitude": 5.074297 , "longitude": -75.491561 },"images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"datestart": "05-12-2022 21:00:00","dateend": "05-12-2022 02:00:00"}'
+               "body" : '{ "category_id": "C01", "name": "Noche acústica","coordinates": {"latitude": 5.074297 , "longitude": -75.491561 },"images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"date_start": "05-12-2022 21:00:00","date_end": "05-12-2022 02:00:00"}'
            },
            '{"error": false, "message": "El evento fue creado exitosamente"}'
         ),
@@ -60,7 +60,7 @@ class TableEventMock:
                         }
                     } 
                 },
-               "body" : '{ "category_id": "C10", "name": "Noche acústica","coordinates": {"latitude": 5.074297 , "longitude": -75.491561 },"images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"datestart": "05-12-2022 21:00:00","dateend": "05-12-2022 02:00:00"}'
+               "body" : '{ "category_id": "C10", "name": "Noche acústica","coordinates": {"latitude": 5.074297 , "longitude": -75.491561 },"images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"date_start": "05-12-2022 21:00:00","date_end": "05-12-2022 02:00:00"}'
            },
            '{"error": true, "message": "La categoría no existe o no fue seleccionada"}'
         ),
@@ -72,7 +72,7 @@ class TableEventMock:
                         }
                     } 
                 },
-               "body" : '{ "category_id": "", "name": "Noche acústica","coordinates": {"latitude": 5.074297 , "longitude": -75.491561 },"images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"datestart": "05-12-2022 21:00:00","dateend": "05-12-2022 02:00:00"}'
+               "body" : '{ "category_id": "", "name": "Noche acústica","coordinates": {"latitude": 5.074297 , "longitude": -75.491561 },"images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"date_start": "05-12-2022 21:00:00","date_end": "05-12-2022 02:00:00"}'
            },
            '{"error": true, "message": "La categoría no existe o no fue seleccionada"}'
         ),
@@ -84,7 +84,7 @@ class TableEventMock:
                         }
                     } 
                 },
-               "body" : '{ "category_id": "C01", "name": "","coordinates": {"latitude": 5.074297 , "longitude": -75.491561 },"images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"datestart": "05-12-2022 21:00:00","dateend": "05-12-2022 02:00:00"}'
+               "body" : '{ "category_id": "C01", "name": "","coordinates": {"latitude": 5.074297 , "longitude": -75.491561 },"images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"date_start": "05-12-2022 21:00:00","date_end": "05-12-2022 02:00:00"}'
            },
            '{"error": true, "message": "Debe escribir el nombre del evento"}'
         ),
@@ -96,7 +96,7 @@ class TableEventMock:
                         }
                     } 
                 },
-               "body" : '{ "category_id": "C01", "name": "Noche Acústica","images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"datestart": "05-12-2022 21:00:00","dateend": "05-12-2022 02:00:00"}'
+               "body" : '{ "category_id": "C01", "name": "Noche Acústica","images": ["x","y","z"],"description": "Disfruta de una noche de música","range_age": [18,100],"price": 2000,"slots": 100,"max": 100,"date_start": "05-12-2022 21:00:00","date_end": "05-12-2022 02:00:00"}'
            },
            '{"error": true, "message": "Es necesaria la ubicación del evento"}'
         )
