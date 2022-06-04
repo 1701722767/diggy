@@ -1,30 +1,41 @@
 import pytest
 import main
 
-def test_handler():
-    class TableMock:
-        def scan(self,FilterExpression={},Limit=50):
-            return {
-                "Items": {
-                    "category_id" : "category_id",
-                    "event_id" : "event_id"
-                }
+class TableMock:
+    def scan(self,FilterExpression={},ExclusiveStartKey={},Limit=50):
+        return {
+            "Items": {
+                "category_id" : "category_id",
+                "event_id" : "event_id"
             }
+        }
+class DynamoMock:
+    def Table(self,table):
+        assert "events" == table, "Validate table"
+        return TableMock()
 
+def test_handler():
     main.eventsTable = TableMock()
-
-    class DynamoMock:
-        def Table(self,table):
-            assert "events" == table, "Validate table"
-            return TableMock()
-
     main.dynamodb = DynamoMock()
-
-    req = main.Request()
-
 
     response = main.lambda_handler({
         "queryStringParameters": {
+            "type": "default",
+            "category_id": "C01"
+        }
+    },{})
+    assert '{"error": false, "message": "Eventos listados correctamente", "data": {"items": {"category_id": "category_id", "event_id": "event_id"}}}' == response["body"], "Validate response 1"
+
+    response = main.lambda_handler({},{})
+    assert '{"error": false, "message": "Eventos listados correctamente", "data": {"items": {"category_id": "category_id", "event_id": "event_id"}}}' == response["body"], "Validate response 2"
+
+def test_handler_list_own():
+    main.eventsTable = TableMock()
+    main.dynamodb = DynamoMock()
+
+    response = main.lambda_handler({
+        "queryStringParameters": {
+            "type": "own",
             "category_id": "C01"
         }
     },{})

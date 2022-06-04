@@ -74,9 +74,11 @@ export default {
       width: 0,
       sheet: false,
       items: [
-        { icon: "mdi-map-search-outline", 
-          title: "Ver mapa", 
-          path: "/directory/map" },
+        {
+          icon: "mdi-map-search-outline",
+          title: "Ver mapa",
+          path: "/directory/map",
+        },
         {
           icon: "mdi-account-plus-outline",
           title: "Registrarme",
@@ -135,17 +137,13 @@ export default {
           title: "Ver mapa",
           path: "/directory/map",
         },
-        { icon: "mdi-calendar-star", 
-          title: "Mis eventos", 
-          path: "/my-events" },
+        { icon: "mdi-calendar-star", title: "Mis eventos", path: "/my-events" },
         {
           icon: "mdi-map-marker-outline",
           title: "Mis sitios",
           path: "/my-places",
         },
-        { icon: "mdi-currency-usd",
-          title: "Balance", 
-          path: "/my-balance" },
+        { icon: "mdi-currency-usd", title: "Balance", path: "/my-balance" },
         {
           icon: "mdi-logout",
           title: "Cerrar sesión",
