@@ -3,6 +3,11 @@ import os
 from botocore.exceptions import ClientError
 import boto3
 
+AWS_REGION = "us-east-1"
+
+client_users = boto3.resource('dynamodb',region_name=AWS_REGION)
+users_table = client_users.Table("users")
+
 client = boto3.client("cognito-idp", region_name="us-east-1")
 KEY_ERROR_MESSAGE = {
     "username" : "Debe escribir un nombre de usuario",
@@ -14,7 +19,9 @@ KEY_ERROR_MESSAGE = {
 }
 
 def sign_up(new_user):
-
+    
+    validate(new_user)
+    
     response = client.sign_up(
         ClientId=os.getenv("COGNITO_USER_CLIENT_ID"),
         Username=new_user['username'],
@@ -25,11 +32,29 @@ def sign_up(new_user):
             {"Name": "birthdate" , "Value": new_user['birthdate']},
             {"Name": "name","Value": new_user['name']},]
     )
+    
     return response
+
+def create_user(new_user,user_id):
+    
+    if 'password' in new_user:
+        del new_user['password']
+    
+    new_user['id']  = user_id
+    response = users_table.put_item(
+        Item=new_user
+    )
+    
+    validate_dynamodb_response(response)
+
+def validate_dynamodb_response(response):
+    if response['ResponseMetadata']['HTTPStatusCode'] != 200:
+        raise Exception("Error interno en la base de datos")
+
 def validate(data):
-    for name in data.keys():
-        if not data[name]:
-            raise KeyError(str(name))
+    for key in KEY_ERROR_MESSAGE.keys():
+        if key not in data.keys() or not data[key]:
+            raise KeyError(key)
 
 
 def lambda_handler(event, context):
@@ -39,23 +64,15 @@ def lambda_handler(event, context):
     }
 
     try :
-        new_user = {
-            "username" : event['username'],
-            "password" : event['password'],
-            "email" : event['email'],
-            "phone_number" : event['phone_number'],
-            "birthdate" : event['birthdate'],
-            "name": event['name']
-
-        }
-        validate(new_user)
-        response['data'] = sign_up(new_user)
-        response['error'] = False
+    
+        response['data'] = sign_up(event)
+        create_user(event,response['data']['UserSub'])
+        
     except KeyError as e:
+        print(e)
         response['error']  = True
         response['message'] = KEY_ERROR_MESSAGE[e.args[0]]
-
-        return reponse
+        
     except ClientError as e:
         print(e)
         response['error']  = True
@@ -65,8 +82,7 @@ def lambda_handler(event, context):
             response['message'] = "No se logro enviar el email de verificación"
         else:
             response['message'] = "Error interno del servidor 1"
-
-        return response
+        
     except Exception as e:
         print(e)
         response['error']  = True
