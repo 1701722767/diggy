@@ -1,76 +1,67 @@
 <template>
-    <l-map 
-      style="z-index:0; height: 100%" 
-      :zoom="zoom" 
-      :center="center"
-      @ready="onReady" 
-      ref="map" 
-      @locationfound="onLocationFound"
-    >
-
+  <l-map
+    style="z-index: 0; height: 100%"
+    :zoom="zoom"
+    :center="center"
+    @ready="onReady"
+    ref="map"
+    @locationfound="onLocationFound"
+  >
     <ShowEvent ref="ShowEvent"></ShowEvent>
     <ShowPlace ref="ShowPlace"></ShowPlace>
 
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-      
-      <l-marker 
-          v-for = "(event,i) in events"
-          :key= "i"
-          :lat-lng="[event.coordinates.latitude,event.coordinates.longitude]"
-          @click="showInfoEvent(event.event_id,event.category_id)" 
+
+    <l-marker
+      v-for="(event) in events"
+      :key="event.event_id"
+      :lat-lng="[event.coordinates.latitude, event.coordinates.longitude]"
+      @click="showInfoEvent(event.event_id, event.category_id)"
+    >
+      <l-tooltip :options="optionsTooltip">{{ event.name }}</l-tooltip>
+
+      <l-icon
+        :tooltipAnchor="[20, -10]"
+        :icon-size="[45, 45]"
+        icon-url="https://cdn-icons-png.flaticon.com/512/6554/6554348.png"
       >
+      </l-icon>
+    </l-marker>
 
-        <l-tooltip :options= "optionsTooltip" >{{event.name}}</l-tooltip>
+    <l-marker
+      v-for="(place) in places"
+      :key="place.id"
+      :lat-lng="[place.coordinates.latitude, place.coordinates.longitude]"
+      @click="showInfoPlace(place.id, place.category_id)"
+    >
+      <l-tooltip :options="optionsTooltip">{{ place.name }}</l-tooltip>
 
+      <l-icon
+        :tooltipAnchor="[20, -10]"
+        :icon-size="[45, 45]"
+        icon-url="https://cdn1.iconfinder.com/data/icons/vibrancie-map/30/map_026-location-marker-favorite-pin-star-256.png"
+      >
+      </l-icon>
+    </l-marker>
+
+    <template v-if="location">
+      <l-marker :lat-lng="location.latlng">
         <l-icon
-          :tooltipAnchor="[20,-10]"
+          :tooltipAnchor="[20, -10]"
           :icon-size="[45, 45]"
-          icon-url="https://cdn-icons-png.flaticon.com/512/6554/6554348.png" >
-        </l-icon>
-
-      </l-marker>
-
-
-       <l-marker 
-          v-for = "(place,i) in places"
-          :key= "place.id"
-          :lat-lng="[place.coordinates.latitude,place.coordinates.longitude]"
-          @click="showInfoPlace(place.id,place.category_id)" 
-        >
-
-        <l-tooltip :options= "optionsTooltip" >{{place.name}}</l-tooltip>
-
-        <l-icon
-          :tooltipAnchor="[20,-10]"
-          :icon-size="[45, 45]"
-          icon-url="https://cdn1.iconfinder.com/data/icons/vibrancie-map/30/map_026-location-marker-favorite-pin-star-256.png"
+          icon-url="https://cdn-icons-png.flaticon.com/512/1949/1949165.png"
         >
         </l-icon>
-
       </l-marker>
-
-      <template v-if="location">
-        <l-marker :lat-lng="location.latlng">
-          <l-icon
-            :tooltipAnchor="[20,-10]"
-            :icon-size="[45, 45]"
-            icon-url="https://cdn-icons-png.flaticon.com/512/1949/1949165.png" 
-          >
-          </l-icon>
-        </l-marker>
-      </template>
-
-  
+    </template>
   </l-map>
 </template>
 
 <script>
-import { latLng } from "leaflet";
-import { LMap, LTileLayer, LMarker , LTooltip, LIcon} from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker, LTooltip, LIcon } from "vue2-leaflet";
 import { getJSON } from "../../helpers/Request";
-import { Icon } from 'leaflet';
-import ShowEvent from '../ShowEvent';
-import ShowPlace from '../ShowPlace';
+import ShowEvent from "../Events/Show";
+import ShowPlace from "../Places/Show";
 import { notification } from "@/helpers/Notifications";
 
 export default {
@@ -82,13 +73,11 @@ export default {
     LTooltip,
     LIcon,
     ShowEvent,
-    ShowPlace
+    ShowPlace,
   },
   mounted() {
-
     this.getEvents();
     this.getPlaces();
-     
   },
   data() {
     return {
@@ -97,96 +86,105 @@ export default {
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       zoom: 16,
       center: [5.0569, -75.50356],
-      
 
       map: null,
       location: null,
 
-      optionsTooltip : {
-        permanent : true,
-      
+      optionsTooltip: {
+        permanent: true,
       },
 
-      events : [],
-      places : []
+      events: [],
+      places: [],
     };
   },
 
-  methods : {
-      showInfoEvent (event_id,category_id){
-        const keys = btoa(
-          `{
+  methods: {
+    showInfoEvent(event_id, category_id) {
+      const keys = btoa(
+        `{
             "event_id" : "${event_id}" ,
             "category_id" : "${category_id}"
-            }`);
-        
-        const param = { composite_key : keys };
-        this.$refs.ShowEvent.show(param);
-      },
+            }`
+      );
 
-      showInfoPlace (place_id,category_id){
-        const keys = btoa(
-          `{
+      const param = { composite_key: keys };
+      this.$refs.ShowEvent.show(param);
+    },
+
+    showInfoPlace(place_id, category_id) {
+      const keys = btoa(
+        `{
             "id" : "${place_id}" ,
             "category_id" : "${category_id}"
-            }`);
-        
-        const param = { composite_key : keys };
-        this.$refs.ShowPlace.show(param);
-      },
+            }`
+      );
 
-      onReady() {
-        this.map = this.$refs["map"].mapObject;
-        this.map.locate();
-      },
-
-      onLocationFound(currentLocation) {
-        this.location = currentLocation;
-        this.recenterMap(this.location.latlng);
-      },
-
-      recenterMap(currentLocation) {
-        this.$refs["map"].mapObject.panTo(currentLocation);
-      },
-
-      getEvents(){
-        getJSON("/events", null, false)
-            .then((res) => {
-              if(res.error){
-                notification({
-                  message: res.message,
-                });
-              }
-              else{
-                this.events = res.data.items;
-              } 
-            }).catch((err) => {
-                  notification({
-                      message: "Ocurrió un error al hacer la petición",
-                    }); 
-              });
-      },
-
-      getPlaces(){
-        getJSON("/places", null, false)
-            .then((res) => {
-              if(res.error){
-                notification({
-                  message: res.message,
-                });
-              }
-              else{
-                this.places = res.data.items;
-
-              } 
-            }).catch((err) => {
-                  notification({
-                      message: "Ocurrió un error al hacer la petición",
-                    }); 
-              });
-      }
-
+      const param = { composite_key: keys };
+      this.$refs.ShowPlace.show(param);
     },
-  };
-</script>
 
+    onReady() {
+      this.map = this.$refs["map"].mapObject;
+      this.map.locate();
+    },
+
+    onLocationFound(currentLocation) {
+      this.location = currentLocation;
+      this.recenterMap(this.location.latlng);
+    },
+
+    recenterMap(currentLocation) {
+      this.$refs["map"].mapObject.panTo(currentLocation);
+    },
+
+    getEvents() {
+      getJSON(
+        "/events",
+        {
+          type: "default",
+        },
+        false
+      )
+        .then((res) => {
+          if (res.error) {
+            notification({
+              message: res.message,
+            });
+          } else {
+            this.events = res.data.items;
+          }
+        })
+        .catch((err) => {
+          notification({
+            message: "Ocurrió un error al hacer la petición",
+          });
+        });
+    },
+
+    getPlaces() {
+      getJSON(
+        "/places",
+        {
+          type: "default",
+        },
+        false
+      )
+        .then((res) => {
+          if (res.error) {
+            notification({
+              message: res.message,
+            });
+          } else {
+            this.places = res.data.items;
+          }
+        })
+        .catch((err) => {
+          notification({
+            message: "Ocurrió un error al hacer la petición",
+          });
+        });
+    },
+  },
+};
+</script>

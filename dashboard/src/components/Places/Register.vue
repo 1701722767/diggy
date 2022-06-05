@@ -1,70 +1,69 @@
 <template>
-  <v-app>
-    <v-dialog v-model="dialog" persistent max-width="1000px" min-width="360px">
-      <div>
-        <v-tabs
-          v-model="tab"
-          show-arrows
-          background-color="deep-purple accent-4"
-          icons-and-text
-          dark
-          grow
-        >
-          <v-tabs-slider color="purple darken-4"></v-tabs-slider>
-          <v-tab v-for="i in tabs" :key="i">
-            <v-icon large>{{ i.icon }}</v-icon>
-            <div class="caption py-1">{{ i.name }}</div>
-          </v-tab>
-          <v-tab-item>
-            <v-card class="px-4">
-              <v-card-text>
-                <v-form ref="registerForm" :v-model="true" lazy-validation>
-                  <v-row>
-                    <!-- NOMBRE DEL EVENTO -->
-                    <v-col cols="12">
-                      <v-text-field
-                        v-model="model.name"
-                        label="Nombre del lugar"
-                        maxlength="40"
-                        :rules="[rules.required]"
-                      ></v-text-field>
-                    </v-col>
-                    <!-- FIN NOMBRE EVENTO -->
-                    <!-- DESCRIPCION EVENTO  -->
-                    <v-col cols="12">
-                      <v-textarea
-                        :rules="[rules.required]"
-                        label="Descripción del lugar"
-                        v-model="model.description"
-                      ></v-textarea>
-                    </v-col>
-                    <!-- FIN DESCRIPCION EVENTO -->
-                    <!-- SELECCION DE CATEGORIA -->
-                    <v-col cols="12" sm="6" md="6">
-                      <v-select
-                        v-model="model.category_id"
-                        :items="categories"
-                        item-text="name"
-                        item-value="id"
-                        label="Seleccione categoría"
-                        persistent-hint
-                        single-line
-                      ></v-select>
-                    </v-col>
-                    <!-- FIN SELECCION CATEGORIA -->
-                    <!-- AFORO -->
-                    <v-col cols="12" sm="6" md="6">
-                      <v-text-field
-                        v-model="model.max"
-                        :rules="[rules.required]"
-                        type="number"
-                        label="Aforo máximo"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <!-- FIN AFORO -->
-                    <!-- IMAGEN -->
-                    <!--
+  <v-dialog v-model="dialog" max-width="1000px" min-width="360px">
+    <div>
+      <v-tabs
+        v-model="tab"
+        show-arrows
+        background-color="deep-purple accent-4"
+        icons-and-text
+        dark
+        grow
+      >
+        <v-tabs-slider color="purple darken-4"></v-tabs-slider>
+        <v-tab v-for="i in tabs" :key="i.name">
+          <v-icon large>{{ i.icon }}</v-icon>
+          <div class="caption py-1">{{ i.name }}</div>
+        </v-tab>
+        <v-tab-item>
+          <v-card class="px-4">
+            <v-card-text>
+              <v-form ref="registerForm" :v-model="true" lazy-validation>
+                <v-row>
+                  <!-- NOMBRE DEL EVENTO -->
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="model.name"
+                      label="Nombre del lugar"
+                      maxlength="40"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-col>
+                  <!-- FIN NOMBRE EVENTO -->
+                  <!-- DESCRIPCION EVENTO  -->
+                  <v-col cols="12">
+                    <v-textarea
+                      :rules="[rules.required]"
+                      label="Descripción del lugar"
+                      v-model="model.description"
+                    ></v-textarea>
+                  </v-col>
+                  <!-- FIN DESCRIPCION EVENTO -->
+                  <!-- SELECCION DE CATEGORIA -->
+                  <v-col cols="12" sm="6" md="6">
+                    <v-select
+                      v-model="model.category_id"
+                      :items="categories"
+                      item-text="name"
+                      item-value="id"
+                      label="Seleccione categoría"
+                      persistent-hint
+                      single-line
+                    ></v-select>
+                  </v-col>
+                  <!-- FIN SELECCION CATEGORIA -->
+                  <!-- AFORO -->
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field
+                      v-model="model.max"
+                      :rules="[rules.required]"
+                      type="number"
+                      label="Aforo máximo"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <!-- FIN AFORO -->
+                  <!-- IMAGEN -->
+                  <!--
                     <v-col cols="12" sm="6" md="6">
                       <v-file-input
                         v-model="model.imagen"
@@ -75,79 +74,76 @@
                         label="Inserte imagen del evento"
                       ></v-file-input>
                     </v-col>-->
-                    <!-- FIN IMAGEN -->
-                    <!-- COORDENADAS -->
-                    <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="25">
-                      <v-btn
-                        x-large
-                        block
-                        color="secondary"
-                        @click="showModal = true"
-                      >
-                        Inserte dirección
-                      </v-btn>
-                      <transition name="fade" appear>
-                        <div
-                          class="modal-overlay"
-                          v-if="showModal"
-                          @click="showModal = false"
-                        ></div>
-                      </transition>
-                      <transition name="slide" appear>
-                        <div class="modal" v-if="showModal">
-                          <h1>Seleccione la ubicación del lugar</h1>
+                  <!-- FIN IMAGEN -->
+                  <!-- COORDENADAS -->
+                  <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="25">
+                    <v-btn
+                      x-large
+                      block
+                      color="secondary"
+                      @click="showModal = true"
+                    >
+                      Inserte dirección
+                    </v-btn>
+                    <transition name="fade" appear>
+                      <div
+                        class="modal-overlay"
+                        v-if="showModal"
+                        @click="showModal = false"
+                      ></div>
+                    </transition>
+                    <transition name="slide" appear>
+                      <div class="modal" v-if="showModal">
+                        <h1>Seleccione la ubicación del lugar</h1>
+                        <br />
+                        <l-map
+                          style="height: 250px"
+                          :zoom="zoom"
+                          :center="center"
+                          @click="addMarker($event)"
+                        >
+                          <l-tile-layer
+                            :url="url"
+                            :attribution="attribution"
+                          ></l-tile-layer>
+                        </l-map>
+                        <v-col>
+                          <h1>Coordenadas seleccionadas:</h1>
+                          <h3>{{ model.coordinates }}</h3>
                           <br />
-                          <l-map
-                            style="height: 250px"
-                            :zoom="zoom"
-                            :center="center"
-                            @click="addMarker($event)"
+                          <v-btn
+                            x-large
+                            block
+                            :disabled="!valid"
+                            color="success"
+                            @click="showModal = false"
+                            >Guardar dirección</v-btn
                           >
-                            <l-tile-layer
-                              :url="url"
-                              :attribution="attribution"
-                            ></l-tile-layer>
-                            <l-marker :lat-lng="markerLatLng"></l-marker>
-                          </l-map>
-                          <v-col>
-                            <h1>Coordenadas seleccionadas:</h1>
-                            <h3>{{ model.coordinates }}</h3>
-                            <br />
-                            <v-btn
-                              x-large
-                              block
-                              :disabled="!valid"
-                              color="success"
-                              @click="showModal = false"
-                              >Guardar dirección</v-btn
-                            >
-                          </v-col>
-                        </div>
-                      </transition>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-btn
-                        x-large
-                        block
-                        :disabled="!valid"
-                        color="success"
-                        @click="register"
-                        :loading="loading"
-                        >Crear lugar</v-btn
-                      >
-                    </v-col>
-                    <!-- FIN COORDENADA -->
-                  </v-row>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-        </v-tabs>
-      </div>
-      <div></div>
-    </v-dialog>
-  </v-app>
+                        </v-col>
+                      </div>
+                    </transition>
+                  </v-col>
+                  <v-spacer></v-spacer>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-btn
+                      x-large
+                      block
+                      :disabled="!valid"
+                      color="success"
+                      @click="register"
+                      :loading="loading"
+                      >Crear lugar</v-btn
+                    >
+                  </v-col>
+                  <!-- FIN COORDENADA -->
+                </v-row>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </div>
+  </v-dialog>
 </template>
 
 <script>
@@ -194,7 +190,8 @@ export default {
               icon: "mdi-alert-circle",
             });
             return;
-          } notification({
+          }
+          notification({
             message: "Evento creado con éxito",
           });
 
@@ -225,9 +222,7 @@ export default {
       this.$refs.form.resetValidation();
     },
     openDialog() {
-      if (this.showModal) {
-        this.showModal = !this.showModal;
-      }
+      this.dialog = true;
     },
     addMarker(event) {
       let latitude = event.latlng.lat;
@@ -249,7 +244,8 @@ export default {
       zoom: 16,
       center: [5.0569, -75.50356],
       markers: [L.latLng(5.0569, -75.50356)],
-      dialog: true,
+      dialog: false,
+      loading: false,
       tab: 0,
       tabs: [{ name: "Registro de lugar", icon: "mdi-map-marker" }],
       valid: true,
@@ -258,7 +254,7 @@ export default {
         description: "",
         category_id: "",
         max: "",
-        score:0.0,
+        score: 0.0,
         coordinates: {},
       },
       categories: "",

@@ -1,6 +1,5 @@
 <template>
-  <v-app>
-    <v-dialog v-model="dialog" persistent max-width="1000px" min-width="360px">
+    <v-dialog v-model="dialog" max-width="1000px" min-width="360px">
       <div>
         <v-tabs
           v-model="tab"
@@ -11,7 +10,7 @@
           grow
         >
           <v-tabs-slider color="purple darken-4"></v-tabs-slider>
-          <v-tab v-for="i in tabs" :key="i">
+          <v-tab v-for="i in tabs" :key="i.name">
             <v-icon large>{{ i.icon }}</v-icon>
             <div class="caption py-1">{{ i.name }}</div>
           </v-tab>
@@ -44,7 +43,7 @@
                       <h3>Seleccione el rango de edad:</h3>
                       <v-range-slider
                         color="purple darken-4"
-                      
+
                         :tick-labels="edades"
                         v-model="model.range_age"
                         min="0"
@@ -63,12 +62,12 @@
                     <!--FIN RANGO EDAD-->
                     <!--FECHA DE INICIO-->
                     <v-col cols="12" sm="6" md="6">
-                      <v-datetime-picker 
+                      <v-datetime-picker
                         v-model="model.date_start"
                         color="purple darken-4"
                         label="Fecha y hora de inicio"
                         max="2024-03-20"
-                        > 
+                        >
                         <template slot="dateIcon">
                             <v-icon>mdi-calendar</v-icon>
                             </template>
@@ -80,12 +79,12 @@
                     <!--FIN FECHA DE INICIO-->
                     <!--FECHA DE FIN-->
                     <v-col cols="12" sm="6" md="6">
-                      <v-datetime-picker 
+                      <v-datetime-picker
                             color="purple darken-4"
-                            label="Fecha y hora de fin" 
+                            label="Fecha y hora de fin"
                             v-model="model.date_end"
                             max="2024-03-20"
-                            >    
+                            >
                             <template slot="dateIcon">
                               <v-icon>mdi-calendar</v-icon>
                             </template>
@@ -135,7 +134,7 @@
                         type="number"
                         label="Espacios disponible"
                         required
-                        
+
                       ></v-text-field>
                     </v-col>
                     <!-- FIN AFORO -->
@@ -151,77 +150,87 @@
                         label="Inserte imagen del evento"
                       ></v-file-input>
                     </v-col>-->
-                    <!-- FIN IMAGEN -->
-                    <!-- COORDENADAS -->
-                    <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="25">
-                      <v-btn
-                        x-large
-                        block
-                        color="secondary"
-                        @click="showModal=true"> Inserte dirección                 
-                      </v-btn>
-                      <transition name="fade" appear>
-                        <div class="modal-overlay" v-if="showModal" @click="showModal=false"></div>
-                      </transition>  
-                      <transition name="slide" appear>
-                        <div class="modal" v-if="showModal">
-                            <h1>Seleccione la ubicación del evento</h1>
-                            <br>
-                            <l-map style="height: 250px" :zoom="zoom" :center="center" @click="addMarker($event)">
-                              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                              <l-marker :lat-lng="markerLatLng"></l-marker>
-                            </l-map>
-                            <v-col>                     
-                                <h1>Coordenadas seleccionadas:</h1>
-                                <h3>{{model.coordinates}}</h3>
-                                <br>
-                              <v-btn
-                              x-large
-                              block
-                              :disabled="!valid"
-                              color="success"
-                              @click="showModal=false"
-                              >Guardar dirección</v-btn>
-                            </v-col> 
-                        </div>
-                      </transition> 
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-btn
-                        x-large
-                        block
-                        :disabled="!valid"
-                        color="success"
-                        @click="register"
-                        :loading="loading"
-                        >Crear evento</v-btn
-                      >
-                    </v-col>
-                    <!-- FIN COORDENADA -->
-                  </v-row>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-        </v-tabs>
-      </div>
-      <div></div>
-    </v-dialog>
-  </v-app>
+                  <!-- FIN IMAGEN -->
+                  <!-- COORDENADAS -->
+                  <v-col class="d-flex ml-auto" cols="15" sm="5" xsm="25">
+                    <v-btn
+                      x-large
+                      block
+                      color="secondary"
+                      @click="showModal = true"
+                    >
+                      Inserte dirección
+                    </v-btn>
+                    <transition name="fade" appear>
+                      <div
+                        class="modal-overlay"
+                        v-if="showModal"
+                        @click="showModal = false"
+                      ></div>
+                    </transition>
+                    <transition name="slide" appear>
+                      <div class="modal" v-if="showModal">
+                        <h1>Seleccione la ubicación del evento</h1>
+                        <br />
+                        <l-map
+                          style="height: 250px"
+                          :zoom="zoom"
+                          :center="center"
+                          @click="addMarker($event)"
+                        >
+                          <l-tile-layer
+                            :url="url"
+                            :attribution="attribution"
+                          ></l-tile-layer>
+                        </l-map>
+                        <v-col>
+                          <h1>Coordenadas seleccionadas:</h1>
+                          <h3>{{ model.coordinates }}</h3>
+                          <br />
+                          <v-btn
+                            x-large
+                            block
+                            :disabled="!valid"
+                            color="success"
+                            @click="showModal = false"
+                            >Guardar dirección</v-btn
+                          >
+                        </v-col>
+                      </div>
+                    </transition>
+                  </v-col>
+                  <v-spacer></v-spacer>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-btn
+                      x-large
+                      block
+                      :disabled="!valid"
+                      color="success"
+                      @click="register"
+                      :loading="loading"
+                      >Crear evento</v-btn
+                    >
+                  </v-col>
+                  <!-- FIN COORDENADA -->
+                </v-row>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </div>
+  </v-dialog>
 </template>
 
 <script>
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
-import { Icon } from 'leaflet';
-import { postJSON , getJSON } from "../../helpers/Request.js";
+import { postJSON, getJSON } from "@/helpers/Request.js";
 import { notification } from "@/helpers/Notifications.js";
 import { transformDate } from "@/helpers/Date.js";
 
-
 export default {
   name: "EventRegister",
-  components:{
+  components: {
     LMap,
     LTileLayer,
     LMarker,
@@ -233,8 +242,8 @@ export default {
     register() {
       if (!this.$refs.registerForm.validate()) {
         notification({
-            message: "Complete todos los campos.",
-          });
+          message: "Complete todos los campos.",
+        });
         return;
       }
 
@@ -247,16 +256,15 @@ export default {
         .then((res) => {
           this.loading = false;
 
-          if(res.error){
+          if (res.error) {
             notification({
-            message: res.message,
-            icon: "mdi-alert-circle"
-          });
+              message: res.message,
+              icon: "mdi-alert-circle",
+            });
             return;
           }
 
           this.$router.push({ path: "/my-events" });
-
         })
         .catch((err) => {
           this.loading = false;
@@ -266,18 +274,17 @@ export default {
         });
     },
 
-    getCategories (){
-        getJSON("/categories", this.params, false)
-          .then((res) => {
-            this.categories = res.data.items;
-          })
-          .catch((err) => {
-            notification({
+    getCategories() {
+      getJSON("/categories", this.params, false)
+        .then((res) => {
+          this.categories = res.data.items;
+        })
+        .catch((err) => {
+          notification({
             message: "Error al obtener las categorias",
           });
-
-          });
-      },
+        });
+    },
     reset() {
       this.$refs.form.reset();
     },
@@ -285,35 +292,33 @@ export default {
       this.$refs.form.resetValidation();
     },
     openDialog() {
-      if (this.showModal) {
-        this.showModal=!this.showModal
-      }
+      this.dialog = true;
     },
     addMarker(event) {
-      let latitude= event.latlng.lat;
-      let longitude= event.latlng.lng;
-      this.model.coordinates= {
-        latitude, longitude
+      let latitude = event.latlng.lat;
+      let longitude = event.latlng.lng;
+      this.model.coordinates = {
+        latitude,
+        longitude,
       };
     },
-    season (val) {
-        return this.icons[val]
-      },
-    setSlot(aforo){
-      return this.slots=this.max;
+    season(val) {
+      return this.icons[val];
+    },
+    setSlot(aforo) {
+      return (this.slots = this.max);
     },
   },
-  data(){
+  data() {
     return {
-      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
-          '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       zoom: 16,
-      center: [5.05690, -75.50356],
-       markers:[
-        L.latLng(5.05690, -75.50356),
-      ],
-      dialog: true,
+      center: [5.0569, -75.50356],
+      markers: [L.latLng(5.0569, -75.50356)],
+      dialog: false,
+      loading: false,
       tab: 0,
       tabs: [{ name: "Registro de evento", icon: "mdi-calendar-edit" }],
       valid: true,
@@ -321,118 +326,108 @@ export default {
         name: "",
         description: "",
         price: "",
-        slots:"",
-        max:"",
-        range_age:[0,1],
+        slots: "",
+        max: "",
+        range_age: [0, 1],
         //images: null,
         date_start: "",
         date_end: "",
         category_id:"",
         coordinates:{}
       },
-      categories:"",
+      categories: "",
       select: { category: "" },
-      edades: [
-        '0',
-        '10',
-        '20',
-        '30',
-        '40',
-        '50',
-        '60',
-        '70',
-        '80',
-      ],
+      edades: ["0", "10", "20", "30", "40", "50", "60", "70", "80"],
       icons: [
-        'mdi-teddy-bear',
-        'mdi-football',
-        'mdi-football',
-        'mdi-football',
-        'mdi-football',
-        'mdi-human-male',
-        'mdi-human-male',
-        'mdi-human-male',
-        'mdi-human-male',
+        "mdi-teddy-bear",
+        "mdi-football",
+        "mdi-football",
+        "mdi-football",
+        "mdi-football",
+        "mdi-human-male",
+        "mdi-human-male",
+        "mdi-human-male",
+        "mdi-human-male",
       ],
       show1: false,
-      showModal:false,
+      showModal: false,
       rules: {
         required: (value) => !!value || "Campo requerido",
-      }
+      },
     };
-  }
+  },
 };
 </script>
 
 <style scoped>
-  * {
- margin: 0;
- padding: 0;
- box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
- font-family: 'montserrat', sans-serif;
+  font-family: "montserrat", sans-serif;
 }
 
 #app {
- position: relative;
- 
- display: flex;
- justify-content: center;
- align-items: center;
- 
- width: 100vw;
- min-height: 100vh;
- overflow-x: hidden;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .button {
- transition: 0.4s ease-out;
+  transition: 0.4s ease-out;
 }
 
 .modal-overlay {
- position: absolute;
- top: 0;
- left: 0;
- right: 0;
- bottom: 0;
- z-index: 98;
- background-color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 98;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .modal {
- position: fixed;
- top: 50%;
- left: 50%;
- transform: translate(-50%, -50%);
- z-index: 99;
- 
- width: 100%;
- max-width: 600px;
- background-color: #FFF;
- border-radius: 16px;
- 
- padding: 25px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+
+  width: 100%;
+  max-width: 600px;
+  background-color: #fff;
+  border-radius: 16px;
+
+  padding: 25px;
 }
 
 .fade-enter-active,
 .fade-leave-active {
- transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .fade-enter,
 .fade-leave-to {
- opacity: 0;
+  opacity: 0;
 }
 
 .slide-enter-active,
 .slide-leave-active {
- transition: transform .5s;
+  transition: transform 0.5s;
 }
 
 .slide-enter,
 .slide-leave-to {
- transform: translateY(-50%) translateX(100vw);
+  transform: translateY(-50%) translateX(100vw);
 }
 </style>

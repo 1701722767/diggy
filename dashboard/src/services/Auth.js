@@ -48,6 +48,19 @@ export const getToken = async () => {
   return token;
 };
 
+export const getUserId= async () => {
+  let token = await Auth.currentAuthenticatedUser()
+    .then((res) => {
+      return res.attributes.sub;
+    })
+    .catch((err) => {
+      console.log(err);
+      throw "Ocurrió un error al obtener el id de usuario";
+    });
+
+  return token;
+};
+
 export const isAuthenticate = async () => {
   try {
     let response = await Auth.currentSession();

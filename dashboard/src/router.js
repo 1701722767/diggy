@@ -7,9 +7,8 @@ import EventRegister from './components/Events/Register.vue'
 import PlaceRegister from './components/Places/Register.vue'
 import Container from './components/Directory/Container.vue'
 import Map from './components/Directory/Map.vue'
-import EventsPublicList from './components/Directory/Events.vue'
-import PlacesPublicList from './components/Directory/Places.vue'
-import EventList from './components/Events/List.vue'
+import EventsList from './components/Events/List.vue'
+import PlacesPublicList from './components/Places/List.vue'
 import MyEvents from './views/MyEvents.vue'
 import MyPlaces from './views/MyPlaces.vue'
 
@@ -34,7 +33,7 @@ export default new Router({
               },
               {
                 path: 'events',
-                component: EventsPublicList
+                component: EventsList
               },
               {
                 path: 'places',
@@ -63,15 +62,6 @@ export default new Router({
           component: EventRegister
         },
         {
-          path: '/events-list',
-          name: 'list',
-          component: EventList
-        },
-        {
-          path: '*',
-          redirect: "/directory/map"
-        },
-        {
           path: '/my-events',
           name: 'MyEvents',
           component: MyEvents
@@ -86,5 +76,9 @@ export default new Router({
           name: 'MyPlaces',
           component: MyPlaces
         },
+        {
+          path: '*',
+          redirect: "/directory/map"
+        }
     ],
 });

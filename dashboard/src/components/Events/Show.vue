@@ -34,30 +34,50 @@
               <div class="grey--text ms-4">
                 {{this.model.score}} ({{this.model.total_comments}})
               </div>
-
             </v-row>
 
-            <div class="my-3 text-subtitle-2" >{{this.model.description}}</div>
+            <div class="my-4 text-subtitle-1">
+              $ • {{this.model.price}}
+            </div>
+
+            <div>{{this.model.description}}</div>
+
 
         </v-card-text>
 
         <v-divider class="mx-4"></v-divider>
 
         <v-card-text>
-          
+          <div>
+             <span style= "font-weight: bold"> Inicia </span> : {{ formatDateAndTime(this.model.date_start)}}
+          </div>
+          <div>
+             <span style= "font-weight: bold"> Termina </span> : {{formatDateAndTime(this.model.date_end)}}
+          </div>
           <div>
              <span style= "font-weight: bold"> Aforo Máximo </span> : {{ this.model.max}}
           </div>
-
           <div>
-             <span style= "font-weight: bold" > Categoría </span> : {{ this.model.category_name}} 
+             <span style= "font-weight: bold"> Cupos disponibles</span> : {{ this.model.slots}}
           </div>
-
+          <div>
+             <span style= "font-weight: bold" > Rango de edad </span> : {{this.model.range_age[0]}} - {{this.model.range_age[1]}} años
+          </div>
+          <div>
+             <span style= "font-weight: bold" > Categoría </span> : {{ this.model.category_name}}
+          </div>
         </v-card-text>
 
        <v-divider class="mx-4"></v-divider>
 
         <v-card-actions>
+          <v-btn
+            color="deep-purple lighten-2"
+            text
+            @click="reserve"
+          >
+            Reservar
+          </v-btn>
           <v-btn
             color="red lighten-2"
             text
@@ -73,7 +93,7 @@
 </template>
 
 <script>
-import { getJSON } from "../helpers/Request";
+import { getJSON } from "@/helpers/Request";
 import { formatDateAndTime } from "@/helpers/Date"
 import { notification } from "@/helpers/Notifications";
 
@@ -83,16 +103,20 @@ import { notification } from "@/helpers/Notifications";
         dialog : false,
 
         model: {
-        
-            id : "",
-            category_id : "",
-            category_name : "",
+
+            event_id : "",
+            category_name: "",
             name: "",
             description: "",
+            date_end: "",
+            date_start: "",
             max: "",
-            score: 0,
-            total_comments: 0
-
+            name: "",
+            price: "",
+            range_age: "",
+            slots: "",
+            score: "",
+            total_comments: ""
         },
 
         items: [
@@ -123,17 +147,17 @@ import { notification } from "@/helpers/Notifications";
             /// not implemented yet
         },
         getItem(params){
-            getJSON("/places/find", params, false)
+            getJSON("/events/find", params, false)
             .then((res) => {
                 if (res.error) {
                     notification({
                         message: res.message,
-                    }); 
+                    });
                 }
                 else{
                     this.model = res.data;
                     this.dialog = true;
-                    
+
                 }
             })
             .catch((err) => {
@@ -143,6 +167,6 @@ import { notification } from "@/helpers/Notifications";
                 });
             });
         }
-    }    
+    }
   }
 </script>

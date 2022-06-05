@@ -7,7 +7,7 @@ PAGE_SIZE = 15
 AWS_REGION = "us-east-1"
 
 dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
-eventsTable = dynamodb.Table('categories')
+categories_table = dynamodb.Table('categories')
 
 
 """
@@ -31,17 +31,17 @@ class Request:
     def process(self,event):
         response = None
         if event.get("start_key","") !=  "":
-            response = eventsTable.scan(
+            response = categories_table.scan(
                  Limit=PAGE_SIZE,
                  ExclusiveStartKey= self.decodeBase64ToJson(event["start_key"])
             )
         elif event.get("category_id","") !=  "":
-            response = eventsTable.query(
+            response = categories_table.query(
                 KeyConditionExpression=Key('category_id').eq(event["category_id"]),
                 Limit=PAGE_SIZE
             )
         else:
-            response = eventsTable.scan(Limit=PAGE_SIZE)
+            response = categories_table.scan(Limit=PAGE_SIZE)
 
         data = {
             "items":response['Items']

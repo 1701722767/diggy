@@ -1,5 +1,7 @@
 <template>
   <v-container>
+    <br>
+    <ShowPlace ref="ShowPlace"></ShowPlace>
     <v-row dense>
       <v-col
         v-for="(item, i) in items"
@@ -10,7 +12,7 @@
         lg="6"
         xl="6"
       >
-        <v-card>
+        <v-card @click="showInfo(item.id,item.category_id)" >
           <div class="d-flex flex-no-wrap justify-space-between">
             <div>
               <v-card-title class="text-b" v-text="item.name"></v-card-title>
@@ -23,7 +25,9 @@
                 <v-img :src="item.images[0]"></v-img>
               </template>
               <template v-else>
-                <v-icon class="icon-not-found-image">mdi-map-marker-outline</v-icon>
+                <v-icon class="icon-not-found-image"
+                  >mdi-map-marker-outline</v-icon
+                >
               </template>
             </v-avatar>
           </div>
@@ -40,27 +44,51 @@
 <script>
 import { getJSON } from "@/helpers/Request";
 import { notification } from "@/helpers/Notifications";
-import { formatDateAndTime } from "@/helpers/Date"
+import { formatDateAndTime } from "@/helpers/Date";
+import { getUserId } from "../../services/Auth";
+import ShowPlace from "./Show.vue";
 
 export default {
-  name: "Places",
+  name: "List",
+  components: { ShowPlace },
   data() {
     return {
-      items:  [],
+      items: [],
       start_key: "",
       renderFinished: false,
       isLoading: false,
       isTheLast: false,
+      typeSearch: "default",
+      user_id: null,
     };
+  },
+  mounted() {
+    this.startComponent();
   },
   updated() {
     this.renderFinished = true;
   },
-  created() {
-    this.getPlaces();
-  },
   methods: {
     formatDateAndTime,
+    async startComponent() {
+      if (this.$route.path == "/my-places") {
+        this.typeSearch = "own";
+        this.user_id = await getUserId();
+      }
+
+      this.getPlaces();
+    },
+    showInfo(place_id, category_id) {
+      const keys = btoa(
+        `{
+            "id" : "${place_id}" ,
+            "category_id" : "${category_id}"
+            }`
+      );
+
+      const param = { composite_key: keys };
+      this.$refs.ShowPlace.show(param);
+    },
     infiniteScrolling() {
       if (this.isTheLast || this.isLoading || !this.renderFinished) {
         return;
@@ -76,6 +104,8 @@ export default {
       getJSON(
         "/places",
         {
+          type: this.typeSearch,
+          user_id: this.user_id,
           start_key: this.start_key,
         },
         false

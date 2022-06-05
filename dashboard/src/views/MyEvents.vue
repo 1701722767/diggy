@@ -1,27 +1,52 @@
 <template>
   <div class="content">
-    <v-col cols="12" sm="6" md="6">
-      <v-btn x-large color="success" :to="{ path: '/event-register' }"
-        >Crear evento
-      </v-btn>
-    </v-col>
+    <h2>Mis eventos</h2>
+    <list />
+    <register ref="addEvent" />
+    <v-btn
+      class="btn-add"
+      fab
+      color="deep-purple accent-4"
+      bottom
+      right
+      absolute
+      @click="openAddModal"
+    >
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
   </div>
 </template>
 
 <script>
+import List from "../components/Events/List.vue";
+import Register from "../components/Events/Register.vue";
 export default {
+  components: { Register, List },
   name: "MyEvents",
-  data: function() {
-return {};
-},
-  methods: {},
+  methods: {
+    openAddModal() {
+      this.$refs.addEvent.openDialog();
+    },
+  },
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .content {
-  height: 100%;
-  padding-bottom: 56px;
+  height: 100vh;
+  padding: 10px;
+}
+
+.btn-add {
+  bottom: 10px !important;
+}
+
+.mdi-plus {
+  color: white !important;
+}
+
+.container {
+  overflow: auto;
+  height: 80vh;
 }
 </style>
-
