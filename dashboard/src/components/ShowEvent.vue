@@ -64,7 +64,7 @@
              <span style= "font-weight: bold" > Rango de edad </span> : {{this.model.range_age[0]}} - {{this.model.range_age[1]}} años
           </div>
           <div>
-             <span style= "font-weight: bold" > Categoría </span> : {{ this.model.category_name}}
+             <span style= "font-weight: bold" > Categoría </span> : {{ this.model.category_name}} 
           </div>
         </v-card-text>
 
@@ -103,7 +103,7 @@ import { notification } from "@/helpers/Notifications";
         dialog : false,
 
         model: {
-
+        
             event_id : "",
             category_name: "",
             name: "",
@@ -152,12 +152,12 @@ import { notification } from "@/helpers/Notifications";
                 if (res.error) {
                     notification({
                         message: res.message,
-                    });
+                    }); 
                 }
                 else{
                     this.model = res.data;
                     this.dialog = true;
-
+                    
                 }
             })
             .catch((err) => {
@@ -167,6 +167,6 @@ import { notification } from "@/helpers/Notifications";
                 });
             });
         }
-    }
+    }    
   }
 </script>

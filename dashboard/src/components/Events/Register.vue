@@ -1,143 +1,145 @@
 <template>
-  <v-dialog v-model="dialog" max-width="1000px" min-width="360px">
-    <div>
-      <v-tabs
-        v-model="tab"
-        show-arrows
-        background-color="deep-purple accent-4"
-        icons-and-text
-        dark
-        grow
-      >
-        <v-tabs-slider color="purple darken-4"></v-tabs-slider>
-        <v-tab v-for="i in tabs" :key="i.name">
-          <v-icon large>{{ i.icon }}</v-icon>
-          <div class="caption py-1">{{ i.name }}</div>
-        </v-tab>
-        <v-tab-item>
-          <v-card class="px-4">
-            <v-card-text>
-              <v-form ref="registerForm" :v-model="true" lazy-validation>
-                <v-row>
-                  <!-- NOMBRE DEL EVENTO -->
-                  <v-col cols="12">
-                    <v-text-field
-                      v-model="model.name"
-                      label="Nombre del evento"
-                      maxlength="40"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <!-- FIN NOMBRE EVENTO -->
-                  <!-- DESCRIPCION EVENTO  -->
-                  <v-col cols="12">
-                    <v-textarea
-                      :rules="[rules.required]"
-                      label="Descripción del evento"
-                      v-model="model.description"
-                    ></v-textarea>
-                  </v-col>
-                  <!-- FIN DESCRIPCION EVENTO -->
-                  <!--RANGO EDAD-->
-                  <v-col cols="12">
-                    <h3>Seleccione el rango de edad:</h3>
-                    <v-range-slider
-                      color="purple darken-4"
-                      :tick-labels="edades"
-                      v-model="model.range_age"
-                      min="0"
-                      max="80"
-                      step="10"
-                      ticks="always"
-                      tick-size="1"
-                    >
-                      <template v-slot:thumb-label="props">
-                        <v-icon dark>
-                          {{ season(props.value) }}
-                        </v-icon>
-                      </template>
-                    </v-range-slider>
-                  </v-col>
-                  <!--FIN RANGO EDAD-->
-                  <!--FECHA DE INICIO-->
-                  <v-col cols="12" sm="6" md="6">
-                    <v-datetime-picker
-                      v-model="model.datestart"
-                      color="purple darken-4"
-                      label="Fecha y hora de inicio"
-                      max="2024-03-20"
-                    >
-                      <template slot="dateIcon">
-                        <v-icon>mdi-calendar</v-icon>
-                      </template>
-                      <template slot="timeIcon">
-                        <v-icon>mdi-clock</v-icon>
-                      </template>
-                    </v-datetime-picker>
-                  </v-col>
-                  <!--FIN FECHA DE INICIO-->
-                  <!--FECHA DE FIN-->
-                  <v-col cols="12" sm="6" md="6">
-                    <v-datetime-picker
-                      color="purple darken-4"
-                      label="Fecha y hora de fin"
-                      v-model="model.dateend"
-                      max="2024-03-20"
-                    >
-                      <template slot="dateIcon">
-                        <v-icon>mdi-calendar</v-icon>
-                      </template>
-                      <template slot="timeIcon">
-                        <v-icon>mdi-clock</v-icon>
-                      </template>
-                    </v-datetime-picker>
-                  </v-col>
-                  <!--FIN FECHA DE FIN-->
-                  <!-- SELECCION DE CATEGORIA -->
-                  <v-col cols="12" sm="6" md="6">
-                    <v-select
-                      v-model="model.category_id"
-                      :items="categories"
-                      item-text="name"
-                      item-value="id"
-                      label="Seleccione categoría"
-                      persistent-hint
-                      single-line
-                    ></v-select>
-                  </v-col>
-                  <!-- FIN SELECCION CATEGORIA -->
-                  <!-- VALOR DE INGRESO -->
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
-                      v-model="model.price"
-                      type="number"
-                      label="Valor de ingreso"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <!-- FIN VALOR DE INGRESO -->
-                  <!-- AFORO -->
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
-                      v-model="model.max"
-                      :rules="[rules.required]"
-                      type="number"
-                      label="Aforo máximo"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
-                      v-model="model.slots"
-                      :rules="[rules.required]"
-                      type="number"
-                      label="Espacios disponible"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <!-- FIN AFORO -->
-                  <!-- IMAGEN -->
-                  <!--
+    <v-dialog v-model="dialog" persistent max-width="1000px" min-width="360px">
+      <div>
+        <v-tabs
+          v-model="tab"
+          show-arrows
+          background-color="deep-purple accent-4"
+          icons-and-text
+          dark
+          grow
+        >
+          <v-tabs-slider color="purple darken-4"></v-tabs-slider>
+          <v-tab v-for="i in tabs" :key="i">
+            <v-icon large>{{ i.icon }}</v-icon>
+            <div class="caption py-1">{{ i.name }}</div>
+          </v-tab>
+          <v-tab-item>
+            <v-card class="px-4">
+              <v-card-text>
+                <v-form ref="registerForm" :v-model="true" lazy-validation>
+                  <v-row>
+                    <!-- NOMBRE DEL EVENTO -->
+                    <v-col cols="12">
+                      <v-text-field
+                        v-model="model.name"
+                        label="Nombre del evento"
+                        maxlength="40"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <!-- FIN NOMBRE EVENTO -->
+                    <!-- DESCRIPCION EVENTO  -->
+                    <v-col cols="12">
+                      <v-textarea
+                        :rules="[rules.required]"
+                        label="Descripción del evento"
+                        v-model="model.description"
+                      ></v-textarea>
+                    </v-col>
+                    <!-- FIN DESCRIPCION EVENTO -->
+                    <!--RANGO EDAD-->
+                    <v-col cols="12">
+                      <h3>Seleccione el rango de edad:</h3>
+                      <v-range-slider
+                        color="purple darken-4"
+
+                        :tick-labels="edades"
+                        v-model="model.range_age"
+                        min="0"
+                        max="80"
+                        step="10"
+                        ticks="always"
+                        tick-size="1"
+                        >
+                        <template v-slot:thumb-label="props">
+                          <v-icon dark>
+                            {{ season(props.value) }}
+                          </v-icon>
+                        </template>
+                      </v-range-slider>
+                    </v-col>
+                    <!--FIN RANGO EDAD-->
+                    <!--FECHA DE INICIO-->
+                    <v-col cols="12" sm="6" md="6">
+                      <v-datetime-picker
+                        v-model="model.date_start"
+                        color="purple darken-4"
+                        label="Fecha y hora de inicio"
+                        max="2024-03-20"
+                        >
+                        <template slot="dateIcon">
+                            <v-icon>mdi-calendar</v-icon>
+                            </template>
+                            <template slot="timeIcon">
+                              <v-icon>mdi-clock</v-icon>
+                        </template>
+                      </v-datetime-picker>
+                    </v-col>
+                    <!--FIN FECHA DE INICIO-->
+                    <!--FECHA DE FIN-->
+                    <v-col cols="12" sm="6" md="6">
+                      <v-datetime-picker
+                            color="purple darken-4"
+                            label="Fecha y hora de fin"
+                            v-model="model.date_end"
+                            max="2024-03-20"
+                            >
+                            <template slot="dateIcon">
+                              <v-icon>mdi-calendar</v-icon>
+                            </template>
+                            <template slot="timeIcon">
+                              <v-icon>mdi-clock</v-icon>
+                            </template>
+                      </v-datetime-picker>
+                    </v-col>
+                    <!--FIN FECHA DE FIN-->
+                    <!-- SELECCION DE CATEGORIA -->
+                    <v-col cols="12" sm="6" md="6">
+                      <v-select
+                        v-model="model.category_id"
+                        :items="categories"
+                        item-text="name"
+                        item-value="id"
+                        label="Seleccione categoría"
+                        persistent-hint
+                        single-line
+                      ></v-select>
+                    </v-col>
+                    <!-- FIN SELECCION CATEGORIA -->
+                    <!-- VALOR DE INGRESO -->
+                    <v-col cols="12" sm="6" md="6">
+                      <v-text-field
+                        v-model="model.price"
+                        type="number"
+                        label="Valor de ingreso"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <!-- FIN VALOR DE INGRESO -->
+                    <!-- AFORO -->
+                    <v-col cols="12" sm="6" md="6">
+                      <v-text-field
+                        v-model="model.max"
+                        :rules="[rules.required]"
+                        type="number"
+                        label="Aforo máximo"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                     <v-col cols="12" sm="6" md="6">
+                      <v-text-field
+                        v-model="model.slots"
+                        :rules="[rules.required]"
+                        type="number"
+                        label="Espacios disponible"
+                        required
+
+                      ></v-text-field>
+                    </v-col>
+                    <!-- FIN AFORO -->
+                    <!-- IMAGEN -->
+                    <!--
                     <v-col cols="12" sm="6" md="6">
                       <v-file-input
                         v-model="model.imagen"
@@ -218,7 +220,6 @@
         </v-tab-item>
       </v-tabs>
     </div>
-    <div></div>
   </v-dialog>
 </template>
 
@@ -249,8 +250,8 @@ export default {
 
       this.loading = true;
 
-      this.model.datestart = transformDate(this.model.datestart);
-      this.model.dateend = transformDate(this.model.dateend);
+      this.model.date_start = transformDate(this.model.date_start);
+      this.model.date_end = transformDate(this.model.date_end);
 
       postJSON("/events", this.model, true)
         .then((res) => {
@@ -330,10 +331,10 @@ export default {
         max: "",
         range_age: [0, 1],
         //images: null,
-        datestart: "",
-        dateend: "",
-        category_id: "",
-        coordinates: {},
+        date_start: "",
+        date_end: "",
+        category_id:"",
+        coordinates:{}
       },
       categories: "",
       select: { category: "" },
