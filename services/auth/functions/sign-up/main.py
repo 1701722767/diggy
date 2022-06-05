@@ -10,12 +10,12 @@ users_table = client_users.Table("users")
 
 client = boto3.client("cognito-idp", region_name="us-east-1")
 KEY_ERROR_MESSAGE = {
-    "username" : "Debe escribir un nombre de usuario",
+    "user_name" : "Debe escribir un nombre de usuario",
     "password" : "Debe escribir una contraseña",
     "email" : "Debe indicar el email",
     "phone_number" : "Debe escribir el número de teléfono",
     "birthdate" : "Debe indicar su fecha de nacimiento",
-    "name": "Debe escribir su nombre y apellidos"
+    "full_name": "Debe escribir su nombre y apellidos"
 }
 
 def sign_up(new_user):
@@ -24,13 +24,13 @@ def sign_up(new_user):
     
     response = client.sign_up(
         ClientId=os.getenv("COGNITO_USER_CLIENT_ID"),
-        Username=new_user['username'],
+        Username=new_user['user_name'],
         Password=new_user['password'],
         UserAttributes=[
             {"Name": "email", "Value": new_user['email']},
             {"Name": "phone_number", "Value": new_user['phone_number']},
             {"Name": "birthdate" , "Value": new_user['birthdate']},
-            {"Name": "name","Value": new_user['name']},]
+            {"Name": "name","Value": new_user['full_name']},]
     )
     
     return response
