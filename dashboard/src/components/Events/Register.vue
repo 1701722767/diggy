@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" persistent max-width="1000px" min-width="360px">
+    <v-dialog v-model="dialog" max-width="1000px" min-width="360px">
       <div>
         <v-tabs
           v-model="tab"
@@ -10,7 +10,7 @@
           grow
         >
           <v-tabs-slider color="purple darken-4"></v-tabs-slider>
-          <v-tab v-for="i in tabs" :key="i">
+          <v-tab v-for="i in tabs" :key="i.name">
             <v-icon large>{{ i.icon }}</v-icon>
             <div class="caption py-1">{{ i.name }}</div>
           </v-tab>
@@ -182,7 +182,6 @@
                             :url="url"
                             :attribution="attribution"
                           ></l-tile-layer>
-                          <l-marker :lat-lng="markerLatLng"></l-marker>
                         </l-map>
                         <v-col>
                           <h1>Coordenadas seleccionadas:</h1>
@@ -225,7 +224,7 @@
 
 <script>
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
-import { postJSON, getJSON } from "../../helpers/Request.js";
+import { postJSON, getJSON } from "@/helpers/Request.js";
 import { notification } from "@/helpers/Notifications.js";
 import { transformDate } from "@/helpers/Date.js";
 

@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { getJSON } from "../helpers/Request";
+import { getJSON } from "@/helpers/Request";
 import { formatDateAndTime } from "@/helpers/Date"
 import { notification } from "@/helpers/Notifications";
 
