@@ -20,14 +20,14 @@
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
-                      v-model="model.name"
+                      v-model="model.full_name"
                       label="Nombre completo"
                       :rules="nameRules"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
-                      v-model="model.username"
+                      v-model="model.user_name"
                       label="Nombre de usuario"
                       :rules="userNameRules"
                     ></v-text-field>
@@ -151,12 +151,12 @@ export default {
       loading: false,
 
       model: {
-        username: "",
+        user_name: "",
         password: "",
         email: "",
         phone_number: "",
         birthdate: "",
-        name: "",
+        full_name: "",
       },
       confirmPassword: "",
       showPassword: false,
