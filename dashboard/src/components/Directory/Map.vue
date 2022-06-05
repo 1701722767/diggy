@@ -13,8 +13,8 @@
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
     <l-marker
-      v-for="(event, i) in events"
-      :key="i"
+      v-for="(event) in events"
+      :key="event.event_id"
       :lat-lng="[event.coordinates.latitude, event.coordinates.longitude]"
       @click="showInfoEvent(event.event_id, event.category_id)"
     >
@@ -29,8 +29,8 @@
     </l-marker>
 
     <l-marker
-      v-for="(place, i) in places"
-      :key="i"
+      v-for="(place) in places"
+      :key="place.id"
       :lat-lng="[place.coordinates.latitude, place.coordinates.longitude]"
       @click="showInfoPlace(place.id, place.category_id)"
     >

@@ -11,7 +11,7 @@ def test_handler():
                 }
             }
 
-    main.eventsTable = TableMock()
+    main.categories_table = TableMock()
 
     class DynamoMock:
         def Table(self,table):
