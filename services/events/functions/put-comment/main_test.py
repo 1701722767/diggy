@@ -55,7 +55,8 @@ class TableEventMock:
             {   "requestContext": { 
                     "authorizer" : {
                         "claims": {
-                           "sub" : "abc"
+                           "sub" : "abc",
+                           "name" : "Nicolas Cardona"
                         }
                     } 
                 },
@@ -70,7 +71,8 @@ class TableEventMock:
             {   "requestContext": { 
                     "authorizer" : {
                         "claims": {
-                           "sub" : "abc"
+                           "sub" : "abc",
+                           "name": "Juan Carlos Giraldo"
                         }
                     } 
                 },

@@ -14,7 +14,9 @@ KEY_ERROR_MESSAGE = {
 }
 
 client = boto3.resource('dynamodb',region_name=AWS_REGION)
+client_cognito = boto3.client("cognito-idp", region_name=AWS_REGION)
 events_table = client.Table("events")
+
 
 def decodeBase64ToJson(base64Data):
     base64_bytes = base64Data.encode('ascii')
@@ -102,11 +104,15 @@ def lambda_handler(event, context):
     try:
         composite_key = event['queryStringParameters']['composite_key']
         user_id = event['requestContext']['authorizer']['claims']['sub']
-        event_data = json.loads(event['body'], parse_float=Decimal)
-        event_data['user_id'] = user_id
-        event_data['composite_key'] = decodeBase64ToJson(composite_key)
-        put_comment(event_data)
+        full_name = event['requestContext']['authorizer']['claims']['name']
         
+        event_data = json.loads(event['body'], parse_float=Decimal)
+        
+        event_data['user_id'] = user_id
+        event_data['full_name'] =  full_name
+        event_data['composite_key'] = decodeBase64ToJson(composite_key)
+        
+        put_comment(event_data)
 
     except KeyError as e:
         print(e)
