@@ -25,6 +25,11 @@ class TableEventMock():
     "input,expected",[
         (
             {
+                "requestContext":{
+                    "identity":{
+                        "sourceIp": "191.95.160.92"
+                    }
+                },
                 "queryStringParameters": 
                 {
                     "center_coordinates": "ew0KICAgICJsYXRpdHVkZSIgOiA1My4zMTg2MTExMTExMTExMSwNCiAgICAibG9uZ2l0dWRlIiA6IC0xLjY5OTcyMjIyMjIyMjIyMjMNCn0="
