@@ -138,10 +138,7 @@ export default {
 
     onMouseMove(){
         const currentCenter = this.$refs['map'].mapObject.getCenter();
-        console.log(currentCenter.lat);
-        console.log(currentCenter.lng);
         this.getEvents([currentCenter.lat,currentCenter.lng])
-      
     },
 
     recenterMap(currentLocation) {

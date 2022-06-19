@@ -17,14 +17,11 @@ def get_closest_events(center_coordinates):
         raise Exception("No existe ningún evento registrado")
     
     events = response['Items']
-    
-    closest_events = []
-    
-    for event in events:
-        if distance(center_coordinates,event['coordinates']) <= MIN_DISTANCE:
-            closest_events.append(event)
-             
+    closest_events = [event for event in events if isClose(event['coordinates'],center_coordinates)]
     return closest_events
+
+def isClose(coordinates1,coordinates2):
+    return distance(coordinates1,coordinates2) <= MIN_DISTANCE
     
 def distance(coordinates1,coordinates2):
     
