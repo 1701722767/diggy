@@ -3,15 +3,22 @@ import boto3
 import base64
 from decimal import Decimal
 from math import radians, cos, sin, asin, sqrt
+from datetime import datetime
+import requests
+import pytz
 
 AWS_REGION = "us-east-1"
 dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION)
 events_table = dynamodb.Table('events')
 MIN_DISTANCE = 900
 
-def get_closest_events(center_coordinates):
-    
-    response = events_table.scan()
+def get_closest_events(center_coordinates,client_datetime):
+    response = events_table.scan(
+        FilterExpression = "date_start >= :client_datetime",
+        ExpressionAttributeValues = {
+        ":client_datetime" : client_datetime
+        }
+    )
     
     if 'Items'not in response or not response['Items']:
         raise Exception("No existe ningún evento registrado")
@@ -40,7 +47,13 @@ def decodeBase64ToJson(base64Data):
     base64_bytes = base64Data.encode('ascii')
     message_bytes = base64.b64decode(base64_bytes)
     return json.loads(message_bytes.decode('ascii'), parse_float=Decimal)
-	
+
+def get_client_datetime(source_ip):
+    response_api = requests.get(f"https://ipapi.co/{source_ip}/json/")
+    time_zone = response_api.json()['timezone']
+    tz = pytz.timezone(time_zone) 
+    datetime_client = datetime.now(tz)
+    return datetime_client.strftime("%Y-%m-%d %H:%M:%S")
 	
 def lambda_handler(event, context):
     
@@ -64,8 +77,9 @@ def lambda_handler(event, context):
     
     try:
         base64_coordinates = event['queryStringParameters']['center_coordinates']
+        source_ip = event['requestContext']['identity']['sourceIp']
         center_coordinates = decodeBase64ToJson(base64_coordinates)
-        message['data']['items'] = get_closest_events(center_coordinates)
+        message['data']['items'] = get_closest_events(center_coordinates,get_client_datetime(source_ip))
         
     except Exception as e:
         message['error'] = True
