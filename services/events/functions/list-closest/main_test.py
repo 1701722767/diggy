@@ -2,7 +2,7 @@ import pytest
 import main
 
 class TableEventMock():
-    def scan(self):
+    def scan(self,FilterExpression,ExpressionAttributeValues):
         return {
             "Items":[
                 {
