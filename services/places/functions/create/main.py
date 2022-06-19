@@ -53,6 +53,8 @@ class Request:
         places_data["id"] = "PL" + str(uuid.uuid4())
         places_data["user_id"] = user_id
         places_data["category_name"] = category
+        places_data["score"] = 0
+        places_data["total_comments"] = 0
 
         response = places_table.put_item( Item=places_data )
 
