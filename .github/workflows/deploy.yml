@@ -2,7 +2,7 @@ name: Build zips
 
 on:
   push:
-    branches: [main]
+    branches: [create-lambda-for-closest-events]
 
 jobs:
   build:
