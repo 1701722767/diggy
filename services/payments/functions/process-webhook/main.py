@@ -6,7 +6,7 @@ import traceback
 
 AWS_REGION = "us-east-1"
 TRANSACTION_QUEUE = "https://sqs.us-east-1.amazonaws.com/605550406178/payments-transactions-queue"
-sqsClient = boto3.client('sqs',region_name=AWS_REGION)
+sqsClient = boto3.client('sqs', region_name=AWS_REGION)
 
 
 """
@@ -20,34 +20,44 @@ class Request:
         self.err = None
 
     def isValidateWebhook(self):
-        if self.meessage is None:
+        if self.message is None:
             return False
 
-        state_pol = self.meessage.get("state_pol", "")
+        state_pol = self.message.get("state_pol", "")
         if state_pol == "" or state_pol[0] != "4":
             False
 
-        response_message_pol = self.meessage.get("response_message_pol", "")
+        response_message_pol = self.message.get("response_message_pol", "")
 
         return response_message_pol != "" and response_message_pol[0] == "APPROVED"
 
     def createTransaction(self):
-        value = self.meessage.get("value", "")
+        value = self.message.get("value", "")
         if value == "" or len(value) != 1:
             return None
 
         amount = float(value[0])
 
-        reference_sale = self.meessage.get("reference_sale", "")
+        reference_sale = self.message.get("reference_sale", "")
         if reference_sale == "" or len(reference_sale) != 1:
             return None
 
         reference_sale = reference_sale[0]
-        user_id = reference_sale.split('#')[0]
+        reference_info = reference_sale.split('#')
+
+        if len(reference_info) != 3:
+            return None
+
+        user_id = reference_info[0]
+        user_name = reference_info[1]
+        reference_id = reference_info[2]
 
         return {
             "user_id": user_id,
-            "amount": amount
+            "user_name": user_name,
+            "reference_id": reference_id,
+            "amount": amount,
+            "description": "Consignación a través de Payu"
         }
 
     def sendTransaction(self, transaction):
@@ -55,15 +65,13 @@ class Request:
             QueueUrl=TRANSACTION_QUEUE,
             MessageBody=json.dumps(transaction))
 
-        print(response)
-
         if response["ResponseMetadata"]["HTTPStatusCode"] == 200:
             return None
 
         raise("send to sqs payments failed")
 
     def process(self, message):
-        self.meessage = message
+        self.message = message
 
         if not self.isValidateWebhook():
             return None
