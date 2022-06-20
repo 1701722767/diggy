@@ -6,6 +6,7 @@
     @ready="onReady"
     ref="map"
     @locationfound="onLocationFound"
+    @moveend="onMouseMove"
   >
     <ShowEvent ref="ShowEvent"></ShowEvent>
     <ShowPlace ref="ShowPlace"></ShowPlace>
@@ -76,7 +77,7 @@ export default {
     ShowPlace,
   },
   mounted() {
-    this.getEvents();
+    this.getEvents(this.center);
     this.getPlaces();
   },
   data() {
@@ -87,6 +88,7 @@ export default {
       zoom: 16,
       center: [5.0569, -75.50356],
 
+      currentCenter: null,
       map: null,
       location: null,
 
@@ -126,7 +128,7 @@ export default {
     },
 
     onReady() {
-      this.map = this.$refs["map"].mapObject;
+      this.map = this.$refs['map'].mapObject;
       this.map.locate();
     },
 
@@ -135,18 +137,25 @@ export default {
       this.recenterMap(this.location.latlng);
     },
 
+    onMouseMove(){
+        const currentCenter = this.$refs['map'].mapObject.getCenter();
+        this.getEvents([currentCenter.lat,currentCenter.lng])
+    },
+
     recenterMap(currentLocation) {
       this.$refs["map"].mapObject.panTo(currentLocation);
     },
 
-    getEvents() {
-      getJSON(
-        "/events",
-        {
-          type: "default",
-        },
-        false
-      )
+    getEvents(center) {
+      const centerCoordinates = btoa(
+        `{
+          "latitude": ${center[0]},
+          "longitude": ${center[1]}
+        }`)
+      
+      const params = { center_coordinates : centerCoordinates}
+
+      getJSON("/events/closest",params,false)
         .then((res) => {
           if (res.error) {
             notification({
@@ -158,7 +167,7 @@ export default {
         })
         .catch((err) => {
           notification({
-            message: "Ocurrió un error al hacer la petición",
+            message: "Error al realizar la petición",
           });
         });
     },

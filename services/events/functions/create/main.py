@@ -56,7 +56,7 @@ def create_event(event):
         "max": event['max'],
         "date_start": event['date_start'],
         "date_end": event['date_end'],
-        "score" : 0.0,
+        "score" : 0,
         "total_comments" : 0
     })
     validate_dynamodb_response(response)
