@@ -64,7 +64,6 @@ export default {
   }),
   methods: {
     register() {
-      console.log(this.composite_key);
       this.loading = true;
       postJSON(this.route, this.postModel, true, this.composite_key)
         .then((res) => {
@@ -90,16 +89,6 @@ export default {
             message: "Ocurrió un error al hacer la petición",
           });
         });
-    },
-
-    getKeysEvent(event_id, category_id){
-      const keys = btoa(
-        `{
-            "event_id" : "${event_id}" ,
-            "category_id" : "${category_id}"
-            }`
-      );
-      this.parametros = { composite_key: keys };
     },
 
 
