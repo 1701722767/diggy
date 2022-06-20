@@ -223,7 +223,6 @@ export default {
       postJSON("/users", this.model, false)
         .then((res) => {
           this.loading = false;
-
           notification({
             message: res.message,
           });

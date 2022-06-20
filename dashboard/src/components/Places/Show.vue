@@ -52,6 +52,13 @@
         <v-card-actions>
           <v-btn color="red lighten-2" text @click="hide"> Cerrar </v-btn>
         </v-card-actions>
+
+        <Comment 
+            ref="Comment"
+            :composite_key="composite_key"
+            route="/places/comments"
+        ></Comment>
+
       </v-card>
     </v-dialog>
   </v-row>
@@ -61,8 +68,13 @@
 import { getJSON } from "@/helpers/Request";
 import { formatDateAndTime } from "@/helpers/Date";
 import { notification } from "@/helpers/Notifications";
+import Comment from "@/components/Comment";
 
 export default {
+
+  components:{
+    Comment
+  },
   data: () => ({
     dialog: false,
 
@@ -76,6 +88,7 @@ export default {
       score: 0,
       total_comments: 0,
     },
+    composite_key:"",
 
     items: [
       {
@@ -97,6 +110,7 @@ export default {
     formatDateAndTime,
     show(params) {
       this.getItem(params);
+      this.composite_key=params;
     },
     hide() {
       this.dialog = false;

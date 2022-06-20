@@ -2,9 +2,14 @@ import { getToken } from "@/services/Auth.js";
 import { API_URL } from "../config/Constants.js";
 import { TOKEN_KEY } from "../config/Constants.js";
 
-export const postJSON = async function (path = "", data = {}, needToken) {
+export const postJSON = async function (path = "", data = {}, needToken, params=null) {
   let url = API_URL + path;
+
   let headers = await getHeaders(needToken);
+
+  if (params !== null) {
+    url += "?" + new URLSearchParams(params).toString();
+  }
 
   const response = await fetch(url, {
     method: "POST",
