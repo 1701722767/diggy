@@ -3,7 +3,7 @@ import { API_URL } from "../config/Constants.js";
 import { TOKEN_KEY } from "../config/Constants.js";
 
 export const postJSON = async function (path = "", data = {}, needToken, params=null) {
-  let url = APP_HOST + path;
+  let url = API_URL + path;
 
   let headers = await getHeaders(needToken);
 
