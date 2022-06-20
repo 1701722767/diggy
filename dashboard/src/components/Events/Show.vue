@@ -88,7 +88,6 @@
 import { getJSON } from "@/helpers/Request";
 import { formatDateAndTime } from "@/helpers/Date";
 import { notification } from "@/helpers/Notifications";
-//import { postJSON } from "../../helpers/Request.js";
 import Comment from "@/components/Comment";
 
 export default {
@@ -140,7 +139,6 @@ export default {
     show(params) {
       this.getItem(params);
       this.composite_key=params;
-      console.log(params);
     },
     hide() {
       this.dialog = false;

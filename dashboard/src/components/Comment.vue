@@ -79,6 +79,8 @@ export default {
           notification({
             message: "Comentario guardado con éxito",
           });
+          this.postModel.comment="";
+          this.postModel.score=5.0;
 
           this.showModal = false;
         })
