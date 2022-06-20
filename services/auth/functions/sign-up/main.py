@@ -5,8 +5,8 @@ import boto3
 
 AWS_REGION = "us-east-1"
 
-client_users = boto3.resource('dynamodb',region_name=AWS_REGION)
-users_table = client_users.Table("users")
+dynamo_client = boto3.resource('dynamodb',region_name=AWS_REGION)
+users_table = dynamo_client.Table("users")
 
 client = boto3.client("cognito-idp", region_name="us-east-1")
 KEY_ERROR_MESSAGE = {
