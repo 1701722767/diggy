@@ -11,6 +11,7 @@ import EventsList from './components/Events/List.vue'
 import PlacesPublicList from './components/Places/List.vue'
 import MyEvents from './views/MyEvents.vue'
 import MyPlaces from './views/MyPlaces.vue'
+import MyBalance from './views/MyBalance.vue'
 
 
 
@@ -65,6 +66,11 @@ export default new Router({
           path: '/my-events',
           name: 'MyEvents',
           component: MyEvents
+        },
+        {
+          path: '/my-balance',
+          name: 'MyBalance',
+          component: MyBalance
         },
         {
           path: '/place-register',
