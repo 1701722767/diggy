@@ -85,6 +85,21 @@
                   </v-col>
                   <!-- END BIRTHDAY -->
 
+                  <!-- SELECCION DE CATEGORIA -->
+                  <v-col cols="12">
+                    <v-select
+                      v-model="model.categories"
+                      :items="categories"
+                      item-text="name"
+                      item-value="id"
+                      label="Categorias de interés"
+                      attach
+                      chips
+                      multiple
+                    ></v-select>
+                  </v-col>
+                  <!-- FIN SELECCION CATEGORIA -->
+
                   <v-col cols="12">
                     <v-text-field
                       v-model="model.password"
@@ -134,7 +149,7 @@
 </template>
 
 <script>
-import { postJSON } from "@/helpers/Request.js";
+import { postJSON, getJSON } from "@/helpers/Request.js";
 import { notification } from "@/helpers/Notifications.js";
 
 export default {
@@ -145,10 +160,15 @@ export default {
         this.password === this.verify || "Las contraseñas deben coincidir";
     },
   },
+  mounted() {
+    this.getCategories();
+  },
   data() {
     return {
       dialog: true,
       loading: false,
+
+      categories: [],
 
       model: {
         user_name: "",
@@ -157,6 +177,7 @@ export default {
         phone_number: "",
         birthdate: "",
         full_name: "",
+        categories: [],
       },
       confirmPassword: "",
       showPassword: false,
@@ -212,9 +233,9 @@ export default {
   methods: {
     register() {
       if (!this.$refs.registerForm.validate()) {
-         notification({
-            message: "Verifique los datos ingresados",
-          });
+        notification({
+          message: "Verifique los datos ingresados",
+        });
 
         return;
       }
@@ -241,6 +262,17 @@ export default {
     },
     saveBirthDate(date) {
       this.$refs.menu.save(date);
+    },
+    getCategories() {
+      getJSON("/categories", this.params, false)
+        .then((res) => {
+          this.categories = res.data.items;
+        })
+        .catch((err) => {
+          notification({
+            message: "Error al obtener las categorias",
+          });
+        });
     },
   },
 };

@@ -14,6 +14,7 @@
       <v-tab-item>
         <v-container>
           <form
+            style="padding:10px"
             ref="rechargeForm"
             @submit.prevent="rechargeValidate()"
             method="POST"
@@ -28,7 +29,6 @@
               :value="`${user.id}#${user.user_name}#${reference_id}`"
             />
             <input name="tax" type="hidden" value="0" />
-            <!-- <input name="taxReturnBase" type="hidden" value="16806" /> -->
             <input name="currency" type="hidden" value="COP" />
             <input
               name="signature"
