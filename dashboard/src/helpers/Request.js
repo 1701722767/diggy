@@ -1,9 +1,10 @@
 import { getToken } from "@/services/Auth.js";
-import { APP_HOST } from "../config/Constants.js";
+import { API_URL } from "../config/Constants.js";
 import { TOKEN_KEY } from "../config/Constants.js";
 
 export const postJSON = async function (path = "", data = {}, needToken, params=null) {
   let url = APP_HOST + path;
+
   let headers = await getHeaders(needToken);
 
   if (params !== null) {
@@ -24,7 +25,7 @@ export const postJSON = async function (path = "", data = {}, needToken, params=
 };
 
 export const getJSON = async function (path = "", params = null, needToken) {
-  let url = APP_HOST + path;
+  let url = API_URL + path;
 
   if (params !== null) {
     url += "?" + new URLSearchParams(params).toString();
@@ -45,7 +46,7 @@ export const getJSON = async function (path = "", params = null, needToken) {
 };
 
 export const deleteJSON = async function (path = "", data = {}, needToken) {
-  let url = APP_HOST + path;
+  let url = API_URL + path;
   let headers = await getHeaders(needToken);
 
   const response = await fetch(url, {

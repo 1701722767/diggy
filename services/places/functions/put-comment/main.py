@@ -6,7 +6,7 @@ import base64
 
 AWS_REGION = "us-east-1"
 KEY_ERROR_MESSAGE = {
-    "composite_key" : "No se indicó el evento ni la categoría",
+    "composite_key" : "No se indicó el sitio ni la categoría",
     "user_id" : "No se indicó el usuario que escribió el comentario",
     "full_name": "El nombre es obligatorio",
     "comment": "El comentario no puede estar vacío",
@@ -15,7 +15,7 @@ KEY_ERROR_MESSAGE = {
 
 client = boto3.resource('dynamodb',region_name=AWS_REGION)
 client_cognito = boto3.client("cognito-idp", region_name=AWS_REGION)
-events_table = client.Table("events")
+places_table = client.Table("places")
 
 
 def decodeBase64ToJson(base64Data):
@@ -37,13 +37,12 @@ def put_comment(comment_info):
     
     key = comment_info['composite_key']
     
-    
     old_score, total = get_score_comments(key)
     
     new_score = round(compute_score(old_score,total + 1 ,comment_info['score']),1)
     
    
-    response = events_table.update_item(
+    response = places_table.update_item(
         Key = key,
         UpdateExpression = 
         "SET comments=list_append(if_not_exists (comments, :empty_list),:new_comment)," + 
@@ -63,15 +62,15 @@ def compute_score(old_score,total,score):
     return ((old_score)*(total - 1) + score) / total
 
 def get_score_comments(key):
-    response = events_table.get_item(
+    response = places_table.get_item(
         Key = key,
         ProjectionExpression = "score,total_comments"
         )
     if 'Item' not in response:
-        raise Exception("El evento no existe")
+        raise Exception("El sitio no existe")
         
     if 'score' not in response['Item'] or 'total_comments' not in response['Item']:
-        raise Exception("El evento no tiene los atributos score y total_comments")
+        raise Exception("El sitio no tiene los atributos score y total_comments")
     
     return response['Item']['score'],response['Item']['total_comments']
     
@@ -95,7 +94,8 @@ def lambda_handler(event, context):
     
     response = {
         'statusCode': 200,
-        'headers': {'Content-Type': 'application/json',
+        'headers': {
+            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         },
         'body': json.dumps(message)
@@ -105,13 +105,10 @@ def lambda_handler(event, context):
         composite_key = event['queryStringParameters']['composite_key']
         user_id = event['requestContext']['authorizer']['claims']['sub']
         full_name = event['requestContext']['authorizer']['claims']['name']
-        
         event_data = json.loads(event['body'], parse_float=Decimal)
-        
         event_data['user_id'] = user_id
         event_data['full_name'] =  full_name
         event_data['composite_key'] = decodeBase64ToJson(composite_key)
-        
         put_comment(event_data)
 
     except KeyError as e:
