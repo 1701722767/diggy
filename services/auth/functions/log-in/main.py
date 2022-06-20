@@ -25,32 +25,10 @@ def log_in(user):
     )
 
     access_token = response["AuthenticationResult"]["IdToken"]
-    
-    sub = client.get_user(
-        AccessToken= response["AuthenticationResult"]["AccessToken"]
-    )
-    
-    user['id'] = sub["UserAttributes"][0]["Value"]
-    save_firebase_token(user)
 
     return {
         "access_token" : access_token
     }
-    
-def save_firebase_token(user):
-    if 'FCM_token' in user:
-        FCM_token = user['FCM_token']
-        response = users_table.update_item(
-            Key = {
-                'id' : user['id'],
-                'user_name' : user['username']
-            },
-            UpdateExpression = "SET FCM_token=:FCM_token",
-            ExpressionAttributeValues = {
-                ":FCM_token":FCM_token
-            }
-        )
-        validate_dynamodb_response(response)
         
 def validate_dynamodb_response(response):
     if response['ResponseMetadata']['HTTPStatusCode'] != 200:
