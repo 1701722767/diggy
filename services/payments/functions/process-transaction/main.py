@@ -3,16 +3,16 @@ import json
 import base64
 from urllib.parse import parse_qs
 import traceback
+from datetime import datetime, timedelta
 
 AWS_REGION = "us-east-1"
+REQUIRED_FIELDS = ['user_id','user_name','reference_id','description','amount']
 dynamoClient = boto3.client('dynamodb', region_name=AWS_REGION)
 
 
 """
 Request is the class used for handling the request
 """
-
-
 class Request:
 
     def __init__(self):
@@ -22,32 +22,19 @@ class Request:
         if self.message is None:
             return False
 
-        user_id = self.message.get("user_id", "")
-        if user_id == "":
-            return False
+        for field in REQUIRED_FIELDS:
+            if self.message.get(field, "") == "":
+                return False
 
-        user_name = self.message.get("user_name", "")
-        if user_name == "":
-            print("not user name")
-            return False
-
-        reference_id = self.message.get("reference_id", "")
-        if reference_id == "":
-            return False
-
-        description = self.message.get("description", "")
-        if description == "":
-            return False
-
-        amount = self.message.get("amount", "")
-
-        return amount != ""
+        return True
 
     def process(self, message):
         self.message = message
 
         if not self.isValidateTransaction():
             return None
+
+        date = datetime.now() - timedelta(hours=5)
 
         response = dynamoClient.transact_write_items(
             TransactItems=[
@@ -72,6 +59,7 @@ class Request:
                             'user_id': {'S': self.message["user_id"]},
                             'reference_id': {'S': self.message["reference_id"]},
                             'description': {'S': self.message["description"]},
+                            'date': {'S': date.strftime("%m/%d/%Y, %H:%M:%S")},
                             'amount': {'N': str(self.message["amount"])}
                         },
                         'ConditionExpression': 'attribute_not_exists(reference_id)',
