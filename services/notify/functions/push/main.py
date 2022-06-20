@@ -2,9 +2,15 @@ import firebase_admin
 import json
 from firebase_admin import credentials,messaging
 
-def init(push):
+REQUIRED_ATTRIBUTES = {
+    "title" : "Debe indicar el título del mensaje",
+    "body" : "Debe indicar el cuerpo del mensaje",
+    "token" : "No se indicó el token de cliente"
+}
 
-    cred = credentials.Certificate("serviceAccountKey.json")
+cred = credentials.Certificate("serviceAccountKey.json")
+
+def notify(push):
     
     if not firebase_admin._apps:
         firebase_admin.initialize_app(cred)
@@ -13,40 +19,26 @@ def init(push):
     body = push["body"]
     token  = push["token"]
 
-    # See documentation on defining a message payload.
-
-    try :
-        message = messaging.Message(
-            notification=messaging.Notification(
-                title=title,
-                body=body,
-            ),
-            token=token
-        )
-
-        # Send a message to the device corresponding to the provided
-        # registration token.
-        response = messaging.send(message)
-        return response
-        
-
-    except Exception as e:
-        print(str(e))
-        raise e
-
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title=title,
+            body=body,
+        ),
+        token=token
+    )
+    response = messaging.send(message)
+    return response
+   
 def validate(data):
-    
-    for name in data.keys():
-        if not data[name]:
-            print(name," missing")
-            raise Exception(str(name))
-
+    for key in REQUIRED_ATTRIBUTES.keys():
+        if key not in data or not data[key]:
+            print(key," missing")
+            raise KeyError(key)
 
 def lambda_handler(event, context):
-    
     response = {
         "error" : False,
-        "message": "Todo bien",
+        "message": "Notificación enviada",
         "data": None
     }
     
@@ -57,14 +49,17 @@ def lambda_handler(event, context):
             "title" : message["title"],
             "body" : message["body"]
         }
-        validate(message)
+        validate(push)
+        response['data'] = notify(push)
+        response['error'] = False
+    
+    except KeyError as e:
+        response['error']  = True
+        response['message'] = REQUIRED_ATTRIBUTES[e.args[0]]
+        
     except Exception as e:
         response['error']  = True
-        response['message'] = str(e).replace("'","")  + " missing"
-        return response
+        response['message'] = str(e)
         
-    data = init(push)
-    response['error'] = False
-    response['data'] = data
     
-    return response
+    return json.dumps(response,ensure_ascii = False)
