@@ -73,47 +73,12 @@
           <v-btn color="red lighten-2" text @click="hide"> Cerrar </v-btn>
         </v-card-actions>
 
-        <v-card-action class="justify-end">
-          <v-btn color="primary" text @click="showModal = true">Comentar</v-btn>
-          <transition name="fade" appear>
-            <div
-              class="modal-overlay"
-              v-if="showModal"
-              @click="showModal = false"
-            ></div>
-          </transition>
-          <transition name="slide" appear>
-            <div ref="commentForm" slot="" class="modal" v-if="showModal">
-              <v-col>
-                <h3>Realice el comentario</h3>
-                <v-textarea
-                  v-model="postModel.comment"
-                  append-icon="mdi-comment"
-                  class="mx-2"
-                  label="Comentario"
-                  rows="1"
-                ></v-textarea>
-                <v-rating
-                  :value="5.0"
-                  color="amber"
-                  v-model="postModel.score"
-                  dense
-                  half-increments
-                  size="23"
-                ></v-rating>
-                <br />
-                <v-card-actions>
-                  <v-btn color="red" text @click="showModal=false">
-                    Salir
-                  </v-btn>
-                  <v-btn color="primary" text @click="register">
-                    Guardar
-                  </v-btn>
-                </v-card-actions>
-              </v-col>
-            </div>
-          </transition>
-        </v-card-action>
+        <Comment 
+          ref="Comment"
+          :composite_key="composite_key"
+          route="/events/comments"
+        ></Comment>
+        
       </v-card>
     </v-dialog>
   </v-row>
@@ -123,9 +88,15 @@
 import { getJSON } from "@/helpers/Request";
 import { formatDateAndTime } from "@/helpers/Date";
 import { notification } from "@/helpers/Notifications";
-import { postJSON } from "../../helpers/Request.js";
+//import { postJSON } from "../../helpers/Request.js";
+import Comment from "@/components/Comment";
 
 export default {
+
+  components:{
+    Comment
+  },
+
   data: () => ({
     dialog: false,
     showModal: false,
@@ -145,11 +116,8 @@ export default {
       score: "",
       total_comments: "",
     },
+    composite_key:"",
 
-    postModel: {
-      comment: "",
-      score: 0.0,
-    },
 
     items: [
       {
@@ -171,6 +139,8 @@ export default {
     formatDateAndTime,
     show(params) {
       this.getItem(params);
+      this.composite_key=params;
+      console.log(params);
     },
     hide() {
       this.dialog = false;
@@ -182,42 +152,6 @@ export default {
       if (this.showModal) {
         this.showModal = !this.showModal;
       }
-    },
-
-    register() {
-      if (!this.$refs.commentForm.validate()) {
-        notification({
-          message: "Complete todos los campos.",
-        });
-        return;
-      }
-
-      this.loading = true;
-      postJSON("/events/comments", this.model, true)
-        .then((res) => {
-          this.loading = false;
-
-          if (res.error) {
-            notification({
-              message: res.message,
-              icon: "mdi-alert-circle",
-            });
-            return;
-          }
-          notification({
-            message: "Comentario guardado con éxito",
-          });
-
-          this.$router.push({ path: "/my-events" });
-
-          this.showModal = false;
-        })
-        .catch((err) => {
-          this.loading = false;
-          notification({
-            message: "Ocurrió un error al hacer la petición",
-          });
-        });
     },
 
     getItem(params) {

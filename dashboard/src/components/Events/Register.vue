@@ -63,7 +63,7 @@
                     <!--FECHA DE INICIO-->
                     <v-col cols="12" sm="6" md="6">
                       <v-datetime-picker
-                        v-model="model.date_start"
+                        v-model="picker_start"
                         color="purple darken-4"
                         label="Fecha y hora de inicio"
                         max="2024-03-20"
@@ -82,7 +82,7 @@
                       <v-datetime-picker
                             color="purple darken-4"
                             label="Fecha y hora de fin"
-                            v-model="model.date_end"
+                            v-model="picker_end"
                             max="2024-03-20"
                             >
                             <template slot="dateIcon">
@@ -249,8 +249,9 @@ export default {
 
       this.loading = true;
 
-      this.model.date_start = transformDate(this.model.date_start);
-      this.model.date_end = transformDate(this.model.date_end);
+      this.model.date_start = transformDate(this.picker_start);
+      this.model.date_end = transformDate(this.picker_end);
+    
 
       postJSON("/events", this.model, true)
         .then((res) => {
@@ -264,7 +265,14 @@ export default {
             return;
           }
 
-          this.$router.push({ path: "/my-events" });
+          if (!res.error) {
+            notification({
+            message: "Evento creado con éxito",
+          });
+            this.closeDialog();
+          }
+
+          
         })
         .catch((err) => {
           this.loading = false;
@@ -293,6 +301,9 @@ export default {
     },
     openDialog() {
       this.dialog = true;
+    },
+    closeDialog(){
+      this.dialog=false;
     },
     addMarker(event) {
       let latitude = event.latlng.lat;
@@ -335,6 +346,8 @@ export default {
         category_id:"",
         coordinates:{}
       },
+      tpdate_start:"",
+      tpdate_end:"",
       categories: "",
       select: { category: "" },
       edades: ["0", "10", "20", "30", "40", "50", "60", "70", "80"],

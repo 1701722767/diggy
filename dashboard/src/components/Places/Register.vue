@@ -191,11 +191,13 @@ export default {
             });
             return;
           }
-          notification({
-            message: "Evento creado con éxito",
-          });
 
-          this.$router.push({ path: "/my-places" });
+          if (!res.error) {
+            notification({
+              message: "Lugar creado con éxito",
+            });
+            this.closeDialog();
+          }
         })
         .catch((err) => {
           this.loading = false;
@@ -223,6 +225,9 @@ export default {
     },
     openDialog() {
       this.dialog = true;
+    },
+    closeDialog(){
+      this.dialog=false;
     },
     addMarker(event) {
       let latitude = event.latlng.lat;

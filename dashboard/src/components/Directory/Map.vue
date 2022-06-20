@@ -72,7 +72,7 @@ export default {
     LMarker,
     LTooltip,
     LIcon,
-    ShowEvent,
+  ShowEvent,
     ShowPlace,
   },
   mounted() {
@@ -96,6 +96,7 @@ export default {
 
       events: [],
       places: [],
+
     };
   },
 

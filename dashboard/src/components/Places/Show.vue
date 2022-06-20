@@ -52,6 +52,13 @@
         <v-card-actions>
           <v-btn color="red lighten-2" text @click="hide"> Cerrar </v-btn>
         </v-card-actions>
+
+        <Comment 
+          ref="Comment"
+          :composite_key="composite_key"
+          route="/events/comments"
+        ></Comment>
+        
       </v-card>
     </v-dialog>
   </v-row>
