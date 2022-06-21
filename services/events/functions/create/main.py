@@ -15,8 +15,8 @@ KEY_ERROR_MESSAGE = {
     "price": "Debe indicar el precio del evento",
     "slots": "Debe indicar los cupos disponibles actuales del evento",
     "max": "Debe ingresar la cantidad máxima de personas al evento",
-    "datestart": "Debe ingresar la hora y fecha de inicio del evento",
-    "dateend": "Debe ingresar la hora y fecha en la cual termina el evento"
+    "date_start": "Debe ingresar la hora y fecha de inicio del evento",
+    "date_end": "Debe ingresar la hora y fecha en la cual termina el evento"
 }
 
 client = boto3.resource('dynamodb',region_name=AWS_REGION)
@@ -57,7 +57,8 @@ def create_event(event):
         "date_start": event['date_start'],
         "date_end": event['date_end'],
         "score" : 0,
-        "total_comments" : 0
+        "total_comments" : 0,
+        "comments":[]
     })
     validate_dynamodb_response(response)
         
@@ -124,7 +125,7 @@ def lambda_handler(event, context):
     except Exception as e:
         print(e)
         message['error']  = True
-        message['message'] = "Error interno en el servidor"
+        message['message'] = str(e)
         response['statusCode'] = 500
         
     
