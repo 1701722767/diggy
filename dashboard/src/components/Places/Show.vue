@@ -47,70 +47,68 @@
           </div>
         </v-card-text>
 
-        <v-divider class="mx-4"></v-divider>
-        <br />
-        <v-row justify="center">
-          <v-dialog v-model="commentDialog" width="300px">
-            <template v-slot:activator="{ on, attrs }">
-              <div class="my-2">
-                <v-btn
-                  rounded
-                  outlined
-                  large
-                  v-bind="attrs"
-                  v-on="on"
-                  color="deep-purple lighten-2"
-                  dark
-                >
-                  Ver comentarios
-                </v-btn>
-              </div>
-            </template>
-            <v-card scrollable="300px">
-              <v-card-title>
-                <span class="text-h5">Comentarios</span>
-              </v-card-title>
-              <v-col v-for="(comment, i) in this.model.comments" :key="i">
-                <v-card-text>
-                  <h4>{{ comment["full_name"] }}</h4>
-                  {{ comment["comment"] }}
-                  <v-rating
-                    :value="Number(comment['score'])"
-                    color="amber"
-                    dense
-                    half-increments
-                    readonly
-                    size="14"
-                  ></v-rating>
-                </v-card-text>
-              </v-col>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="green darken-1"
-                  text
-                  @click="commentDialog = false"
-                >
-                  Salir
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-row>
-
-        <v-row justify="center">
-          <Comment
-            ref="Comment"
-            :composite_key="composite_key"
-            route="/places/comments"
-          ></Comment>
-        </v-row>
-
-        <v-spacer></v-spacer>
-
-        <v-card-actions class="justify-left">
-          <v-btn color="red lighten-2" text @click="hide"> Cerrar </v-btn>
-        </v-card-actions>
+        <v-card-text>
+          <v-divider class="mx-4"></v-divider>
+          <br />
+          <div>
+            <v-row justify="center">
+              <v-dialog v-model="commentDialog" width="300px">
+                <template v-slot:activator="{ on, attrs }">
+                  <div class="my-2">
+                    <v-btn
+                      rounded
+                      outlined
+                      large
+                      v-bind="attrs"
+                      v-on="on"
+                      color="deep-purple lighten-2"
+                      dark
+                    >
+                      Ver comentarios
+                    </v-btn>
+                  </div>
+                </template>
+                <v-card scrollable="300px">
+                  <v-card-title>
+                    <span class="text-h5">Comentarios</span>
+                  </v-card-title>
+                  <v-col v-for="(comment, i) in this.model.comments" :key="i">
+                    <v-card-text>
+                      <h4>{{ comment["full_name"] }}</h4>
+                      {{ comment["comment"] }}
+                      <v-rating
+                        :value="Number(comment['score'])"
+                        color="amber"
+                        dense
+                        half-increments
+                        readonly
+                        size="14"
+                      ></v-rating>
+                    </v-card-text>
+                  </v-col>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="green darken-1"
+                      text
+                      @click="commentDialog = false"
+                    >
+                      Salir
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-row>
+          </div>
+          <br/>
+          <v-row justify="center">
+            <Comment
+              ref="Comment"
+              :composite_key="composite_key"
+              route="/places/comments"
+            ></Comment>
+          </v-row>
+        </v-card-text>
       </v-card>
     </v-dialog>
   </v-row>

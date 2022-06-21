@@ -1,6 +1,7 @@
 <template>
   <v-card-action class="justify-end">
     <v-btn
+      v-if="!showModal"
       rounded
       outlined
       large
@@ -40,8 +41,10 @@
           ></v-rating>
           <br />
           <v-card-actions>
-            <v-btn color="red" text @click="showModal = false"> Salir </v-btn>
-            <v-btn color="primary" text @click="register"> Guardar </v-btn>
+            <v-row justify="center">
+              <v-btn color="red" text @click="showModal = false"> Salir </v-btn>
+              <v-btn color="primary" text @click="register"> Guardar </v-btn>
+            </v-row>
           </v-card-actions>
         </v-col>
       </div>
