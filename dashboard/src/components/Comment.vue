@@ -1,13 +1,24 @@
 <template>
   <v-card-action class="justify-end">
-    <v-btn color="primary" text @click="showModal = true">Comentar</v-btn>
+    <v-btn
+      rounded
+      outlined
+      large
+      v-bind="attrs"
+      v-on="on"
+      color="primary"
+      dark
+       @click="showModal = true"
+    >
+      Comentar
+    </v-btn>
     <transition name="fade" appear>
       <div
         class="modal-overlay"
         v-if="showModal"
         @click="showModal = false"
       ></div>
-    </transition> 
+    </transition>
     <transition name="slide" appear>
       <div ref="commentForm" slot="" class="modal" v-if="showModal">
         <v-col>
@@ -39,28 +50,25 @@
 </template>
 
 <script>
-
 import Map from "../components/Directory/Map";
 import { postJSON } from "../helpers/Request.js";
 import { notification } from "@/helpers/Notifications";
 
 export default {
-
-  components:{
-    Map
+  components: {
+    Map,
   },
-  props:{
+  props: {
     composite_key: String,
-    route: String
+    route: String,
   },
   data: () => ({
-
     showModal: false,
     postModel: {
       comment: "",
       score: 5.0,
     },
-    parametros:""
+    parametros: "",
   }),
   methods: {
     register() {
@@ -78,8 +86,8 @@ export default {
           notification({
             message: "Comentario guardado con éxito",
           });
-          this.postModel.comment="";
-          this.postModel.score=5.0;
+          this.postModel.comment = "";
+          this.postModel.score = 5.0;
 
           this.showModal = false;
         })
@@ -90,8 +98,6 @@ export default {
           });
         });
     },
-
-
   },
 };
 </script>

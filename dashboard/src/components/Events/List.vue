@@ -17,7 +17,7 @@
             <div>
               <v-card-title class="text-b" v-text="item.name"></v-card-title>
               <v-card-subtitle>{{
-                formatDateAndTime(item.datestart)
+                formatDateAndTime(item.date_start)
               }}</v-card-subtitle>
             </div>
 
