@@ -39,9 +39,17 @@ export const getTokenFirebase = () => {
                   message : "Te notificaremos cuando haya un evento nuevo de tú interés"
                 })
               }
+              else{
+                notification({
+                  message : "No se pudieron activar las notificaciones"
+                })
+              }
              
             })
             .catch((err)=>{
+              notification({
+                message : "No se pudieron activar las notificaciones"
+              })
             })
           }
     
