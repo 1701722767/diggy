@@ -44,6 +44,9 @@ class Request:
         if templates.EMAILS_TEMPLATES.get(self.template,None) is None:
             return "" # for resturn a default in template
 
+        if self.template == "booking":
+            return templates.EMAILS_TEMPLATES[self.template] + "<h3>"+self.data+"</h3>"
+
         return templates.EMAILS_TEMPLATES[self.template]
 
 
