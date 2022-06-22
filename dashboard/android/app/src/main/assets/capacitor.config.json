@@ -1,0 +1,6 @@
+{
+	"appId": "diggy.com",
+	"appName": "Diggy",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

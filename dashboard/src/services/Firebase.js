@@ -44,7 +44,7 @@ export const getTokenFirebase = () => {
                   message : "No se pudieron activar las notificaciones"
                 })
               }
-             
+
             })
             .catch((err)=>{
               notification({
@@ -52,8 +52,8 @@ export const getTokenFirebase = () => {
               })
             })
           }
-    
-        
+
+
         } else {
           notification({
             message : "Activa las notificaciones para que no te pierdes los últimos eventos"
@@ -62,10 +62,10 @@ export const getTokenFirebase = () => {
       })
       .catch((err) => {
         notification({
-          message : "Activa las notificaciones para que no te pierdes los últimos eventos"
+          message : err
         })
       });
-    
+
     onMessage(messaging, (payload) => {
       navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(registration => {
           registration.showNotification(

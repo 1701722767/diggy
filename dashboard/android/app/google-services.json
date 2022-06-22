@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "607844518648",
+    "project_id": "encoded-keyword-270113",
+    "storage_bucket": "encoded-keyword-270113.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607844518648:android:b8d5452c376a64c24c090d",
+        "android_client_info": {
+          "package_name": "diggy.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607844518648-5jb8rsa63utiehmdtf8h976be31q0kmp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAof_7_HfO3yVtC1JgDos2KU8MRStvSlHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607844518648-5jb8rsa63utiehmdtf8h976be31q0kmp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

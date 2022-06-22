@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Diggy</string>
+    <string name="title_activity_main">Diggy</string>
+    <string name="package_name">diggy.com</string>
+    <string name="custom_url_scheme">diggy.com</string>
+    <string name="default_notification_channel_id">com.mycompany.myapp.urgent</string>
+</resources>
