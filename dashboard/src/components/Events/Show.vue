@@ -66,7 +66,7 @@
 
         <v-divider class="mx-4"></v-divider>
 
-        <br/>
+        <br />
 
         <v-card-text>
           <v-row justify="center">
@@ -129,10 +129,8 @@
 
         <v-divider class="mx-4"></v-divider>
 
-        <v-card-actions class="justify-center"> 
-          <v-btn color="green" text @click="reserve">
-            Reservar
-          </v-btn>
+        <v-card-actions class="justify-center">
+          <v-btn color="green" text @click="reserve()"> Reservar </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -140,15 +138,14 @@
 </template>
 
 <script>
-import { getJSON } from "@/helpers/Request";
+import { getJSON,postJSON } from "@/helpers/Request";
 import { formatDateAndTime } from "@/helpers/Date";
 import { notification } from "@/helpers/Notifications";
 import Comment from "@/components/Comment";
 
-
 export default {
   components: {
-    Comment
+    Comment,
   },
 
   data: () => ({
@@ -200,6 +197,23 @@ export default {
     },
     reserve() {
       /// not implemented yet
+      postJSON("/events/booking", null, true,this.composite_key)
+        .then((res) => {
+          if (res.error) {
+            notification({
+              message: res.message,
+            });
+          } else {
+            notification({
+              message: res.message,
+            });
+          }
+        })
+        .catch((err) => {
+          notification({
+            message: "Ocurrió un error al hacer la petición",
+          });
+        });
     },
 
     getItem(params) {
@@ -224,5 +238,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
