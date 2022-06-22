@@ -4,7 +4,7 @@
         <v-card
             max-width="300px"
         >
-            <v-card-title>Nicolas Cardona</v-card-title>
+            <v-card-title>{{ this.model.full_name }}</v-card-title>
 
             <v-card-text>
             <v-row
@@ -22,22 +22,33 @@
 
             <v-card-text>
                 <div>
-                    <span style= "font-weight: bold"> Nombre de usuario </span> : nicolascr181
+                    <span style= "font-weight: bold"> Nombre de usuario </span> : {{ this.model.user_name }}
                 </div>
                 <div>
-                    <span style= "font-weight: bold"> Email  </span> : nicolascr181@gmail.com
+                    <span style= "font-weight: bold"> Email  </span> :{{ this.model.email }}
                 </div>
                  <div>
-                    <span style= "font-weight: bold"> Teléfono  </span> : +57 323-444-0587
+                    <span style= "font-weight: bold"> Teléfono  </span> : {{ this.model.phone_number }}
                 </div>
                 <div>
-                    <span style= "font-weight: bold"> Fecha de nacimiento </span> : 1998-09-04
+                    <span style= "font-weight: bold"> Fecha de nacimiento </span> : {{ this.model.birthdate }}
                 </div>
                 <div>
-                    <span style= "font-weight: bold"> Categorías de interés </span> : Música,Social
+                    <v-col cols="12">
+                    <v-select
+                      v-model="model.categories"
+                      :items="categories"
+                      item-text="name"
+                      item-value="id"
+                      label="Categorias de interés"
+                      attach
+                      chips
+                      multiple
+                    ></v-select>
+                  </v-col>
                 </div>
                 <div>
-                    <span style= "font-weight: bold"> Saldo </span> : $ 20.000
+                    <span style= "font-weight: bold"> Saldo </span> : {{ this.model.amount }}
                 </div>
             </v-card-text>
 
@@ -55,18 +66,75 @@
   </v-row>
 </template>
 
+
 <script>
+
+import { getJSON } from "@/helpers/Request";
+import { notification } from "@/helpers/Notifications.js";
+
   export default {
     data: () => ({
       dialog: false,
+      model :{
+        full_name : "",
+        birthdate : "",
+        categories: "",
+        amount: "",
+        phone_number: "",
+        email : ""
+
+      },
+
+      categories : []
+
     }),
 
     methods: {
         show() {
-            this.dialog = true;
+            this.getItem();
+            this.getCategories();
+
+            let user_cats = [];
+
+            this.categories.forEach((category)=>{
+                if(this.model.categories.includes(category.id)){
+                    user_cats.push(category)
+                }
+            })
+
+            this.categories = user_cats;
         },
         hide() {
             this.dialog = false;
+        },
+        getItem() {
+            getJSON("/users",null,true)
+                .then((res) => {
+                if (res.error) {
+                    notification({
+                     message: res.message,
+                    });
+                } else {
+                    this.model = res.data;
+                    this.dialog = true;
+                }
+                })
+                .catch((err) => {
+                    notification({
+                        message: "Ocurrió un error al hacer la petición",
+                    });
+                });
+        },
+        getCategories() {
+            getJSON("/categories", this.params, false)
+                .then((res) => {
+                    this.categories = res.data.items;
+                })
+                .catch((err) => {
+                    notification({
+                        message: err
+                    });
+                });
         }
     }
   }
