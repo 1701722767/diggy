@@ -66,10 +66,13 @@ export const getTokenFirebase = () => {
         })
       });
     
-    /// Need implementation when page is in foreground!!!!
     onMessage(messaging, (payload) => {
-      console.log("Message received. ", payload);
-      // ...
+      navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(registration => {
+          registration.showNotification(
+              payload.notification.title,
+              payload.notification
+          )
+      });
     });
 }
 
