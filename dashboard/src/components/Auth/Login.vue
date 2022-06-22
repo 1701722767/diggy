@@ -72,6 +72,7 @@
 import { logIn } from "@/services/Auth.js";
 import Emitter from "@/services/Emitter.js";
 import { notification } from "@/helpers/Notifications.js";
+import { getTokenFirebase } from "@/services/Firebase.js";
 
 export default {
   name: "Login",
@@ -108,6 +109,8 @@ export default {
             icon: "mdi-account",
             message: `Bienvenido ${res.attributes.name}`,
           });
+
+          getTokenFirebase();
 
           Emitter.emit("reload-navbar-items");
           setTimeout(() => {
