@@ -154,7 +154,6 @@ export default {
   data: () => ({
     dialog: false,
     commentDialog: false,
-    showModal: false,
 
     model: {
       event_id: "",
@@ -201,11 +200,6 @@ export default {
     },
     reserve() {
       /// not implemented yet
-    },
-    openDialog() {
-      if (this.showModal) {
-        this.showModal = !this.showModal;
-      }
     },
 
     getItem(params) {
