@@ -129,7 +129,7 @@
 
         <v-divider class="mx-4"></v-divider>
 
-        <v-card-actions class="justify-center"> 
+        <v-card-actions class="justify-center">
           <v-btn color="green" text @click="reserve">
             Reservar
           </v-btn>
@@ -201,6 +201,9 @@ export default {
     },
     reserve() {
       /// not implemented yet
+
+
+
     },
     openDialog() {
       if (this.showModal) {
