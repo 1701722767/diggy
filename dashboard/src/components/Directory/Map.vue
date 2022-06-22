@@ -10,6 +10,7 @@
   >
     <ShowEvent ref="ShowEvent"></ShowEvent>
     <ShowPlace ref="ShowPlace"></ShowPlace>
+    <ShowUser ref="ShowUser"></ShowUser>
 
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
 
@@ -46,7 +47,7 @@
     </l-marker>
 
     <template v-if="location">
-      <l-marker :lat-lng="location.latlng">
+      <l-marker :lat-lng="location.latlng" @click="showInfoUser">
         <l-icon
           :tooltipAnchor="[20, -10]"
           :icon-size="[45, 45]"
@@ -63,6 +64,7 @@ import { LMap, LTileLayer, LMarker, LTooltip, LIcon } from "vue2-leaflet";
 import { getJSON } from "../../helpers/Request";
 import ShowEvent from "../Events/Show";
 import ShowPlace from "../Places/Show";
+import ShowUser from "@/components/User";
 import { notification } from "@/helpers/Notifications";
 
 export default {
@@ -73,8 +75,9 @@ export default {
     LMarker,
     LTooltip,
     LIcon,
-  ShowEvent,
+    ShowEvent,
     ShowPlace,
+    ShowUser
   },
   mounted() {
     this.getEvents(this.center);
@@ -125,6 +128,10 @@ export default {
 
       const param = { composite_key: keys };
       this.$refs.ShowPlace.show(param);
+    },
+
+    showInfoUser(){
+      this.$refs.ShowUser.show();
     },
 
     onReady() {
